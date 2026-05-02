@@ -525,7 +525,6 @@ MonoBehaviour:
   speed: 4
   heightJump: 0.5
   jumpSound: {fileID: 8300000, guid: aad764e98302718409099d90023e7fea, type: 3}
-  pushSound: {fileID: 8300000, guid: 019bc7bfff8c20343ac12f446546cf14, type: 3}
 --- !u!65 &1843085262
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -560,6 +559,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveScript: {fileID: 1843085261}
+  maxInvulTime: 1
+  hurtSound: {fileID: 8300000, guid: 019bc7bfff8c20343ac12f446546cf14, type: 3}
 --- !u!54 &1843085264
 Rigidbody:
   m_ObjectHideFlags: 0
