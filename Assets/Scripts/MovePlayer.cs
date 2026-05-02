@@ -19,7 +19,7 @@ public class MovePlayer : MonoBehaviour
 {
     public float speed = 1.0f;              // Speed of movement
     public float heightJump = 0.5f;         // Height of the jump during a move
-    public AudioClip jumpSound, pushSound;  // Sound for moving and pushing a box
+    public AudioClip jumpSound;  // Sound for moving and pushing a box
 
     PlayerState state;               // Current player state
     Direction dir;                   // Current direction the player is facing

@@ -9,7 +9,7 @@ public class CreateLevel : MonoBehaviour
 {
     public GameObject player;                   // Reference to the player object.
                                                 // We need to position it according to the level.
-    [SerializeField] public GameObject ground, wall, box, goal, coin;  // References to objects we need to instantiate to
+    [SerializeField] public GameObject ground, wall, box, coin, slime;  // References to objects we need to instantiate to
                                                 // build the level.
 
     // Start is called before the first frame update
@@ -55,7 +55,7 @@ public class CreateLevel : MonoBehaviour
                             obj.transform.parent = transform;
                             break;
                         case 3:
-                            obj = Instantiate(goal, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj = Instantiate(slime, new Vector3(x, 0.0f, y), transform.rotation);
                             obj.transform.parent = transform;
                             break;
                         case 5:

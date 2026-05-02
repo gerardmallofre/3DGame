@@ -6,7 +6,10 @@ public class PlayerHandler : MonoBehaviour
 {
     private int coins = 0;
     private int health = 3;
+    private float invulTime = 0;
     [SerializeField] MovePlayer moveScript;
+    [SerializeField] float maxInvulTime = 1;
+    [SerializeField] public AudioClip hurtSound;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +21,7 @@ public class PlayerHandler : MonoBehaviour
     void Update()
     {
         movement();
+        if (invulTime >= 0) invulTime -= Time.deltaTime;
     }
 
     void movement()
@@ -35,6 +39,18 @@ public class PlayerHandler : MonoBehaviour
 
     public void takeDamage(int dmg)
     {
-        health -= dmg;
+        if (invulTime < 0)
+        {
+            AudioSource.PlayClipAtPoint(hurtSound, Camera.main.transform.position);
+            health -= dmg;
+            if (health > 0)
+                invulTime = maxInvulTime;
+            else die();
+        }
+    }
+
+    void die()
+    {
+        Destroy(this.transform.gameObject);
     }
 }
