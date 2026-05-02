@@ -12,7 +12,7 @@ enum PlayerState { STOP, MOVE };
 // (multiplied by 90 degrees) the rotation needed to reorient the player
 // from one direction to another (e.g. changing from DOWN to RIGHT requires
 // a 90 * (RIGHT - DOWN) = -90 degree rotation.)
-enum Direction { UP = 0, RIGHT, DOWN, LEFT };
+public enum Direction { UP = 0, RIGHT, DOWN, LEFT };
 
 
 public class MovePlayer : MonoBehaviour
@@ -26,10 +26,6 @@ public class MovePlayer : MonoBehaviour
     Vector3 initialPosMove, vecMove; // For a movement, initial location and vector of movement
     float timeInMove;                // Time in a movement currently taking place
                                      // It should take values from 0 to 1/speed, for tiles of size 1
-
-    bool bMoveBox;          // Is the player pushing on a box that should move with him?
-    GameObject box;         // If bMoveBox == true, then this is the box we need to move
-    Vector3 initialPosBox;  // Initial location of the box the player is pushing
 
     // Start is called before the first frame update
     void Start()
@@ -48,42 +44,21 @@ public class MovePlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // First, check if the player wants to reset the level. If so, reload the scene.
-        if (Input.GetKeyDown(KeyCode.Space))
-            SceneManager.LoadScene("SampleScene");
+        if (state != PlayerState.STOP)
+        {
+            UpdateMovement();
+        }
+    }
 
+    public void tryMove(Direction dirMove)
+    {
         // We need behaviour for the two player states. If it is MOVE, we call UpdateMovement.
         // For STOP, we check if any of the arrow keys is pressed, and we check and prepare the
         // corresponding movement via the method PrepareMovement.
         if (state == PlayerState.STOP)
         {
-            bool bMove = false;
-            Direction dirMove = Direction.DOWN;
-            if(Input.GetKey(KeyCode.UpArrow))
-            {
-                bMove = true;
-                dirMove = Direction.UP;
-            }
-            else if (Input.GetKey(KeyCode.RightArrow))
-            {
-                bMove = true;
-                dirMove = Direction.RIGHT;
-            }
-            else if (Input.GetKey(KeyCode.DownArrow))
-            {
-                bMove = true;
-                dirMove = Direction.DOWN;
-            }
-            else if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                bMove = true;
-                dirMove = Direction.LEFT;
-            }
-            if (bMove)
-                PrepareMovement(dirMove);
+            PrepareMovement(dirMove);
         }
-        else
-            UpdateMovement();
     }
 
     // This method checks that the movement the player wants to make is valid and
@@ -106,25 +81,6 @@ public class MovePlayer : MonoBehaviour
         GameObject obj = GetObjectInDirection("Wall", initialPosMove, vecMove, 0.0f, 1.0f);
         if ((obj != null) && (obj.tag == "Wall"))
             bMove = false;
-        else
-        {
-            // Otherwise, we check for a box
-            obj = GetObjectInDirection("Box", initialPosMove, vecMove, 0.0f, 1.0f);
-            if ((obj != null) && (obj.tag == "Box"))
-            {
-                // If a box is present, we check if just beyond there is a wall or box.
-                // If that is the case we cannot move. Otherwise, we need to push the box adjacent to the player.
-                box = obj.transform.parent.gameObject;
-                obj = GetObjectInDirection(null, initialPosMove, vecMove, 1.0f, 2.0f);
-                if ((obj == null) || ((obj.tag != "Wall") && (obj.tag != "Box")))
-                {
-                    bMoveBox = true;
-                    initialPosBox = box.transform.position;
-                }
-                else
-                    bMove = false;
-            }
-        }
         if (bMove)
         {
             // Now that we know we will move, we initalize all that we need, and rotate
@@ -136,8 +92,6 @@ public class MovePlayer : MonoBehaviour
 
             // We also play the corresponding sound, and add a sound for the box if one is being pushed.
             AudioSource.PlayClipAtPoint(jumpSound, Camera.main.transform.position);
-            if(bMoveBox)
-                AudioSource.PlayClipAtPoint(pushSound, Camera.main.transform.position);
         }
 
         return bMove;
@@ -154,8 +108,8 @@ public class MovePlayer : MonoBehaviour
         RaycastHit[] hits = Physics.RaycastAll(P, v, max);
         foreach (RaycastHit hit in hits)
         {
-            if((hit.distance > min) && (hit.distance < max) && ((tag == null) || (hit.collider.gameObject.tag == tag)))
-                if(hit.distance < closestDistance)
+            if ((hit.distance > min) && (hit.distance < max) && ((tag == null) || (hit.collider.gameObject.tag == tag)))
+                if (hit.distance < closestDistance)
                 {
                     closestDistance = hit.distance;
                     obj = hit.collider.gameObject;
@@ -176,12 +130,6 @@ public class MovePlayer : MonoBehaviour
             // by the size of one tile (in this case, 1).
             transform.localPosition = initialPosMove + vecMove;
             state = PlayerState.STOP;
-            if (bMoveBox)
-            {
-                // The same has to be done for the pushed box if any.
-                bMoveBox = false;
-                box.transform.localPosition = initialPosBox + vecMove;
-            }
         }
         else
         {
@@ -189,9 +137,6 @@ public class MovePlayer : MonoBehaviour
             Vector3 jumpMove = heightJump * Mathf.Sin(speed * timeInMove * Mathf.PI) * Vector3.up;
             // The movement is then the initial position plus the horizontal displacement plus the jump.
             transform.localPosition = initialPosMove + speed * timeInMove * vecMove + jumpMove;
-            // And the same (with no vertical movement) for the pushed box.
-            if (bMoveBox)
-                box.transform.localPosition = initialPosBox + speed * timeInMove * vecMove;
         }
 
     }
