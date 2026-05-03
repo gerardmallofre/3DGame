@@ -18,8 +18,11 @@ public class FollowPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Transform playert = player.GetComponent<Transform>();
+        if (player != null)
+        {
+            Transform playert = player.GetComponent<Transform>();
 
-        camt.position = new Vector3(camstartpos.x, camstartpos.y, playert.position.z + camstartpos.z);
+            camt.position = new Vector3(camstartpos.x, camstartpos.y, playert.position.z + camstartpos.z);
+        }
     }
 }

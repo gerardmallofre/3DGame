@@ -6,6 +6,8 @@ public class SlimeHandler : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] MovePlayer moveScript;
+    [SerializeField] float maxjumpwait = 1;
+    float jumpwait = 0;
 
     void Start()
     {
@@ -15,7 +17,12 @@ public class SlimeHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        movement();
+        if (jumpwait >= 0) jumpwait -= Time.deltaTime;
+        else
+        {
+            movement();
+            jumpwait = maxjumpwait;
+        }
     }
 
     // I'M THE REAL ONE!!!
@@ -31,9 +38,16 @@ public class SlimeHandler : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         PlayerHandler p = other.GetComponent<PlayerHandler>();
-        if (p != null)
+        MovePlayer smv = GetComponent<MovePlayer>();
+        if (p != null && smv.getState() == PlayerState.MOVE)
         {
             p.takeDamage(1);
+            smv.undoMove();
         }
+    }
+
+    public void die()
+    {
+        Destroy(this.transform.gameObject);
     }
 }

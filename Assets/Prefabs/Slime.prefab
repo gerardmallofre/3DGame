@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 8337605225650355259}
   m_Layer: 0
   m_Name: Slime
-  m_TagString: Untagged
+  m_TagString: Slime
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -154,7 +154,6 @@ MonoBehaviour:
   speed: 2
   heightJump: 0.5
   jumpSound: {fileID: 8300000, guid: aad764e98302718409099d90023e7fea, type: 3}
-  pushSound: {fileID: 0}
 --- !u!114 &8337605225650355259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,3 +167,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveScript: {fileID: 5922124968762103422}
+  maxjumpwait: 1

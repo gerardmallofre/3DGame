@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 // The player will alternate between two distinct states, either stopped
 // or executing a movement from one tile to an adjacent one.
-enum PlayerState { STOP, MOVE };
+public enum PlayerState { STOP, MOVE, UNDO };
 
 // The player can move in four directions. Here they are listed in 
 // clockwise order, so that taking differences of directions produces
@@ -20,6 +20,7 @@ public class MovePlayer : MonoBehaviour
     public float speed = 1.0f;              // Speed of movement
     public float heightJump = 0.5f;         // Height of the jump during a move
     public AudioClip jumpSound;  // Sound for moving and pushing a box
+    //[SerializeField] bool isPlayer=false;
 
     PlayerState state;               // Current player state
     Direction dir;                   // Current direction the player is facing
@@ -139,5 +140,18 @@ public class MovePlayer : MonoBehaviour
             transform.localPosition = initialPosMove + speed * timeInMove * vecMove + jumpMove;
         }
 
+    }
+
+    public PlayerState getState() { return state; }
+
+    public void undoMove()
+    {
+        if (state == PlayerState.MOVE)
+        {
+            state = PlayerState.UNDO;
+            initialPosMove = initialPosMove + vecMove;
+            timeInMove = 1.0f / speed - timeInMove;
+            vecMove = vecMove * -1;
+        }
     }
 }
