@@ -25,7 +25,6 @@ public class SlimeHandler : MonoBehaviour
         }
     }
 
-    // I'M THE REAL ONE!!!
     private void movement()
     {
         float r = Random.Range(0, 4);
@@ -37,12 +36,16 @@ public class SlimeHandler : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        PlayerHandler p = other.GetComponent<PlayerHandler>();
+        GameObject oobj = other.transform.gameObject;
         MovePlayer smv = GetComponent<MovePlayer>();
-        if (p != null && smv.getState() == PlayerState.MOVE)
+        if (smv.getState() == PlayerState.MOVE && oobj.tag!="Coin")
         {
-            p.takeDamage(1);
             smv.undoMove();
+            PlayerHandler p = oobj.GetComponent<PlayerHandler>();
+            if (p != null)
+            {
+                p.takeDamage(1);
+            }
         }
     }
 

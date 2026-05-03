@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Wall
   - Slime
+  - Coin
   layers:
   - Default
   - TransparentFX
