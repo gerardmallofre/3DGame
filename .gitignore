@@ -3,3 +3,11 @@
 /[Oo]bj/
 /[Bb]uilds/
 /[Ll]ogs/
+
+.vs/
+Library/
+Temp/
+Logs/
+UserSettings/
+*.csproj
+*.sln

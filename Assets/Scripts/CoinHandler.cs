@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,10 +19,10 @@ public class CoinHandler : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         PlayerHandler p = other.GetComponent<PlayerHandler>();
-
         if (p != null)
         {
             p.addCoin();
+            HUDManager.Instance?.AddCoin();
             Destroy(this.gameObject);
         }
     }

@@ -54,6 +54,7 @@ public class PlayerHandler : MonoBehaviour
         {
             AudioSource.PlayClipAtPoint(hurtSound, Camera.main.transform.position);
             health -= dmg;
+            HUDManager.Instance?.SetHealth(health);
             if (health > 0)
                 invulTime = maxInvulTime;
             else die();
