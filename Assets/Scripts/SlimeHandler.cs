@@ -6,6 +6,7 @@ public class SlimeHandler : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] MovePlayer moveScript;
+    private GameObject cl;
     [SerializeField] float maxjumpwait = 1;
     float jumpwait = 0;
 
@@ -34,6 +35,11 @@ public class SlimeHandler : MonoBehaviour
         else moveScript.tryMove(Direction.RIGHT);
     }
 
+    public void setLevelCreator(GameObject g)
+    {
+        cl = g;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         GameObject oobj = other.transform.gameObject;
@@ -51,6 +57,7 @@ public class SlimeHandler : MonoBehaviour
 
     public void die()
     {
+        cl.GetComponent<CreateLevel>().enemyKilled();
         Destroy(this.transform.gameObject);
     }
 }

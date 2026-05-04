@@ -154,4 +154,10 @@ public class MovePlayer : MonoBehaviour
             vecMove = vecMove * -1;
         }
     }
+
+    public void stopMove()
+    {
+        state = PlayerState.STOP;
+        transform.localPosition = initialPosMove;
+    }
 }

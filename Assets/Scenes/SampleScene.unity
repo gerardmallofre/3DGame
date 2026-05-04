@@ -454,6 +454,7 @@ MonoBehaviour:
   box: {fileID: 6057771484784391244, guid: e20d5a2a58984bc47bc259277f7db9d1, type: 3}
   coin: {fileID: 354449048083276113, guid: e9f8646ddcd35174fb08c6a6c735bf24, type: 3}
   slime: {fileID: 5359074256982616140, guid: c40189d0bd8019a459ca5b9124946c30, type: 3}
+  exitdoor: {fileID: 2648601848892715202, guid: 5050f2dbb5c6d704e81a45a73183e754, type: 3}
 --- !u!4 &1182457125
 Transform:
   m_ObjectHideFlags: 0
