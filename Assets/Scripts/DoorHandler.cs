@@ -22,16 +22,19 @@ public class DoorHandler : MonoBehaviour
 
     public void open()
     {
-        Debug.Log("Door opened");
         isopen = true;
     }
 
     public void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Enter door");
-        if (isopen)
+        if (isopen && other.transform.gameObject.tag=="Player")
         {
             cl.GetComponent<CreateLevel>().advanceLevel();
         }
+    }
+
+    public bool isOpen()
+    {
+        return isopen;
     }
 }

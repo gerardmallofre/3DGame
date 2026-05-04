@@ -99,7 +99,7 @@ public class CreateLevel : MonoBehaviour
                                 break;
                             case 6:
                                 // For the player, we position it at the location of the tile with the player tile id.
-                                player.transform.Translate(x, 0.0f, y);
+                                player.transform.localPosition=new Vector3(x, 0.0f, y);
                                 break;
                         }
                     }
