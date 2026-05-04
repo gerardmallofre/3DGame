@@ -79,8 +79,8 @@ public class MovePlayer : MonoBehaviour
 
         // We look for a object tagged as "Wall" next to the player in the movement's direction 
         // If present, we cannot move
-        GameObject obj = GetObjectInDirection("Wall", initialPosMove, vecMove, 0.0f, 1.0f);
-        if ((obj != null) && (obj.tag == "Wall"))
+        GameObject obj = GetObjectInDirection(initialPosMove, vecMove, 0.0f, 1.0f);
+        if (obj != null)
             bMove = false;
         if (bMove)
         {
@@ -100,7 +100,7 @@ public class MovePlayer : MonoBehaviour
 
     // This method checks if an object with a collider is present looking from point P
     // in the direction v, at a distance between min and max. If so, it returns the closest one.
-    private GameObject GetObjectInDirection(string tag, Vector3 P, Vector3 v, float min, float max)
+    private GameObject GetObjectInDirection(Vector3 P, Vector3 v, float min, float max)
     {
         float closestDistance = max + 1.0f;
         GameObject obj = null;
@@ -109,7 +109,7 @@ public class MovePlayer : MonoBehaviour
         RaycastHit[] hits = Physics.RaycastAll(P, v, max);
         foreach (RaycastHit hit in hits)
         {
-            if ((hit.distance > min) && (hit.distance < max) && ((tag == null) || (hit.collider.gameObject.tag == tag)))
+            if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag == "Wall" || (hit.collider.gameObject.tag == "Door" && !hit.collider.gameObject.GetComponent<DoorHandler>().isOpen())))
                 if (hit.distance < closestDistance)
                 {
                     closestDistance = hit.distance;
@@ -153,5 +153,11 @@ public class MovePlayer : MonoBehaviour
             timeInMove = 1.0f / speed - timeInMove;
             vecMove = vecMove * -1;
         }
+    }
+
+    public void stopMove()
+    {
+        state = PlayerState.STOP;
+        transform.localPosition = initialPosMove;
     }
 }
