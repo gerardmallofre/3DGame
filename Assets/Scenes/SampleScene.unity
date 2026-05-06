@@ -535,9 +535,9 @@ MonoBehaviour:
   ground: {fileID: 1620564332409280801, guid: c79172a17ef11fc4eb2f4c8d605e73b4, type: 3}
   wall: {fileID: 2512714034962792149, guid: facace8863641b14d80702e20a53d8d9, type: 3}
   box: {fileID: 6057771484784391244, guid: e20d5a2a58984bc47bc259277f7db9d1, type: 3}
-  coin: {fileID: 2115505757443974798, guid: 761dfc3bd5512ba4db4e5d7a51c74be8, type: 3}
+  coin: {fileID: 2472641925563084845, guid: ae5677f20cf96b04290097a06584525c, type: 3}
   slime: {fileID: 5359074256982616140, guid: c40189d0bd8019a459ca5b9124946c30, type: 3}
-  exitdoor: {fileID: 2648601848892715202, guid: 5050f2dbb5c6d704e81a45a73183e754, type: 3}
+  exitdoor: {fileID: 3043088802420955959, guid: 05d3bf078149bb348a362549860e3232, type: 3}
 --- !u!4 &1182457125
 Transform:
   m_ObjectHideFlags: 0
