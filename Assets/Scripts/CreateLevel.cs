@@ -11,6 +11,7 @@ public class CreateLevel : MonoBehaviour
     public GameObject player;                   // Reference to the player object.
     private int enemies = 0;
     private GameObject door;
+    private float timepassed = 0.0f;
                                                 // We need to position it according to the level.
     [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor;  // References to objects we need to instantiate to
                                                                         // build the level.
@@ -110,6 +111,32 @@ public class CreateLevel : MonoBehaviour
         {
             // Hopefully this should not happen. But just in case ...
             Debug.Log("Map file could not be found!!!");
+        }
+    }
+
+    void Update()
+    {
+        timepassed += Time.deltaTime;
+        if (timepassed > 6)
+        {
+            foreach (Transform child in transform)
+            {
+                if (child.tag == "Ground")
+                {
+                    child.GetComponent<GroundHandler>().setFallState(FallState.FALL);
+                }
+                timepassed = 10f;
+            }
+        }
+        else if (timepassed > 5)
+        {
+            foreach (Transform child in transform)
+            {
+                if (child.tag == "Ground")
+                {
+                    child.GetComponent<GroundHandler>().setFallState(FallState.SHAKE);
+                }
+            }
         }
     }
 
