@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\SlimeHandler.cs" />
     <Compile Include="Assets\Scripts\FollowPlayer.cs" />
     <Compile Include="Assets\Scripts\CoinHandler.cs" />
+    <Compile Include="Assets\Scripts\GroundHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
