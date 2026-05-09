@@ -8,7 +8,6 @@ public class CoinHandler : MonoBehaviour
                        ?? other.GetComponentInParent<PlayerHandler>();
         if (p != null)
         {
-            p.addCoin();
             HUDManager.Instance?.AddCoin();
             Destroy(gameObject);
         }

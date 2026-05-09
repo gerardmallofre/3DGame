@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PlayerHandler : MonoBehaviour
 {
-    private int coins = 0;
     private int health = 3;
     private float invulTime = 0;
     private float hitCooldown = 0;
     [SerializeField] MovePlayer moveScript;
+    [SerializeField] CreateLevel levelScript;
     [SerializeField] float maxInvulTime = 1;
     [SerializeField] public AudioClip hurtSound;
     [SerializeField] float maxHitCooldown = 0.5f;
@@ -22,17 +22,18 @@ public class PlayerHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        fallCheck();
         progressCooldowns();
         movement();
     }
 
-    void progressCooldowns()
+    private void progressCooldowns()
     {
         if (invulTime >= 0) invulTime -= Time.deltaTime;
         if (hitCooldown >= 0) hitCooldown -= Time.deltaTime;
     }
 
-    void movement()
+    private void movement()
     {
         if (hitCooldown < 0)
         {
@@ -43,9 +44,9 @@ public class PlayerHandler : MonoBehaviour
         }
     }
 
-    public void addCoin()
+    private void fallCheck()
     {
-        coins++;
+
     }
 
     public void takeDamage(int dmg)
@@ -80,6 +81,9 @@ public class PlayerHandler : MonoBehaviour
 
     void die()
     {
-        Destroy(this.transform.gameObject);
+        levelScript.restart();
+        health = 3;
+        HUDManager.Instance?.SetHealth(health);
+        HUDManager.Instance?.SetCoins(0);
     }
 }

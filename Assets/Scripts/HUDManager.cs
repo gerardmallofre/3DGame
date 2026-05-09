@@ -156,6 +156,7 @@ public class HUDManager : MonoBehaviour
 
     public void SetHealth(int v) { currentHealth = Mathf.Clamp(v, 0, maxHealth); RefreshHearts(); }
     public void AddCoin() { currentCoins++; RefreshCoins(); }
+    public void SetCoins(int c) { currentCoins = c; RefreshCoins(); }
     public void SetRoom(int v) { currentRoom = Mathf.Clamp(v, 1, totalRooms); RefreshRooms(); }
     public void ResetHUD() { currentHealth = maxHealth; currentCoins = 0; currentRoom = 1; Start(); }
 }

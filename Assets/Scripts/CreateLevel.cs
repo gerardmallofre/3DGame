@@ -32,6 +32,8 @@ public class CreateLevel : MonoBehaviour
     public void advanceLevel()
     {
         level += 1;
+        timepassed = 0f;
+        enemies = 0;
         string filename = Application.dataPath + levels[level];
         player.GetComponent<MovePlayer>().stopMove();
 
@@ -112,6 +114,12 @@ public class CreateLevel : MonoBehaviour
             // Hopefully this should not happen. But just in case ...
             Debug.Log("Map file could not be found!!!");
         }
+    }
+
+    public void restart()
+    {
+        level = -1;
+        advanceLevel();
     }
 
     void Update()

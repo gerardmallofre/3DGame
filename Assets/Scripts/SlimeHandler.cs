@@ -44,7 +44,7 @@ public class SlimeHandler : MonoBehaviour
     {
         GameObject oobj = other.transform.gameObject;
         MovePlayer smv = GetComponent<MovePlayer>();
-        if (smv.getState() == PlayerState.MOVE && oobj.tag!="Coin")
+        if (smv.getState() == PlayerState.MOVE && oobj.tag!="Coin" && oobj.tag!="Ground")
         {
             smv.undoMove();
             PlayerHandler p = oobj.GetComponent<PlayerHandler>();
