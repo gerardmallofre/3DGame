@@ -9,9 +9,16 @@ using UnityEditorInternal;
 public class CreateLevel : MonoBehaviour
 {
     public GameObject player;                   // Reference to the player object.
+    private bool falls;
+    private bool falling;
+    [SerializeField] float fallstart = 5f;
+    [SerializeField] float fallinterval = 2f;
+    [SerializeField] float shakelength = 1f;
+    private bool rowFallen = false;
     private int enemies = 0;
     private GameObject door;
     private float timepassed = 0.0f;
+    private int fallingrow = 0;
                                                 // We need to position it according to the level.
     [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor;  // References to objects we need to instantiate to
                                                                         // build the level.
@@ -32,7 +39,11 @@ public class CreateLevel : MonoBehaviour
     public void advanceLevel()
     {
         level += 1;
+        falls = false;
+        falling = false;
+        rowFallen = false;
         timepassed = 0f;
+        fallingrow = 0;
         enemies = 0;
         string filename = Application.dataPath + levels[level];
         player.GetComponent<MovePlayer>().stopMove();
@@ -49,6 +60,11 @@ public class CreateLevel : MonoBehaviour
 
             TextReader reader = File.OpenText(filename);
             string line = reader.ReadLine();
+            if (line == "FALLS")
+            {
+                falls = true;
+            }
+            line = reader.ReadLine();
             string[] tokens = line.Split(' ');
             int width, height;
             width = int.Parse(tokens[0]);
@@ -125,24 +141,38 @@ public class CreateLevel : MonoBehaviour
     void Update()
     {
         timepassed += Time.deltaTime;
-        if (timepassed > 6)
+        if (falls)
         {
-            foreach (Transform child in transform)
+            if (!falling && timepassed > fallstart)
             {
-                if (child.tag == "Ground")
-                {
-                    child.GetComponent<GroundHandler>().setFallState(FallState.FALL);
-                }
-                timepassed = 10f;
+                falling = true;
+                timepassed = fallinterval;
             }
-        }
-        else if (timepassed > 5)
-        {
-            foreach (Transform child in transform)
+            else if (falling)
             {
-                if (child.tag == "Ground")
+                if (timepassed > fallinterval)
                 {
-                    child.GetComponent<GroundHandler>().setFallState(FallState.SHAKE);
+                    foreach (Transform child in transform)
+                    {
+                        if (child.gameObject.tag=="Ground" && child.localPosition.z == fallingrow)
+                        {
+                            child.GetComponent<GroundHandler>().setFallState(FallState.SHAKE);
+                        }
+                    }
+                    timepassed = 0f;
+                    rowFallen = false;
+                }
+                else if (!rowFallen && timepassed > shakelength)
+                {
+                    foreach (Transform child in transform)
+                    {
+                        if (child.gameObject.tag == "Ground" && child.localPosition.z == fallingrow)
+                        {
+                            child.GetComponent<GroundHandler>().setFallState(FallState.FALL);
+                        }
+                    }
+                    fallingrow += 1;
+                    rowFallen = true;
                 }
             }
         }

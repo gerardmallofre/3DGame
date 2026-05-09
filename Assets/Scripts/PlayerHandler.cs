@@ -7,6 +7,8 @@ public class PlayerHandler : MonoBehaviour
     private int health = 3;
     private float invulTime = 0;
     private float hitCooldown = 0;
+    private bool falling = false;
+    private float falltime = 0f;
     [SerializeField] MovePlayer moveScript;
     [SerializeField] CreateLevel levelScript;
     [SerializeField] float maxInvulTime = 1;
@@ -22,9 +24,10 @@ public class PlayerHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        fallCheck();
+        if (!falling && moveScript.getState()==PlayerState.STOP) fallCheck();
+        if (falling) fall();
         progressCooldowns();
-        movement();
+        if (!falling) movement();
     }
 
     private void progressCooldowns()
@@ -44,9 +47,47 @@ public class PlayerHandler : MonoBehaviour
         }
     }
 
+    private GameObject CheckForGround()
+    {
+        float min = 0f; float max = 1.5f; Vector3 v = new Vector3(0, -1, 0); Vector3 P = transform.localPosition;
+        P += new Vector3(0, 0.5f, 0);
+        float closestDistance = max + 1.0f;
+        GameObject obj = null;
+
+        // Physics.RaycastAll returns all colliders in a given ray (P, v) within a given distance (max)
+        RaycastHit[] hits = Physics.RaycastAll(P, v, max);
+        foreach (RaycastHit hit in hits)
+        {
+            if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag == "Ground"))
+                if (hit.distance < closestDistance)
+                {
+                    closestDistance = hit.distance;
+                    obj = hit.collider.gameObject;
+                }
+        }
+
+        return obj;
+    }
+
     private void fallCheck()
     {
+        GameObject obj = CheckForGround();
+        if (obj==null)
+        {
+            falling = true;
+        }
+    }
 
+    private void fall()
+    {
+        falltime += Time.deltaTime;
+        if (falltime > 2)
+        {
+            takeDamage(3);
+        }
+        else if (falltime > 0.5) {
+            transform.localPosition -= new Vector3(0, (Time.deltaTime) * 10f, 0);
+        }
     }
 
     public void takeDamage(int dmg)
@@ -85,5 +126,7 @@ public class PlayerHandler : MonoBehaviour
         health = 3;
         HUDManager.Instance?.SetHealth(health);
         HUDManager.Instance?.SetCoins(0);
+        falling = false;
+        falltime = 0f;
     }
 }
