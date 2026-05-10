@@ -51,15 +51,16 @@ public class MovePlayer : MonoBehaviour
         }
     }
 
-    public void tryMove(Direction dirMove)
+    public bool tryMove(Direction dirMove)
     {
         // We need behaviour for the two player states. If it is MOVE, we call UpdateMovement.
         // For STOP, we check if any of the arrow keys is pressed, and we check and prepare the
         // corresponding movement via the method PrepareMovement.
         if (state == PlayerState.STOP)
         {
-            PrepareMovement(dirMove);
+            return PrepareMovement(dirMove);
         }
+        return false;
     }
 
     // This method checks that the movement the player wants to make is valid and

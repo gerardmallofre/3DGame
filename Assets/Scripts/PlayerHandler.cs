@@ -5,8 +5,9 @@ using UnityEngine;
 public class PlayerHandler : MonoBehaviour
 {
     private int health = 3;
-    private float invulTime = 0;
-    private float hitCooldown = 0;
+    private float invulTime = 0f;
+    private float hitCooldown = 0f;
+    private float slimeCooldown = 0f;
     private bool falling = false;
     private float falltime = 0f;
     [SerializeField] MovePlayer moveScript;
@@ -14,6 +15,7 @@ public class PlayerHandler : MonoBehaviour
     [SerializeField] float maxInvulTime = 1;
     [SerializeField] public AudioClip hurtSound;
     [SerializeField] float maxHitCooldown = 0.5f;
+    [SerializeField] float maxSlimeCooldown = 1f;
 
     // Start is called before the first frame update
     void Start()
@@ -34,11 +36,12 @@ public class PlayerHandler : MonoBehaviour
     {
         if (invulTime >= 0) invulTime -= Time.deltaTime;
         if (hitCooldown >= 0) hitCooldown -= Time.deltaTime;
+        if (slimeCooldown >= 0) slimeCooldown -= Time.deltaTime;
     }
 
     private void movement()
     {
-        if (hitCooldown < 0)
+        if (hitCooldown < 0 && slimeCooldown<0)
         {
             if (Input.GetKey(KeyCode.UpArrow)) moveScript.tryMove(Direction.UP);
             else if (Input.GetKey(KeyCode.RightArrow)) moveScript.tryMove(Direction.RIGHT);
@@ -128,5 +131,10 @@ public class PlayerHandler : MonoBehaviour
         HUDManager.Instance?.SetCoins(0);
         falling = false;
         falltime = 0f;
+    }
+
+    public void slime()
+    {
+        slimeCooldown = maxSlimeCooldown;
     }
 }

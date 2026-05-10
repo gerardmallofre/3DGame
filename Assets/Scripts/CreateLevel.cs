@@ -20,7 +20,7 @@ public class CreateLevel : MonoBehaviour
     private float timepassed = 0.0f;
     private int fallingrow = 0;
                                                 // We need to position it according to the level.
-    [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor;  // References to objects we need to instantiate to
+    [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor, slimetile;  // References to objects we need to instantiate to
                                                                         // build the level.
 
     private int level = -1;
@@ -185,5 +185,19 @@ public class CreateLevel : MonoBehaviour
         {
             door.GetComponent<DoorHandler>().open();
         }
+    }
+
+    public void slimeTile(Vector3 pos)
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.tag == "SlimeTile" && child.localPosition.z == pos.z && child.localPosition.x == pos.x)
+            {
+                Destroy(child.gameObject);
+                break;
+            }
+        }
+        GameObject obj=Instantiate(slimetile, new Vector3(pos.x, 0.1f, pos.z), new Quaternion(0f, 0f, 0f, 0f));
+        obj.transform.parent = transform;
     }
 }

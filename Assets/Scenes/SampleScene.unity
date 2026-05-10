@@ -598,6 +598,7 @@ MonoBehaviour:
   coin: {fileID: 2472641925563084845, guid: ae5677f20cf96b04290097a06584525c, type: 3}
   slime: {fileID: 5359074256982616140, guid: c40189d0bd8019a459ca5b9124946c30, type: 3}
   exitdoor: {fileID: 3043088802420955959, guid: 05d3bf078149bb348a362549860e3232, type: 3}
+  slimetile: {fileID: 4441756582574090864, guid: 97471fff798d7564d859f280e92254d0, type: 3}
 --- !u!4 &1182457125
 Transform:
   m_ObjectHideFlags: 0

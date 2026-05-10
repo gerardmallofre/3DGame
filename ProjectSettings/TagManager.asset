@@ -10,6 +10,7 @@ TagManager:
   - Box
   - Door
   - Ground
+  - SlimeTile
   layers:
   - Default
   - TransparentFX
