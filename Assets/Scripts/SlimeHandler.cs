@@ -8,31 +8,38 @@ public class SlimeHandler : MonoBehaviour, IEnemy
     [SerializeField] MovePlayer moveScript;
     private GameObject cl;
     [SerializeField] float maxjumpwait = 1;
-    float jumpwait = 0;
+    private float jumpwait = 0;
+    private bool placeslime = false;
 
     void Start()
     {
-        Random.InitState(3);
+        cl.GetComponent<CreateLevel>().slimeTile(transform.localPosition);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (placeslime && moveScript.getState() == PlayerState.STOP)
+        {
+            placeslime = false;
+            cl.GetComponent<CreateLevel>().slimeTile(transform.localPosition);
+        }
         if (jumpwait >= 0) jumpwait -= Time.deltaTime;
         else
         {
-            movement();
+            bool b = movement();
             jumpwait = maxjumpwait;
+            if (b) placeslime = true;
         }
     }
 
-    private void movement()
+    private bool movement()
     {
         float r = Random.Range(0, 4);
-        if (r < 1) moveScript.tryMove(Direction.UP);
-        else if (r < 2) moveScript.tryMove(Direction.DOWN);
-        else if (r < 3) moveScript.tryMove(Direction.LEFT);
-        else moveScript.tryMove(Direction.RIGHT);
+        if (r < 1) return moveScript.tryMove(Direction.UP);
+        else if (r < 2) return moveScript.tryMove(Direction.DOWN);
+        else if (r < 3) return moveScript.tryMove(Direction.LEFT);
+        else return moveScript.tryMove(Direction.RIGHT);
     }
 
     public void setLevelCreator(GameObject g)
@@ -44,7 +51,7 @@ public class SlimeHandler : MonoBehaviour, IEnemy
     {
         GameObject oobj = other.transform.gameObject;
         MovePlayer smv = GetComponent<MovePlayer>();
-        if (smv.getState() == PlayerState.MOVE && oobj.tag!="Coin")
+        if (smv.getState() == PlayerState.MOVE && oobj.tag!="Coin" && oobj.tag!="Ground" && oobj.tag!="SlimeTile")
         {
             smv.undoMove();
             PlayerHandler p = oobj.GetComponent<PlayerHandler>();

@@ -569,6 +569,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1843085259}
+--- !u!4 &1043433153 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7776559816784428047, guid: 94d7bf1d0fd6ec44ebd92a570ee1bd9f, type: 3}
+  m_PrefabInstance: {fileID: 226826626}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1182457123
 GameObject:
   m_ObjectHideFlags: 0
@@ -599,6 +604,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1843085259}
+  fallstart: 5
+  fallinterval: 2
+  shakelength: 1
   ground: {fileID: 1620564332409280801, guid: c79172a17ef11fc4eb2f4c8d605e73b4, type: 3}
   wall: {fileID: 2512714034962792149, guid: facace8863641b14d80702e20a53d8d9, type: 3}
   box: {fileID: 6057771484784391244, guid: e20d5a2a58984bc47bc259277f7db9d1, type: 3}
@@ -708,6 +716,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveScript: {fileID: 1843085261}
+  levelScript: {fileID: 1182457124}
   maxInvulTime: 1
   hurtSound: {fileID: 8300000, guid: 019bc7bfff8c20343ac12f446546cf14, type: 3}
   maxHitCooldown: 0.5

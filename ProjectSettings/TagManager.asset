@@ -12,6 +12,8 @@ TagManager:
   - Goal
   - Goomba
   - Spike
+  - Ground
+  - SlimeTile
   layers:
   - Default
   - TransparentFX

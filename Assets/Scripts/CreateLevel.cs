@@ -9,10 +9,18 @@ using UnityEditorInternal;
 public class CreateLevel : MonoBehaviour
 {
     public GameObject player;                   // Reference to the player object.
+    private bool falls;
+    private bool falling;
+    [SerializeField] float fallstart = 5f;
+    [SerializeField] float fallinterval = 2f;
+    [SerializeField] float shakelength = 1f;
+    private bool rowFallen = false;
     private int enemies = 0;
     private GameObject door;
+    private float timepassed = 0.0f;
+    private int fallingrow = 0;
                                                 // We need to position it according to the level.
-    [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor, goomba, spikeTrap;  // References to objects we need to instantiate to
+    [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor, goomba, spikeTrap, slimetile;  // References to objects we need to instantiate to
                                                                         // build the level.
 
     private int level = -1;
@@ -31,6 +39,12 @@ public class CreateLevel : MonoBehaviour
     public void advanceLevel()
     {
         level += 1;
+        falls = false;
+        falling = false;
+        rowFallen = false;
+        timepassed = 0f;
+        fallingrow = 0;
+        enemies = 0;
         string filename = Application.dataPath + levels[level];
         player.GetComponent<MovePlayer>().stopMove();
 
@@ -46,6 +60,11 @@ public class CreateLevel : MonoBehaviour
 
             TextReader reader = File.OpenText(filename);
             string line = reader.ReadLine();
+            if (line == "FALLS")
+            {
+                falls = true;
+            }
+            line = reader.ReadLine();
             string[] tokens = line.Split(' ');
             int width, height;
             width = int.Parse(tokens[0]);
@@ -119,6 +138,52 @@ public class CreateLevel : MonoBehaviour
         }
     }
 
+    public void restart()
+    {
+        level = -1;
+        advanceLevel();
+    }
+
+    void Update()
+    {
+        timepassed += Time.deltaTime;
+        if (falls)
+        {
+            if (!falling && timepassed > fallstart)
+            {
+                falling = true;
+                timepassed = fallinterval;
+            }
+            else if (falling)
+            {
+                if (timepassed > fallinterval)
+                {
+                    foreach (Transform child in transform)
+                    {
+                        if (child.gameObject.tag=="Ground" && child.localPosition.z == fallingrow)
+                        {
+                            child.GetComponent<GroundHandler>().setFallState(FallState.SHAKE);
+                        }
+                    }
+                    timepassed = 0f;
+                    rowFallen = false;
+                }
+                else if (!rowFallen && timepassed > shakelength)
+                {
+                    foreach (Transform child in transform)
+                    {
+                        if (child.gameObject.tag == "Ground" && child.localPosition.z == fallingrow)
+                        {
+                            child.GetComponent<GroundHandler>().setFallState(FallState.FALL);
+                        }
+                    }
+                    fallingrow += 1;
+                    rowFallen = true;
+                }
+            }
+        }
+    }
+
     public void enemyKilled()
     {
         --enemies;
@@ -126,5 +191,19 @@ public class CreateLevel : MonoBehaviour
         {
             door.GetComponent<DoorHandler>().open();
         }
+    }
+
+    public void slimeTile(Vector3 pos)
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.tag == "SlimeTile" && child.localPosition.z == pos.z && child.localPosition.x == pos.x)
+            {
+                Destroy(child.gameObject);
+                break;
+            }
+        }
+        GameObject obj=Instantiate(slimetile, new Vector3(pos.x, 0.1f, pos.z), new Quaternion(0f, 0f, 0f, 0f));
+        obj.transform.parent = transform;
     }
 }
