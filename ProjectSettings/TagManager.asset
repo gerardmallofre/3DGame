@@ -9,6 +9,9 @@ TagManager:
   - Coin
   - Box
   - Door
+  - Goal
+  - Goomba
+  - Spike
   layers:
   - Default
   - TransparentFX

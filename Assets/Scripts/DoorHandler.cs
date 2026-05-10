@@ -30,6 +30,7 @@ public class DoorHandler : MonoBehaviour
         if (isopen && other.transform.gameObject.tag=="Player")
         {
             cl.GetComponent<CreateLevel>().advanceLevel();
+            HUDManager.Instance.AddDoor();
         }
     }
 

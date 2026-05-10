@@ -12,7 +12,7 @@ public class CreateLevel : MonoBehaviour
     private int enemies = 0;
     private GameObject door;
                                                 // We need to position it according to the level.
-    [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor;  // References to objects we need to instantiate to
+    [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor, goomba, spikeTrap;  // References to objects we need to instantiate to
                                                                         // build the level.
 
     private int level = -1;
@@ -93,8 +93,14 @@ public class CreateLevel : MonoBehaviour
                                 obj.GetComponent<SlimeHandler>().setLevelCreator(this.transform.gameObject);
                                 ++enemies;
                                 break;
+                            case 4:
+                                obj = Instantiate(goomba, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj.transform.parent = transform;
+                                obj.GetComponent<SlimeHandler>().setLevelCreator(this.transform.gameObject);
+                                ++enemies;
+                                break;
                             case 5:
-                                obj = Instantiate(box, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj = Instantiate(spikeTrap, new Vector3(x, 0.0f, y), transform.rotation);
                                 obj.transform.parent = transform;
                                 break;
                             case 6:

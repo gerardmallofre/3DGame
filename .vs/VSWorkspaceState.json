@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Assets",
+    "\\Assets\\Scripts"
   ],
-  "SelectedNode": "\\.gitignore",
+  "SelectedNode": "\\Assets\\Scripts\\CreateLevel.cs",
   "PreviewInSolutionExplorer": false
 }

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerHandler : MonoBehaviour
@@ -12,14 +11,14 @@ public class PlayerHandler : MonoBehaviour
     [SerializeField] float maxInvulTime = 1;
     [SerializeField] public AudioClip hurtSound;
     [SerializeField] float maxHitCooldown = 0.5f;
+    [SerializeField] private Animator anim;
 
-    // Start is called before the first frame update
     void Start()
     {
-
+        if (anim == null)
+            anim = GetComponentInChildren<Animator>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         progressCooldowns();
@@ -40,46 +39,41 @@ public class PlayerHandler : MonoBehaviour
             else if (Input.GetKey(KeyCode.RightArrow)) moveScript.tryMove(Direction.RIGHT);
             else if (Input.GetKey(KeyCode.LeftArrow)) moveScript.tryMove(Direction.LEFT);
             else if (Input.GetKey(KeyCode.DownArrow)) moveScript.tryMove(Direction.DOWN);
+
+            if (Input.GetKeyDown(KeyCode.Space))
+                anim?.SetTrigger("attack");
         }
     }
 
-    public void addCoin()
-    {
-        coins++;
-    }
+    public void addCoin() { coins++; }
 
     public void takeDamage(int dmg)
     {
         if (invulTime < 0)
         {
+            GetComponent<HitEffect>()?.PlayHitEffect(maxInvulTime);
             AudioSource.PlayClipAtPoint(hurtSound, Camera.main.transform.position);
             health -= dmg;
             HUDManager.Instance?.SetHealth(health);
-            if (health > 0)
-                invulTime = maxInvulTime;
+            if (health > 0) invulTime = maxInvulTime;
             else die();
         }
     }
 
     public void OnTriggerEnter(Collider other)
     {
-        MovePlayer omv = other.GetComponent<MovePlayer>();
+        MovePlayer omv = other.GetComponent<MovePlayer>()
+                      ?? other.GetComponentInParent<MovePlayer>();
         MovePlayer pmv = GetComponent<MovePlayer>();
-        if (omv != null && pmv.getState()==PlayerState.MOVE)
+        if (omv != null && pmv.getState() == PlayerState.MOVE)
         {
             pmv.undoMove();
             hitCooldown = maxHitCooldown;
-
-            GameObject oth = other.transform.gameObject;
-            if (oth.tag == "Slime")
-            {
-                oth.GetComponent<SlimeHandler>().die();
-            }
+            IEnemy enemy = other.GetComponent<IEnemy>()
+                        ?? other.GetComponentInParent<IEnemy>();
+            if (enemy != null) enemy.die();
         }
     }
 
-    void die()
-    {
-        Destroy(this.transform.gameObject);
-    }
+    void die() { Destroy(gameObject); }
 }

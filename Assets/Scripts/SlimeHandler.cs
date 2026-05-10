@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlimeHandler : MonoBehaviour
+public class SlimeHandler : MonoBehaviour, IEnemy
 {
     // Start is called before the first frame update
     [SerializeField] MovePlayer moveScript;
@@ -57,7 +57,7 @@ public class SlimeHandler : MonoBehaviour
 
     public void die()
     {
-        cl.GetComponent<CreateLevel>().enemyKilled();
+        if (cl != null) cl.GetComponent<CreateLevel>().enemyKilled();
         Destroy(this.transform.gameObject);
     }
 }
