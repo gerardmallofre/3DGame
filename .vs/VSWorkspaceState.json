@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\Assets",
+    "\\Assets\\Scenes",
     "\\Assets\\Scripts"
   ],
-  "SelectedNode": "\\Assets\\Scripts\\CreateLevel.cs",
+  "SelectedNode": "\\Assets\\Scenes\\SampleScene.unity",
   "PreviewInSolutionExplorer": false
 }
