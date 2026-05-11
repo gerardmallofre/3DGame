@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\MovePlayer.cs" />
     <Compile Include="Assets\Scripts\IEnemy.cs" />
     <Compile Include="Assets\Scripts\CreateLevel.cs" />
+    <Compile Include="Assets\DeathHandler.cs" />
     <Compile Include="Assets\Scripts\SlimeTileHandler.cs" />
     <Compile Include="Assets\Scripts\HUDManager.cs" />
     <Compile Include="Assets\Scripts\PlayerHandler.cs" />

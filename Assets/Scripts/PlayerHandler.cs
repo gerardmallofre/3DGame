@@ -42,13 +42,20 @@ public class PlayerHandler : MonoBehaviour
     {
         if (hitCooldown < 0 && slimeCooldown<0)
         {
-            if (Input.GetKey(KeyCode.UpArrow)) moveScript.tryMove(Direction.UP);
-            else if (Input.GetKey(KeyCode.RightArrow)) moveScript.tryMove(Direction.RIGHT);
-            else if (Input.GetKey(KeyCode.LeftArrow)) moveScript.tryMove(Direction.LEFT);
-            else if (Input.GetKey(KeyCode.DownArrow)) moveScript.tryMove(Direction.DOWN);
+            bool b=false;
+            if (Input.GetKey(KeyCode.UpArrow)) b=moveScript.tryMove(Direction.UP);
+            else if (Input.GetKey(KeyCode.RightArrow)) b=moveScript.tryMove(Direction.RIGHT);
+            else if (Input.GetKey(KeyCode.LeftArrow)) b=moveScript.tryMove(Direction.LEFT);
+            else if (Input.GetKey(KeyCode.DownArrow)) b=moveScript.tryMove(Direction.DOWN);
 
-            if (Input.GetKeyDown(KeyCode.Space))
-                anim?.SetTrigger("attack");
+            if (b)
+            {
+                GameObject obj = CheckForEnemy(moveScript.getVec());
+                if (obj != null)
+                {
+                    anim?.SetTrigger("attack");
+                }
+            }
         }
     }
 
@@ -64,6 +71,27 @@ public class PlayerHandler : MonoBehaviour
         foreach (RaycastHit hit in hits)
         {
             if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag == "Ground"))
+                if (hit.distance < closestDistance)
+                {
+                    closestDistance = hit.distance;
+                    obj = hit.collider.gameObject;
+                }
+        }
+
+        return obj;
+    }
+
+    private GameObject CheckForEnemy(Vector3 v)
+    {
+        float min = 0f; float max = 1f; Vector3 P = transform.localPosition;
+        float closestDistance = max + 1.0f;
+        GameObject obj = null;
+
+        // Physics.RaycastAll returns all colliders in a given ray (P, v) within a given distance (max)
+        RaycastHit[] hits = Physics.RaycastAll(P, v, max);
+        foreach (RaycastHit hit in hits)
+        {
+            if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag == "Slime"))
                 if (hit.distance < closestDistance)
                 {
                     closestDistance = hit.distance;
