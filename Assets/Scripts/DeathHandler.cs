@@ -31,7 +31,7 @@ public class DeathHandler : MonoBehaviour
             if (time > duration) state = DeathState.DEAD;
         }
     }
-
+        
     public void startDeath(Direction d)
     {
         Vector3 v = new Vector3(0, 0, 0);
