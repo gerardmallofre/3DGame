@@ -32,6 +32,7 @@ public class PlayerHandler : MonoBehaviour
             progressCooldowns();
             if (!falling) movement();
         }
+        else if (dieScript.getState() == DeathState.DEAD) reset();
     }
 
     private void progressCooldowns()
@@ -43,6 +44,10 @@ public class PlayerHandler : MonoBehaviour
 
     private void movement()
     {
+        if (Input.GetKey(KeyCode.K))
+        {
+            die();
+        }
         if (hitCooldown < 0 && slimeCooldown<0)
         {
             bool b=false;
@@ -156,6 +161,7 @@ public class PlayerHandler : MonoBehaviour
 
     void reset()
     {
+        dieScript.Restore();
         levelScript.restart();
         health = 3;
         falling = false;
