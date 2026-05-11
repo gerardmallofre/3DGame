@@ -55,16 +55,13 @@
     <UnityVersion>2022.3.32f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="C:\Program Files\Unity 2022.3.32f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="C:\Program Files\Unity 2022.3.32f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Compile Include="Assets\Scripts\SpikeTrapHandler.cs" />
-    <Compile Include="Assets\Scripts\CoinCollect.cs" />
     <Compile Include="Assets\Scripts\Hiteffect.cs" />
-=======
->>>>>>> 60fcd370229ffbceb65e53ca9c9d160e486ca037
     <Compile Include="Assets\Scripts\MovePlayer.cs" />
     <Compile Include="Assets\Scripts\IEnemy.cs" />
     <Compile Include="Assets\Scripts\CreateLevel.cs" />

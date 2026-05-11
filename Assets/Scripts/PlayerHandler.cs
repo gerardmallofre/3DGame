@@ -94,7 +94,6 @@ public class PlayerHandler : MonoBehaviour
             transform.localPosition -= new Vector3(0, (Time.deltaTime) * 10f, 0);
         }
     }
-    public void addCoin() { coins++; }
 
     public void takeDamage(int dmg)
     {
