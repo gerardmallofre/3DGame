@@ -155,10 +155,9 @@ public class PlayerHandler : MonoBehaviour
     {
         levelScript.restart();
         health = 3;
-        HUDManager.Instance?.SetHealth(health);
-        HUDManager.Instance?.SetCoins(0);
         falling = false;
         falltime = 0f;
+        HUDManager.Instance?.ResetHUD();
     }
 
     public void slime()
