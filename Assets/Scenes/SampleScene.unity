@@ -640,6 +640,7 @@ GameObject:
   - component: {fileID: 1843085262}
   - component: {fileID: 1843085264}
   - component: {fileID: 1843085265}
+  - component: {fileID: 1843085266}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -712,6 +713,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveScript: {fileID: 1843085261}
+  dieScript: {fileID: 1843085266}
   levelScript: {fileID: 1182457124}
   maxInvulTime: 1
   hurtSound: {fileID: 8300000, guid: 019bc7bfff8c20343ac12f446546cf14, type: 3}
@@ -761,6 +763,20 @@ MonoBehaviour:
   shakeMagnitude: 0.1
   blinkInterval: 0.1
   hitParticlePrefab: {fileID: 2918752429573345249, guid: 8c0f4938699ddc749bae4fa41ff284c7, type: 3}
+--- !u!114 &1843085266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843085259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419cb7781485fe94e9a012d24a72e0a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 1
+  knockback: 0.5
 --- !u!1 &1854076875
 GameObject:
   m_ObjectHideFlags: 0

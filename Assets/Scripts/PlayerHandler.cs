@@ -10,6 +10,7 @@ public class PlayerHandler : MonoBehaviour
     private bool falling = false;
     private float falltime = 0f;
     [SerializeField] MovePlayer moveScript;
+    [SerializeField] DeathHandler dieScript;
     [SerializeField] CreateLevel levelScript;
     [SerializeField] float maxInvulTime = 1;
     [SerializeField] public AudioClip hurtSound;
@@ -25,10 +26,13 @@ public class PlayerHandler : MonoBehaviour
 
     void Update()
     {
-        if (!falling && moveScript.getState()==PlayerState.STOP) fallCheck();
-        if (falling) fall();
-        progressCooldowns();
-        if (!falling) movement();
+        if (dieScript.getState() == DeathState.ALIVE)
+        {
+            if (!falling && moveScript.getState() == PlayerState.STOP) fallCheck();
+            if (falling) fall();
+            progressCooldowns();
+            if (!falling) movement();
+        }
     }
 
     private void progressCooldowns()
@@ -125,7 +129,7 @@ public class PlayerHandler : MonoBehaviour
 
     public void takeDamage(int dmg)
     {
-        if (invulTime < 0)
+        if (invulTime < 0 && dieScript.getState()==DeathState.ALIVE)
         {
             GetComponent<HitEffect>()?.PlayHitEffect(maxInvulTime);
             AudioSource.PlayClipAtPoint(hurtSound, Camera.main.transform.position);
@@ -151,7 +155,7 @@ public class PlayerHandler : MonoBehaviour
         }
     }
 
-    void die()
+    void reset()
     {
         levelScript.restart();
         health = 3;
@@ -159,6 +163,11 @@ public class PlayerHandler : MonoBehaviour
         HUDManager.Instance?.SetCoins(0);
         falling = false;
         falltime = 0f;
+    }
+
+    void die()
+    {
+        dieScript.startDeath(moveScript.getDir());
     }
 
     public void slime()
