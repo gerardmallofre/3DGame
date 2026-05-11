@@ -149,6 +149,8 @@ public class MovePlayer : MonoBehaviour
         return new Vector3(0f, 0f, 0f);
     }
 
+    public Direction getDir() { return dir; }
+
     public void undoMove()
     {
         if (state == PlayerState.MOVE)
