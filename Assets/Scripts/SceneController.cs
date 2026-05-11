@@ -1,23 +1,9 @@
-using System;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneController : MonoBehaviour
+public static class SceneController
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
-    internal void changeScene(string sceneName)
+    public static void ChangeScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
-
 }

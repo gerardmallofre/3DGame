@@ -75,5 +75,8 @@ public class DeathHandler : MonoBehaviour
             renderers[i].material = ogmat[i];
         transform.localScale = new Vector3(1, 1, 1);
         transform.rotation = new Quaternion(0, 0, 0, 0);
+
+        state = DeathState.ALIVE;
+        time = 0f;
     }
 }

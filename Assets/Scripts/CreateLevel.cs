@@ -16,7 +16,6 @@ public class CreateLevel : MonoBehaviour
     [SerializeField] float fallstart = 5f;
     [SerializeField] float fallinterval = 2f;
     [SerializeField] float shakelength = 1f;
-    private SceneController sc = new SceneController();
     private bool rowFallen = false;
     private int enemies = 0;
     private GameObject door;
@@ -150,7 +149,7 @@ public class CreateLevel : MonoBehaviour
     void Update()
     {
         timepassed += Time.deltaTime;
-        if (Input.GetKey(KeyCode.P)) sc.changeScene("Prova");
+        if (Input.GetKey(KeyCode.P)) SceneController.ChangeScene("Prova");
         if (falls)
         {
             if (!falling && timepassed > fallstart)
