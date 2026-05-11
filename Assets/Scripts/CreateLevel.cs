@@ -1,10 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
-using System;
-using UnityEngine.Tilemaps;
+using UnityEditor;
 using UnityEditorInternal;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 
 public class CreateLevel : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class CreateLevel : MonoBehaviour
     [SerializeField] float fallstart = 5f;
     [SerializeField] float fallinterval = 2f;
     [SerializeField] float shakelength = 1f;
+    private SceneController sc = new SceneController();
     private bool rowFallen = false;
     private int enemies = 0;
     private GameObject door;
@@ -147,6 +150,7 @@ public class CreateLevel : MonoBehaviour
     void Update()
     {
         timepassed += Time.deltaTime;
+        if (Input.GetKey(KeyCode.P)) sc.changeScene("Prova");
         if (falls)
         {
             if (!falling && timepassed > fallstart)
