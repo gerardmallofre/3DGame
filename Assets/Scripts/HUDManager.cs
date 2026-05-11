@@ -79,7 +79,7 @@ public class HUDManager : MonoBehaviour
             img.sprite = heartFull; img.preserveAspect = true;
             heartImages.Add(img);
         }
-        RefreshCoins(); RefreshRooms();
+        RefreshCoins(); RefreshRooms(); RefreshHearts();
     }
 
     RectTransform Panel(string name, Color col, float w, float h, Vector2 anchor, Vector2 pos)
@@ -160,5 +160,13 @@ public class HUDManager : MonoBehaviour
     
     public void AddDoor() { if (currentRoom < totalRooms) currentRoom++; RefreshRooms(); }
     public void SetRoom(int v) { currentRoom = Mathf.Clamp(v, 1, totalRooms); RefreshRooms(); }
-    public void ResetHUD() { currentHealth = maxHealth; currentCoins = 0; currentRoom = 1; Start(); }
+    public void ResetHUD() { 
+        currentHealth = maxHealth; 
+        currentCoins = 0; 
+        currentRoom = 1;
+        RefreshHearts(); 
+        RefreshCoins(); 
+        RefreshRooms(); 
+    }
+
 }

@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class PlayerHandler : MonoBehaviour
@@ -10,6 +9,7 @@ public class PlayerHandler : MonoBehaviour
     private bool falling = false;
     private float falltime = 0f;
     [SerializeField] MovePlayer moveScript;
+    [SerializeField] DeathHandler dieScript;
     [SerializeField] CreateLevel levelScript;
     [SerializeField] float maxInvulTime = 1;
     [SerializeField] public AudioClip hurtSound;
@@ -25,10 +25,14 @@ public class PlayerHandler : MonoBehaviour
 
     void Update()
     {
-        if (!falling && moveScript.getState()==PlayerState.STOP) fallCheck();
-        if (falling) fall();
-        progressCooldowns();
-        if (!falling) movement();
+        if (dieScript.getState() == DeathState.ALIVE)
+        {
+            if (!falling && moveScript.getState() == PlayerState.STOP) fallCheck();
+            if (falling) fall();
+            progressCooldowns();
+            if (!falling) movement();
+        }
+        else if (dieScript.getState() == DeathState.DEAD) reset();
     }
 
     private void progressCooldowns()
@@ -40,15 +44,26 @@ public class PlayerHandler : MonoBehaviour
 
     private void movement()
     {
+        if (Input.GetKey(KeyCode.K))
+        {
+            die();
+        }
         if (hitCooldown < 0 && slimeCooldown<0)
         {
-            if (Input.GetKey(KeyCode.UpArrow)) moveScript.tryMove(Direction.UP);
-            else if (Input.GetKey(KeyCode.RightArrow)) moveScript.tryMove(Direction.RIGHT);
-            else if (Input.GetKey(KeyCode.LeftArrow)) moveScript.tryMove(Direction.LEFT);
-            else if (Input.GetKey(KeyCode.DownArrow)) moveScript.tryMove(Direction.DOWN);
+            bool b=false;
+            if (Input.GetKey(KeyCode.UpArrow)) b=moveScript.tryMove(Direction.UP);
+            else if (Input.GetKey(KeyCode.RightArrow)) b=moveScript.tryMove(Direction.RIGHT);
+            else if (Input.GetKey(KeyCode.LeftArrow)) b=moveScript.tryMove(Direction.LEFT);
+            else if (Input.GetKey(KeyCode.DownArrow)) b=moveScript.tryMove(Direction.DOWN);
 
-            if (Input.GetKeyDown(KeyCode.Space))
-                anim?.SetTrigger("attack");
+            if (b)
+            {
+                GameObject obj = CheckForEnemy(moveScript.getVec());
+                if (obj != null)
+                {
+                    anim?.SetTrigger("attack");
+                }
+            }
         }
     }
 
@@ -64,6 +79,27 @@ public class PlayerHandler : MonoBehaviour
         foreach (RaycastHit hit in hits)
         {
             if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag == "Ground"))
+                if (hit.distance < closestDistance)
+                {
+                    closestDistance = hit.distance;
+                    obj = hit.collider.gameObject;
+                }
+        }
+
+        return obj;
+    }
+
+    private GameObject CheckForEnemy(Vector3 v)
+    {
+        float min = 0f; float max = 1f; Vector3 P = transform.localPosition;
+        float closestDistance = max + 1.0f;
+        GameObject obj = null;
+
+        // Physics.RaycastAll returns all colliders in a given ray (P, v) within a given distance (max)
+        RaycastHit[] hits = Physics.RaycastAll(P, v, max);
+        foreach (RaycastHit hit in hits)
+        {
+            if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag == "Slime"))
                 if (hit.distance < closestDistance)
                 {
                     closestDistance = hit.distance;
@@ -94,9 +130,10 @@ public class PlayerHandler : MonoBehaviour
             transform.localPosition -= new Vector3(0, (Time.deltaTime) * 10f, 0);
         }
     }
+
     public void takeDamage(int dmg)
     {
-        if (invulTime < 0)
+        if (invulTime < 0 && dieScript.getState()==DeathState.ALIVE)
         {
             GetComponent<HitEffect>()?.PlayHitEffect(maxInvulTime);
             AudioSource.PlayClipAtPoint(hurtSound, Camera.main.transform.position);
@@ -122,14 +159,19 @@ public class PlayerHandler : MonoBehaviour
         }
     }
 
-    void die()
+    void reset()
     {
+        dieScript.Restore();
         levelScript.restart();
         health = 3;
-        HUDManager.Instance?.SetHealth(health);
-        HUDManager.Instance?.SetCoins(0);
         falling = false;
         falltime = 0f;
+        HUDManager.Instance?.ResetHUD();
+    }
+
+    void die()
+    {
+        dieScript.startDeath(moveScript.getDir());
     }
 
     public void slime()
