@@ -569,11 +569,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1843085259}
---- !u!4 &1043433153 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7776559816784428047, guid: 94d7bf1d0fd6ec44ebd92a570ee1bd9f, type: 3}
-  m_PrefabInstance: {fileID: 226826626}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1182457123
 GameObject:
   m_ObjectHideFlags: 0
@@ -613,9 +608,9 @@ MonoBehaviour:
   coin: {fileID: 2472641925563084845, guid: ae5677f20cf96b04290097a06584525c, type: 3}
   slime: {fileID: 5359074256982616140, guid: c40189d0bd8019a459ca5b9124946c30, type: 3}
   exitdoor: {fileID: 3043088802420955959, guid: 05d3bf078149bb348a362549860e3232, type: 3}
-  slimetile: {fileID: 4441756582574090864, guid: 97471fff798d7564d859f280e92254d0, type: 3}
   goomba: {fileID: 4273372793453185638, guid: 869fb1f535445a747b539f6c6c185ac9, type: 3}
   spikeTrap: {fileID: 880992923608939561, guid: e96c8caf85000e1458eecfc4a08c792d, type: 3}
+  slimetile: {fileID: 4441756582574090864, guid: 97471fff798d7564d859f280e92254d0, type: 3}
 --- !u!4 &1182457125
 Transform:
   m_ObjectHideFlags: 0
@@ -720,8 +715,9 @@ MonoBehaviour:
   levelScript: {fileID: 1182457124}
   maxInvulTime: 1
   hurtSound: {fileID: 8300000, guid: 019bc7bfff8c20343ac12f446546cf14, type: 3}
-  maxHitCooldown: 0.5
+  maxHitCooldown: 0.25
   anim: {fileID: 21104236}
+  maxSlimeCooldown: 1
 --- !u!54 &1843085264
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -761,10 +757,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f585b8775aeb2e478447d2f3e2d8a0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flashDuration: 0.1
-  flashColor: {r: 1, g: 1, b: 1, a: 1}
   shakeDuration: 0.15
   shakeMagnitude: 0.1
+  blinkInterval: 0.1
   hitParticlePrefab: {fileID: 2918752429573345249, guid: 8c0f4938699ddc749bae4fa41ff284c7, type: 3}
 --- !u!1 &1854076875
 GameObject:
