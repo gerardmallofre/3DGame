@@ -130,6 +130,7 @@ MonoBehaviour:
   duration: 1
   knockback: 0.5
   mat: {fileID: 2100000, guid: e74b5ecca1158f64ea58180255f61127, type: 2}
+  moveScript: {fileID: 4176311198315178172}
 --- !u!1001 &3277330429994471130
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -9,6 +9,7 @@ public class DeathHandler : MonoBehaviour
     [SerializeField] float duration = 1f;
     [SerializeField] float knockback = 0.5f;
     [SerializeField] Material mat;
+    [SerializeField] MovePlayer moveScript;
 
     private Material[] ogmat;
     private Renderer[] renderers;
@@ -47,7 +48,20 @@ public class DeathHandler : MonoBehaviour
         
     public void startDeath(Direction d)
     {
-        Vector3 v = new Vector3(0, 0, 0);
+        if (d == Direction.NONE)
+        {
+            d = moveScript.getDir();
+        }
+        else
+        {
+            if (d == Direction.LEFT) d = Direction.RIGHT;
+            else if (d == Direction.RIGHT) d = Direction.LEFT;
+            else if (d == Direction.UP) d = Direction.DOWN;
+            else if (d == Direction.DOWN) d = Direction.UP;
+            moveScript.setDir(d);
+        }
+
+            Vector3 v = new Vector3(0, 0, 0);
         if (d == Direction.UP) v = new Vector3(0, 0, 1);
         else if (d == Direction.DOWN) v = new Vector3(0, 0, -1);
         else if (d == Direction.RIGHT) v = new Vector3(1, 0, 0);
@@ -76,6 +90,7 @@ public class DeathHandler : MonoBehaviour
             renderers[i].material = ogmat[i];
         transform.localScale = new Vector3(1, 1, 1);
         transform.rotation = new Quaternion(0, 0, 0, 0);
+        moveScript.setOnlyDir(Direction.DOWN);
 
         state = DeathState.ALIVE;
         time = 0f;

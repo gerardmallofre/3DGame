@@ -58,18 +58,22 @@ public class SlimeHandler : MonoBehaviour, IEnemy
         MovePlayer smv = GetComponent<MovePlayer>();
         if (smv.getState() == PlayerState.MOVE && oobj.tag!="Coin" && oobj.tag!="Ground" && oobj.tag!="SlimeTile")
         {
-            smv.undoMove();
-            PlayerHandler p = oobj.GetComponent<PlayerHandler>();
-            if (p != null)
+            DeathHandler ds = other.GetComponent<DeathHandler>();
+            if (ds != null && ds.getState() == DeathState.ALIVE)
             {
-                p.takeDamage(1);
+                smv.undoMove();
+                PlayerHandler p = oobj.GetComponent<PlayerHandler>();
+                if (p != null)
+                {
+                    p.takeDamage(1, moveScript.getDir());
+                }
             }
         }
     }
 
-    public void die()
+    public void die(Direction d)
     {
-        dieScript.startDeath(moveScript.getDir());
+        dieScript.startDeath(d);
     }
 
     public void destroy()

@@ -213,3 +213,4 @@ MonoBehaviour:
   duration: 1
   knockback: 0.5
   mat: {fileID: 2100000, guid: e74b5ecca1158f64ea58180255f61127, type: 2}
+  moveScript: {fileID: 5922124968762103422}

@@ -64,7 +64,7 @@ public class SpikeTrapHandler : MonoBehaviour
         if (state == SpikeState.IN || dmgCooldownCounter > 0) return;
         PlayerHandler p = other.GetComponent<PlayerHandler>()
                        ?? other.GetComponentInParent<PlayerHandler>();
-        if (p != null) { p.takeDamage(1); dmgCooldownCounter = damageCooldown; }
+        if (p != null) { p.takeDamage(1, Direction.NONE); dmgCooldownCounter = damageCooldown; }
     }
 
     void OnTriggerEnter(Collider other)
@@ -72,7 +72,7 @@ public class SpikeTrapHandler : MonoBehaviour
         if (state == SpikeState.IN || dmgCooldownCounter > 0) return;
         PlayerHandler p = other.GetComponent<PlayerHandler>()
                        ?? other.GetComponentInParent<PlayerHandler>();
-        if (p != null) { p.takeDamage(1); dmgCooldownCounter = damageCooldown; }
+        if (p != null) { p.takeDamage(1, Direction.NONE); dmgCooldownCounter = damageCooldown; }
     }
 
 }
