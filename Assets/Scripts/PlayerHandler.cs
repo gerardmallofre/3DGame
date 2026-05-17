@@ -6,9 +6,9 @@ public class PlayerHandler : MonoBehaviour
     private float invulTime = 0f;
     private float hitCooldown = 0f;
     private float slimeCooldown = 0f;
-    private bool falling = false;
     private float falltime = 0f;
     [SerializeField] MovePlayer moveScript;
+    [SerializeField] FallHandler fallScript;
     [SerializeField] DeathHandler dieScript;
     [SerializeField] CreateLevel levelScript;
     [SerializeField] float maxInvulTime = 1;
@@ -27,10 +27,10 @@ public class PlayerHandler : MonoBehaviour
     {
         if (dieScript.getState() == DeathState.ALIVE)
         {
-            if (!falling && moveScript.getState() == PlayerState.STOP) fallCheck();
-            if (falling) fall();
+            if (!fallScript.isFalling() && moveScript.getState() == PlayerState.STOP) fallScript.fallCheck();
+            if (fallScript.isFalling()) fall();
             progressCooldowns();
-            if (!falling) movement();
+            if (!fallScript.isFalling()) movement();
         }
         else if (dieScript.getState() == DeathState.DEAD) reset();
     }
@@ -44,10 +44,6 @@ public class PlayerHandler : MonoBehaviour
 
     private void movement()
     {
-        if (Input.GetKey(KeyCode.K))
-        {
-            takeDamage(3, Direction.NONE);
-        }
         if (hitCooldown < 0 && slimeCooldown<0)
         {
             bool b=false;
@@ -65,28 +61,6 @@ public class PlayerHandler : MonoBehaviour
                 }
             }
         }
-    }
-
-    private GameObject CheckForGround()
-    {
-        float min = 0f; float max = 1.5f; Vector3 v = new Vector3(0, -1, 0); Vector3 P = transform.localPosition;
-        P += new Vector3(0, 0.5f, 0);
-        float closestDistance = max + 1.0f;
-        GameObject obj = null;
-
-        // Physics.RaycastAll returns all colliders in a given ray (P, v) within a given distance (max)
-        RaycastHit[] hits = Physics.RaycastAll(P, v, max);
-        foreach (RaycastHit hit in hits)
-        {
-            if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag == "Ground"))
-                if (hit.distance < closestDistance)
-                {
-                    closestDistance = hit.distance;
-                    obj = hit.collider.gameObject;
-                }
-        }
-
-        return obj;
     }
 
     private GameObject CheckForEnemy(Vector3 v)
@@ -108,15 +82,6 @@ public class PlayerHandler : MonoBehaviour
         }
 
         return obj;
-    }
-
-    private void fallCheck()
-    {
-        GameObject obj = CheckForGround();
-        if (obj==null)
-        {
-            falling = true;
-        }
     }
 
     private void fall()
@@ -168,7 +133,7 @@ public class PlayerHandler : MonoBehaviour
         dieScript.Restore();
         levelScript.restart();
         health = 3;
-        falling = false;
+        fallScript.setFalling(false);
         falltime = 0f;
         HUDManager.Instance?.ResetHUD();
     }

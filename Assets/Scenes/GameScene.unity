@@ -665,6 +665,7 @@ GameObject:
   - component: {fileID: 1843085264}
   - component: {fileID: 1843085265}
   - component: {fileID: 1843085266}
+  - component: {fileID: 1843085267}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -737,6 +738,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveScript: {fileID: 1843085261}
+  fallScript: {fileID: 1843085267}
   dieScript: {fileID: 1843085266}
   levelScript: {fileID: 1182457124}
   maxInvulTime: 1
@@ -803,6 +805,18 @@ MonoBehaviour:
   knockback: 0.5
   mat: {fileID: 2100000, guid: e74b5ecca1158f64ea58180255f61127, type: 2}
   moveScript: {fileID: 1843085261}
+--- !u!114 &1843085267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843085259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bc078f6a87ce1428c6593068e1b2df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1854076875
 GameObject:
   m_ObjectHideFlags: 0
