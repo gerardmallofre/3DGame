@@ -37,9 +37,15 @@ public class GroundHandler : MonoBehaviour
         {
             time += Time.deltaTime;
             transform.localPosition = new Vector3(initPos.x, initPos.y - fallspeed * time, initPos.z);
+            GameObject obj=CheckAbove();
+            if (obj != null)
+            {
+                obj.transform.localPosition -= new Vector3(0, fallspeed * Time.deltaTime, 0);
+            }
             if (time > 2)
             {
                 Destroy(transform.gameObject);
+                if (obj != null) Destroy(obj);
             }
         }
     }
@@ -47,5 +53,27 @@ public class GroundHandler : MonoBehaviour
     public void setFallState(FallState state)
     {
         if (fallstate!=FallState.FALL) fallstate = state;
+    }
+
+    GameObject CheckAbove()
+    {
+        float min = 0f; float max = 5f; Vector3 v = new Vector3(0, 1, 0); Vector3 P = transform.localPosition;
+        P += new Vector3(0, -0.5f, 0);
+        float closestDistance = max + 1.0f;
+        GameObject obj = null;
+
+        // Physics.RaycastAll returns all colliders in a given ray (P, v) within a given distance (max)
+        RaycastHit[] hits = Physics.RaycastAll(P, v, max);
+        foreach (RaycastHit hit in hits)
+        {
+            if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag!="Ground" && hit.collider.gameObject.tag!="Player" && hit.collider.gameObject.GetComponent<IEnemy>()==null))
+                if (hit.distance < closestDistance)
+                {
+                    closestDistance = hit.distance;
+                    obj = hit.collider.gameObject;
+                }
+        }
+
+        return obj;
     }
 }
