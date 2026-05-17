@@ -150,6 +150,7 @@ public class MovePlayer : MonoBehaviour
     }
 
     public Direction getDir() { return dir; }
+    public void setDir(Direction d) { dir = d; }
 
     public void undoMove()
     {

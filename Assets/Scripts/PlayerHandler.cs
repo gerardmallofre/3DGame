@@ -163,6 +163,7 @@ public class PlayerHandler : MonoBehaviour
     {
         dieScript.Restore();
         levelScript.restart();
+        moveScript.setDir(Direction.DOWN);
         health = 3;
         falling = false;
         falltime = 0f;
