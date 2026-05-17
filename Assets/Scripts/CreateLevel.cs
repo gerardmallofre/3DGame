@@ -1,12 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Tilemaps;
 
 public class CreateLevel : MonoBehaviour
 {
@@ -149,7 +142,7 @@ public class CreateLevel : MonoBehaviour
     void Update()
     {
         timepassed += Time.deltaTime;
-        if (Input.GetKey(KeyCode.P)) SceneController.ChangeScene("Prova");
+        //if (Input.GetKey(KeyCode.P)) SceneController.changeToPauseScene();
         if (falls)
         {
             if (!falling && timepassed > fallstart)
