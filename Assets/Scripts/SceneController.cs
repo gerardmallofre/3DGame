@@ -4,7 +4,7 @@ public static class SceneController
 {
     private static readonly string menuScene = "MenuScene";
     private static readonly string creditsScene = "CreditsScene";
-    private static readonly string gameScene = "SampleScene";
+    private static readonly string gameScene = "GameScene";
 
     private static void ChangeScene(string sceneName)
     {
