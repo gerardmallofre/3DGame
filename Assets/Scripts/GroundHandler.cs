@@ -42,7 +42,7 @@ public class GroundHandler : MonoBehaviour
             {
                 obj.transform.localPosition -= new Vector3(0, fallspeed * Time.deltaTime, 0);
             }
-            if (time > 2)
+            if (time > 1)
             {
                 Destroy(transform.gameObject);
                 if (obj != null) Destroy(obj);
