@@ -44,10 +44,6 @@ public class PlayerHandler : MonoBehaviour
 
     private void movement()
     {
-        if (Input.GetKey(KeyCode.K))
-        {
-            takeDamage(3, Direction.NONE);
-        }
         if (hitCooldown < 0 && slimeCooldown<0)
         {
             bool b=false;

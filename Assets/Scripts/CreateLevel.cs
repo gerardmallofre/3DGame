@@ -141,6 +141,17 @@ public class CreateLevel : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKey(KeyCode.Alpha1))
+        {
+            level = -1;
+            advanceLevel();
+        }
+        else if (Input.GetKey(KeyCode.Alpha2))
+        {
+            level = 0;
+            advanceLevel();
+        }
+
         timepassed += Time.deltaTime;
         //if (Input.GetKey(KeyCode.P)) SceneController.changeToPauseScene();
         if (falls)
