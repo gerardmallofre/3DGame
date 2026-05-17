@@ -172,7 +172,8 @@ public class PlayerHandler : MonoBehaviour
 
     void die()
     {
-        dieScript.startDeath(moveScript.getDir());
+        if (dieScript.getState()==DeathState.ALIVE)
+            dieScript.startDeath(moveScript.getDir());
     }
 
     public void slime()

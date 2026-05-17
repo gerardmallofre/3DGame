@@ -6,6 +6,7 @@ public class SlimeHandler : MonoBehaviour, IEnemy
 {
     // Start is called before the first frame update
     [SerializeField] MovePlayer moveScript;
+    [SerializeField] DeathHandler dieScript;
     private GameObject cl;
     [SerializeField] float maxjumpwait = 1;
     private float jumpwait = 0;
@@ -19,18 +20,22 @@ public class SlimeHandler : MonoBehaviour, IEnemy
     // Update is called once per frame
     void Update()
     {
-        if (placeslime && moveScript.getState() == PlayerState.STOP)
+        if (dieScript.getState() == DeathState.ALIVE)
         {
-            placeslime = false;
-            cl.GetComponent<CreateLevel>().slimeTile(transform.localPosition);
+            if (placeslime && moveScript.getState() == PlayerState.STOP)
+            {
+                placeslime = false;
+                cl.GetComponent<CreateLevel>().slimeTile(transform.localPosition);
+            }
+            if (jumpwait >= 0) jumpwait -= Time.deltaTime;
+            else
+            {
+                bool b = movement();
+                jumpwait = maxjumpwait;
+                if (b) placeslime = true;
+            }
         }
-        if (jumpwait >= 0) jumpwait -= Time.deltaTime;
-        else
-        {
-            bool b = movement();
-            jumpwait = maxjumpwait;
-            if (b) placeslime = true;
-        }
+        else if (dieScript.getState() == DeathState.DEAD) destroy();
     }
 
     private bool movement()
@@ -63,6 +68,11 @@ public class SlimeHandler : MonoBehaviour, IEnemy
     }
 
     public void die()
+    {
+        dieScript.startDeath(moveScript.getDir());
+    }
+
+    public void destroy()
     {
         if (cl != null) cl.GetComponent<CreateLevel>().enemyKilled();
         Destroy(this.transform.gameObject);

@@ -35,10 +35,10 @@ public class DeathHandler : MonoBehaviour
             transform.localPosition = initpos + knockvector * knockback * (time / duration) + new Vector3(0f, -0.5f, 0f) * time/duration;
             transform.Rotate(new Vector3(90, 0, 0) * Time.deltaTime / duration);
             if (time > duration) state = DeathState.DEAD;
-            else if (time > duration / 3)
+            else if (time > duration / 2)
             {
-                float time2 = time - duration / 3;
-                float dur2 = duration / 3;
+                float time2 = time - duration / 2;
+                float dur2 = duration / 2;
                 transform.localScale = new Vector3(1, 1, 1) * (1 - time2 / dur2);
                 SetColor(new Color(1, 1, 1, 1));
             }
@@ -54,6 +54,7 @@ public class DeathHandler : MonoBehaviour
         else if (d == Direction.LEFT) v = new Vector3(-1, 0, 0);
 
         initpos = transform.localPosition;
+        initpos.y += 0.5f;
         knockvector = v * -1;
         state = DeathState.DYING;
     }
