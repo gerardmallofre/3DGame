@@ -46,7 +46,7 @@ public class PlayerHandler : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.K))
         {
-            die();
+            takeDamage(3, Direction.NONE);
         }
         if (hitCooldown < 0 && slimeCooldown<0)
         {
@@ -124,14 +124,14 @@ public class PlayerHandler : MonoBehaviour
         falltime += Time.deltaTime;
         if (falltime > 2)
         {
-            takeDamage(3);
+            takeDamage(3, Direction.NONE);
         }
         else if (falltime > 0.5) {
             transform.localPosition -= new Vector3(0, (Time.deltaTime) * 10f, 0);
         }
     }
 
-    public void takeDamage(int dmg)
+    public void takeDamage(int dmg, Direction d)
     {
         if (invulTime < 0 && dieScript.getState()==DeathState.ALIVE)
         {
@@ -140,22 +140,26 @@ public class PlayerHandler : MonoBehaviour
             health -= dmg;
             HUDManager.Instance?.SetHealth(health);
             if (health > 0) invulTime = maxInvulTime;
-            else die();
+            else die(d);
         }
     }
 
     public void OnTriggerEnter(Collider other)
     {
         MovePlayer omv = other.GetComponent<MovePlayer>()
-                      ?? other.GetComponentInParent<MovePlayer>();
+                        ?? other.GetComponentInParent<MovePlayer>();
         MovePlayer pmv = GetComponent<MovePlayer>();
         if (omv != null && pmv.getState() == PlayerState.MOVE)
         {
-            pmv.undoMove();
-            hitCooldown = maxHitCooldown;
-            IEnemy enemy = other.GetComponent<IEnemy>()
-                        ?? other.GetComponentInParent<IEnemy>();
-            if (enemy != null) enemy.die();
+            DeathHandler ds = other.GetComponent<DeathHandler>();
+            if (ds != null && ds.getState() == DeathState.ALIVE)
+            {
+                pmv.undoMove();
+                hitCooldown = maxHitCooldown;
+                IEnemy enemy = other.GetComponent<IEnemy>()
+                            ?? other.GetComponentInParent<IEnemy>();
+                if (enemy != null) enemy.die(moveScript.getDir());
+            }
         }
     }
 
@@ -169,9 +173,11 @@ public class PlayerHandler : MonoBehaviour
         HUDManager.Instance?.ResetHUD();
     }
 
-    void die()
+    void die(Direction d)
     {
-        dieScript.startDeath(moveScript.getDir());
+        if (dieScript.getState() == DeathState.ALIVE) {
+           dieScript.startDeath(d);
+        }
     }
 
     public void slime()

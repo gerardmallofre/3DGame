@@ -12,7 +12,7 @@ public enum PlayerState { STOP, MOVE, UNDO };
 // (multiplied by 90 degrees) the rotation needed to reorient the player
 // from one direction to another (e.g. changing from DOWN to RIGHT requires
 // a 90 * (RIGHT - DOWN) = -90 degree rotation.)
-public enum Direction { UP = 0, RIGHT, DOWN, LEFT };
+public enum Direction { UP = 0, RIGHT, DOWN, LEFT, NONE};
 
 
 public class MovePlayer : MonoBehaviour
@@ -150,6 +150,14 @@ public class MovePlayer : MonoBehaviour
     }
 
     public Direction getDir() { return dir; }
+    public void setDir(Direction d) {
+        transform.Rotate(0.0f, 90.0f * ((int)d - (int)dir), 0.0f);
+        dir = d;
+    }
+    public void setOnlyDir(Direction d)
+    {
+        dir = d;
+    }
 
     public void undoMove()
     {
