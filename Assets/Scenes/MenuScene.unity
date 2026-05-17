@@ -484,6 +484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c446a00c79c7634eabc60b01929f754, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  botoPerDefecte: {fileID: 1975062325}
 --- !u!4 &689826453
 Transform:
   m_ObjectHideFlags: 0
