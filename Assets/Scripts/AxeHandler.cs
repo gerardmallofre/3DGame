@@ -74,6 +74,11 @@ public class AxeHandler : MonoBehaviour
             {
                 obj.GetComponent<PlayerHandler>().takeDamage(1, currentdir);
             }
+            IEnemy ie = obj.GetComponent<IEnemy>();
+            if (ie != null)
+            {
+                ie.die(currentdir);
+            }
         }
     }
 

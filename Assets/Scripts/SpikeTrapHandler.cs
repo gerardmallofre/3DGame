@@ -61,18 +61,12 @@ public class SpikeTrapHandler : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (state == SpikeState.IN || dmgCooldownCounter > 0) return;
+        if (state == SpikeState.IN || state == SpikeState.FALLING || dmgCooldownCounter > 0) return;
         PlayerHandler p = other.GetComponent<PlayerHandler>()
                        ?? other.GetComponentInParent<PlayerHandler>();
         if (p != null) { p.takeDamage(1, Direction.NONE); dmgCooldownCounter = damageCooldown; }
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (state == SpikeState.IN || dmgCooldownCounter > 0) return;
-        PlayerHandler p = other.GetComponent<PlayerHandler>()
-                       ?? other.GetComponentInParent<PlayerHandler>();
-        if (p != null) { p.takeDamage(1, Direction.NONE); dmgCooldownCounter = damageCooldown; }
+        IEnemy ie = other.GetComponent<IEnemy>();
+        if (ie != null) { ie.die(Direction.NONE); }
     }
 
 }
