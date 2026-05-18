@@ -153,7 +153,7 @@ public class CreateLevel : MonoBehaviour
         }
 
         timepassed += Time.deltaTime;
-        //if (Input.GetKey(KeyCode.P)) SceneController.changeToPauseScene();
+        if (Input.GetKey(KeyCode.M)) SceneController.ChangeToMenuScene();
         if (falls)
         {
             if (!falling && timepassed > fallstart)
