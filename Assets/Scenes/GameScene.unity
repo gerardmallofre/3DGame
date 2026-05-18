@@ -325,6 +325,7 @@ MonoBehaviour:
   doorSprite: {fileID: 21300000, guid: 5ce23a2deb054704e84e529a50495623, type: 3}
   maxHealth: 3
   totalRooms: 10
+  customFont: {fileID: 11400000, guid: 09ffa33aa24d1854fa5548359e320032, type: 2}
 --- !u!223 &868108722
 Canvas:
   m_ObjectHideFlags: 0

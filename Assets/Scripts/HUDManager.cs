@@ -9,11 +9,15 @@ public class HUDManager : MonoBehaviour
     public static HUDManager Instance { get; private set; }
 
     [Header("Sprites")]
-    [SerializeField] private Sprite heartFull, heartEmpty, coinSprite, doorSprite;
+    [SerializeField] private Sprite heartFull;
+    [SerializeField] private Sprite heartEmpty;
+    [SerializeField] private Sprite coinSprite;
+    [SerializeField] private Sprite doorSprite;
 
     [Header("Settings")]
     [SerializeField] private int maxHealth = 3;
     [SerializeField] private int totalRooms = 10;
+    [SerializeField] private TMP_FontAsset customFont;
 
     const float U = 64f, GAP = 10f, PAD = 14f, TEXT_W = 90f, MARGIN = 24f, FONT = 38f, RADIUS = 16f;
 
@@ -106,6 +110,13 @@ public class HUDManager : MonoBehaviour
         tRT.anchoredPosition = new Vector2(PAD, 0);
         tRT.sizeDelta = new Vector2(TEXT_W, U);
         var tmp = tGO.AddComponent<TextMeshProUGUI>();
+
+        // Apliquem la font personalitzada si s'ha assignat a l'inspector
+        if (customFont != null)
+        {
+            tmp.font = customFont;
+        }
+
         tmp.text = val; tmp.fontSize = FONT; tmp.fontStyle = FontStyles.Bold;
         tmp.color = Color.white; tmp.alignment = TextAlignmentOptions.MidlineRight;
 
@@ -157,16 +168,16 @@ public class HUDManager : MonoBehaviour
     public void SetHealth(int v) { currentHealth = Mathf.Clamp(v, 0, maxHealth); RefreshHearts(); }
     public void AddCoin() { currentCoins++; RefreshCoins(); }
     public void SetCoins(int c) { currentCoins = c; RefreshCoins(); }
-    
+
     public void AddDoor() { if (currentRoom < totalRooms) currentRoom++; RefreshRooms(); }
     public void SetRoom(int v) { currentRoom = Mathf.Clamp(v, 1, totalRooms); RefreshRooms(); }
-    public void ResetHUD() { 
-        currentHealth = maxHealth; 
-        currentCoins = 0; 
+    public void ResetHUD()
+    {
+        currentHealth = maxHealth;
+        currentCoins = 0;
         currentRoom = 1;
-        RefreshHearts(); 
-        RefreshCoins(); 
-        RefreshRooms(); 
+        RefreshHearts();
+        RefreshCoins();
+        RefreshRooms();
     }
-
 }
