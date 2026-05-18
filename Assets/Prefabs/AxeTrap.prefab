@@ -344,6 +344,7 @@ MonoBehaviour:
   hitDuration: 0.2
   retractDuration: 0.5
   axe: {fileID: 5727555006536182859}
+  rotDirection: 1
 --- !u!1 &5720093243922133899
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,5 +505,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1, y: 1, z: 0.3}
   m_Center: {x: 1, y: 0, z: 0}

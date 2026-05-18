@@ -42,12 +42,12 @@ public class AxeHandler : MonoBehaviour
         }
         else if (time > rotDuration + hitDelay + hitDuration)
         {
-            state = AxeState.AXEDOWN;
+            if (time > rotDuration + hitDelay + hitDuration + retractDuration/2) state = AxeState.AXEDOWN;
             axe.transform.Rotate(0, 0, Time.deltaTime / retractDuration * 90);
         }
         else if (time > rotDuration + hitDelay)
         {
-            state = AxeState.HIT;
+            if (time > rotDuration + hitDelay + hitDuration/3) state = AxeState.HIT;
             axe.transform.Rotate(0, 0, -90 * Time.deltaTime / hitDuration);
         }
         else if (time >= rotDuration && state == AxeState.ROTATING)
@@ -65,14 +65,14 @@ public class AxeHandler : MonoBehaviour
         }
     }
 
-    public void OnTriggerEnter(Collider other)
+    public void OnTriggerStay(Collider other)
     {
         if (state == AxeState.HIT)
         {
             GameObject obj = other.gameObject;
             if (obj.tag == "Player")
             {
-
+                obj.GetComponent<PlayerHandler>().takeDamage(1, currentdir);
             }
         }
     }
