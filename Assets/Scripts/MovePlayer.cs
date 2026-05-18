@@ -93,7 +93,7 @@ public class MovePlayer : MonoBehaviour
             dir = dirMove;
 
             // We also play the corresponding sound, and add a sound for the box if one is being pushed.
-            AudioSource.PlayClipAtPoint(jumpSound, Camera.main.transform.position);
+            AudioSource.PlayClipAtPoint(jumpSound, Camera.main.transform.position, 0.3f);
         }
 
         return bMove;

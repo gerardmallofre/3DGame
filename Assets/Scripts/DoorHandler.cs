@@ -29,6 +29,7 @@ public class DoorHandler : MonoBehaviour
     {
         if (isopen && other.transform.gameObject.tag=="Player")
         {
+            AudioManager.instance.PlayOpenDoor();
             cl.GetComponent<CreateLevel>().advanceLevel();
             HUDManager.Instance.AddDoor();
         }

@@ -101,7 +101,7 @@ public class PlayerHandler : MonoBehaviour
         if (invulTime < 0 && dieScript.getState()==DeathState.ALIVE)
         {
             GetComponent<HitEffect>()?.PlayHitEffect(maxInvulTime);
-            AudioSource.PlayClipAtPoint(hurtSound, Camera.main.transform.position);
+            AudioSource.PlayClipAtPoint(hurtSound, Camera.main.transform.position, 0.3f);
             health -= dmg;
             HUDManager.Instance?.SetHealth(health);
             if (health > 0) invulTime = maxInvulTime;

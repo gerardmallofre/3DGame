@@ -33,6 +33,7 @@ public class MenuManager : MonoBehaviour
 
     private IEnumerator LoadWithDelay(Action funcioACarregar)
     {
+        StartCoroutine(AudioManager.instance.FadeOut(AudioManager.instance.musicaFonsSource, 0.5f));
         yield return new WaitForSeconds(0.3f);
         funcioACarregar?.Invoke();
     }

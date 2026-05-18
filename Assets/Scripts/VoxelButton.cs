@@ -31,20 +31,30 @@ public class VoxelButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
     }
 
-    public void OnSelect(BaseEventData eventData) { PosarColorSobre(); }
+    public void OnSelect(BaseEventData eventData) 
+    {
+        AudioManager.instance.PlayButtonSelect();
+        PosarColorSobre(); 
+    }
     public void OnDeselect(BaseEventData eventData) { PosarColorNormal(); }
 
-    public void OnPointerDown(PointerEventData eventData) { EnfonsarBoto(); }
+    public void OnPointerDown(PointerEventData eventData) 
+    { 
+        EnfonsarBoto();
+        AudioManager.instance.PlayButtonClick();
+    }
     public void OnPointerUp(PointerEventData eventData) { RestaurarBoto(); }
 
     public void OnSubmit(BaseEventData eventData)
     {
+        if (eventData is PointerEventData) return; 
         StartCoroutine(EfecteClicTeclat());
     }
 
     private IEnumerator EfecteClicTeclat()
     {
         EnfonsarBoto();
+        AudioManager.instance.PlayButtonClick();
         yield return new WaitForSecondsRealtime(0.1f);
         RestaurarBoto();
     }
