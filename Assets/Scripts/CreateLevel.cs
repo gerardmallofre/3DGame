@@ -15,7 +15,7 @@ public class CreateLevel : MonoBehaviour
     private float timepassed = 0.0f;
     private int fallingrow = 0;
                                                 // We need to position it according to the level.
-    [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor, goomba, spikeTrap, slimetile;  // References to objects we need to instantiate to
+    [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor, goomba, spikeTrap, slimetile, axeTrap;  // References to objects we need to instantiate to
                                                                         // build the level.
 
     private int level = -1;
@@ -120,6 +120,10 @@ public class CreateLevel : MonoBehaviour
                             case 6:
                                 // For the player, we position it at the location of the tile with the player tile id.
                                 player.transform.localPosition=new Vector3(x, 0.0f, y);
+                                break;
+                            case 7:
+                                obj = Instantiate(axeTrap, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj.transform.parent = transform;
                                 break;
                         }
                     }
