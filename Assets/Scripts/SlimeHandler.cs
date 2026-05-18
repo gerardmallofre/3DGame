@@ -70,7 +70,7 @@ public class SlimeHandler : MonoBehaviour, IEnemy
     {
         GameObject oobj = other.transform.gameObject;
         MovePlayer smv = GetComponent<MovePlayer>();
-        if (smv.getState() == PlayerState.MOVE && oobj.tag!="Coin" && oobj.tag!="Ground" && oobj.tag!="SlimeTile")
+        if (dieScript.getState()==DeathState.ALIVE && smv.getState() == PlayerState.MOVE && oobj.tag!="Coin" && oobj.tag!="Ground" && oobj.tag!="SlimeTile")
         {
             DeathHandler ds = other.GetComponent<DeathHandler>();
             if (ds != null && ds.getState() == DeathState.ALIVE)
