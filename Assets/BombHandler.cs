@@ -14,6 +14,7 @@ public class BombHandler : MonoBehaviour, IEnemy
     [SerializeField] float explosionRange = 3f;
     [SerializeField] GameObject explosion;
     GameObject cl;
+    float falltimer = 0f;
     GameObject player;
     BombState state = BombState.PATROL;
     [SerializeField] float maxMoveCooldown = 1f;
@@ -80,9 +81,11 @@ public class BombHandler : MonoBehaviour, IEnemy
 
     public void setPlayer(GameObject p) { player = p; }
 
-    void fall()
+    private void fall()
     {
-        dieScript.startDeath(Direction.NONE);
+        falltimer += Time.deltaTime;
+        transform.localPosition -= new Vector3(0, Time.deltaTime * 10f, 0);
+        if (falltimer > 1f) die(Direction.NONE);
     }
 
     void destroy()
@@ -114,7 +117,7 @@ public class BombHandler : MonoBehaviour, IEnemy
         {
             i = q.Dequeue();
             if (Mathf.Abs(i.pos.x - targetpos.x) < 1 && Mathf.Abs(i.pos.z - targetpos.z) < 1) return i.initialDir;
-            if (!visited.Contains(i.pos + new Vector3(1, 0, 0)) && checkWall(i.pos, new Vector3(1, 0, 0), 0f, 1f) == null)
+            if (!visited.Contains(i.pos + new Vector3(1, 0, 0)) && checkWall(i.pos, new Vector3(1, 0, 0), 0f, 1f) == null && CheckForGround(i.pos + new Vector3(0, 0, -1)) != null)
             {
                 item newit;
                 newit.pos = i.pos + new Vector3(1, 0, 0);
@@ -123,7 +126,7 @@ public class BombHandler : MonoBehaviour, IEnemy
                 q.Enqueue(newit);
                 visited.Add(newit.pos);
             }
-            if (!visited.Contains(i.pos + new Vector3(-1, 0, 0)) && checkWall(i.pos, new Vector3(-1, 0, 0), 0f, 1f) == null)
+            if (!visited.Contains(i.pos + new Vector3(-1, 0, 0)) && checkWall(i.pos, new Vector3(-1, 0, 0), 0f, 1f) == null && CheckForGround(i.pos + new Vector3(0, 0, -1)) != null)
             {
                 item newit;
                 newit.pos = i.pos + new Vector3(-1, 0, 0);
@@ -132,7 +135,7 @@ public class BombHandler : MonoBehaviour, IEnemy
                 q.Enqueue(newit);
                 visited.Add(newit.pos);
             }
-            if (!visited.Contains(i.pos + new Vector3(0, 0, 1)) && checkWall(i.pos, new Vector3(0, 0, 1), 0f, 1f) == null)
+            if (!visited.Contains(i.pos + new Vector3(0, 0, 1)) && checkWall(i.pos, new Vector3(0, 0, 1), 0f, 1f) == null && CheckForGround(i.pos + new Vector3(0, 0, -1)) != null)
             {
                 item newit;
                 newit.pos = i.pos + new Vector3(0, 0, 1);
@@ -141,7 +144,7 @@ public class BombHandler : MonoBehaviour, IEnemy
                 q.Enqueue(newit);
                 visited.Add(newit.pos);
             }
-            if (!visited.Contains(i.pos + new Vector3(0, 0, -1)) && checkWall(i.pos, new Vector3(0, 0, -1), 0f, 1f) == null)
+            if (!visited.Contains(i.pos + new Vector3(0, 0, -1)) && checkWall(i.pos, new Vector3(0, 0, -1), 0f, 1f) == null && CheckForGround(i.pos + new Vector3(0, 0, -1)) != null)
             {
                 item newit;
                 newit.pos = i.pos + new Vector3(0, 0, -1);
@@ -164,6 +167,28 @@ public class BombHandler : MonoBehaviour, IEnemy
         foreach (RaycastHit hit in hits)
         {
             if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag == "Wall" || (hit.collider.gameObject.tag == "Door" && !hit.collider.gameObject.GetComponent<DoorHandler>().isOpen())))
+                if (hit.distance < closestDistance)
+                {
+                    closestDistance = hit.distance;
+                    obj = hit.collider.gameObject;
+                }
+        }
+
+        return obj;
+    }
+
+    private GameObject CheckForGround(Vector3 P)
+    {
+        float min = 0f; float max = 1.5f; Vector3 v = new Vector3(0, -1, 0);
+        P += new Vector3(0, 0.5f, 0);
+        float closestDistance = max + 1.0f;
+        GameObject obj = null;
+
+        // Physics.RaycastAll returns all colliders in a given ray (P, v) within a given distance (max)
+        RaycastHit[] hits = Physics.RaycastAll(P, v, max);
+        foreach (RaycastHit hit in hits)
+        {
+            if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag == "Ground"))
                 if (hit.distance < closestDistance)
                 {
                     closestDistance = hit.distance;
