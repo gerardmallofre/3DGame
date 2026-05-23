@@ -6,16 +6,16 @@ public class DoorHandler : MonoBehaviour
 {
     GameObject cl;
     private bool isopen = false;
-    // Start is called before the first frame update
+
+    private Animator animator;
+
     void Start()
     {
-        
-    }
+animator = GetComponentInChildren<Animator>();    }
 
-    // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void setLevelCreator(GameObject g) { cl = g; }
@@ -23,13 +23,19 @@ public class DoorHandler : MonoBehaviour
     public void open()
     {
         isopen = true;
+        AudioManager.instance.PlayOpenDoor();
+
+        if (animator != null)
+        {
+            animator.SetTrigger("Obrir");
+        }
     }
 
     public void OnTriggerEnter(Collider other)
     {
-        if (isopen && other.transform.gameObject.tag=="Player")
+        if (isopen && other.transform.gameObject.tag == "Player")
         {
-            AudioManager.instance.PlayOpenDoor();
+
             cl.GetComponent<CreateLevel>().advanceLevel();
             HUDManager.Instance.AddDoor();
         }

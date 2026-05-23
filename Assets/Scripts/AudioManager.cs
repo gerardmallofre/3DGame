@@ -33,17 +33,17 @@ public class AudioManager : MonoBehaviour
 
     public void PlayOpenDoor()
     {
-        efectesSource.PlayOneShot(soPortaOberta, 1f); 
+        efectesSource.PlayOneShot(soPortaOberta, 0.5f); 
     }
 
     public void PlayButtonSelect()
     {
-        efectesSource.PlayOneShot(soSelectBoto, 1f);
+        efectesSource.PlayOneShot(soSelectBoto, 0.3f);
     }
 
     public void PlayButtonClick()
     {
-        efectesSource.PlayOneShot(soClicBoto, 1f);
+        efectesSource.PlayOneShot(soClicBoto, 0.3f);
     }
 
     public IEnumerator FadeIn(AudioSource source, float duracio, float volumMaxim)
