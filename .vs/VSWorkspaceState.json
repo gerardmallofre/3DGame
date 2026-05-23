@@ -2,9 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\Assets",
+    "\\Assets\\Maps",
     "\\Assets\\Scenes",
     "\\Assets\\Scripts"
   ],
-  "SelectedNode": "\\Assets\\Scripts\\DoorHandler.cs",
+  "SelectedNode": "\\Assets\\Scripts\\PlayerHandler.cs",
   "PreviewInSolutionExplorer": false
 }
