@@ -6,73 +6,166 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance;
 
     [Header("Altaveus (AudioSources)")]
-    public AudioSource musicaFonsSource; 
-    public AudioSource efectesSource;    
+    public AudioSource musicaFonsSource;
+    public AudioSource efectesSource;
 
     [Header("Arxius de So (AudioClips)")]
     public AudioClip musicaNivell;
     public AudioClip soPortaOberta;
     public AudioClip soClicBoto;
-    public AudioClip soSelectBoto; 
+    public AudioClip soSelectBoto;
+    public AudioClip soMort;
+    public AudioClip soDamage;
+    public AudioClip soTremolorTerra;
+    public AudioClip soSpikeTrap;
+    public AudioClip soAxeTrap;
+    public AudioClip soCoin;
 
     private void Awake()
     {
-        if (instance == null) instance = this;
-        else Destroy(gameObject);
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+
+            ValidarAudioSources();
+        }
+        else
+        {
+            instance.ActualitzarTot(this);
+
+            if (musicaNivell != null)
+            {
+                instance.CanviarMusica(musicaNivell);
+            }
+            Destroy(gameObject);
+        }
     }
 
     private void Start()
     {
-        if (musicaNivell != null)
+
+        if (musicaNivell != null && musicaFonsSource != null && musicaFonsSource.clip == null)
         {
             musicaFonsSource.clip = musicaNivell;
             musicaFonsSource.loop = true;
-            StartCoroutine(FadeIn(musicaFonsSource, 2f, 0.2f));
+            StartCoroutine(FadeIn(musicaFonsSource, 2f, 0.1f));
         }
     }
 
-    public void PlayOpenDoor()
+    private void ValidarAudioSources()
     {
-        efectesSource.PlayOneShot(soPortaOberta, 0.5f); 
+        AudioSource[] sources = GetComponents<AudioSource>();
+
+        if (musicaFonsSource == null)
+        {
+            if (sources.Length > 0) musicaFonsSource = sources[0];
+            else musicaFonsSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        if (efectesSource == null)
+        {
+            if (sources.Length > 1) efectesSource = sources[1];
+            else
+            {
+                efectesSource = gameObject.AddComponent<AudioSource>();
+                efectesSource.playOnAwake = false;
+            }
+        }
     }
 
-    public void PlayButtonSelect()
+    private void PlaySo(AudioClip clip, float volum)
     {
-        efectesSource.PlayOneShot(soSelectBoto, 0.3f);
+        if (clip == null || efectesSource == null) return;
+        efectesSource.PlayOneShot(clip, volum);
     }
 
-    public void PlayButtonClick()
+
+    public void ActualitzarTot(AudioManager nouManager)
     {
-        efectesSource.PlayOneShot(soClicBoto, 0.3f);
+        this.musicaNivell = nouManager.musicaNivell;
+        this.soPortaOberta = nouManager.soPortaOberta;
+        this.soClicBoto = nouManager.soClicBoto;
+        this.soSelectBoto = nouManager.soSelectBoto;
+        this.soMort = nouManager.soMort;
+        this.soDamage = nouManager.soDamage;
+        this.soTremolorTerra = nouManager.soTremolorTerra;
+        this.soSpikeTrap = nouManager.soSpikeTrap;
+        this.soAxeTrap = nouManager.soAxeTrap;
+        this.soCoin = nouManager.soCoin;
+
+        if (this.musicaFonsSource == null || this.efectesSource == null)
+        {
+            this.musicaFonsSource = nouManager.musicaFonsSource;
+            this.efectesSource = nouManager.efectesSource;
+        }
+
+        ValidarAudioSources();
     }
+
+    public void CanviarMusica(AudioClip novaMusica)
+    {
+        ValidarAudioSources();
+        if (musicaFonsSource == null) return;
+
+        if (musicaFonsSource.clip == novaMusica && musicaFonsSource.isPlaying) return;
+
+        musicaNivell = novaMusica;
+
+        StopAllCoroutines();
+
+        musicaFonsSource.volume = 0f;
+        musicaFonsSource.Stop();
+        musicaFonsSource.clip = novaMusica;
+        musicaFonsSource.loop = true;
+
+        StartCoroutine(FadeIn(musicaFonsSource, 2f, 0.1f));
+    }
+
+    public void PlayMort() { PlaySo(soMort, 0.8f); }
+    public void PlayDamage() { PlaySo(soDamage, 0.5f); }
+    public void PlaySpikeTrap() { PlaySo(soSpikeTrap, 0.5f); }
+    public void PlayAxeTrap() { PlaySo(soAxeTrap, 0.5f); }
+    public void PlayCoin() { PlaySo(soCoin, 0.5f); }
+    public void PlayOpenDoor() { PlaySo(soPortaOberta, 0.5f); }
+    public void PlayButtonSelect() { PlaySo(soSelectBoto, 0.1f); }
+    public void PlayButtonClick() { PlaySo(soClicBoto, 0.1f); }
+
 
     public IEnumerator FadeIn(AudioSource source, float duracio, float volumMaxim)
     {
+        if (source == null) yield break;
         source.volume = 0f;
         source.Play();
         float temps = 0f;
 
         while (temps < duracio)
         {
+            if (source == null) yield break;
             temps += Time.deltaTime;
             source.volume = Mathf.Lerp(0f, volumMaxim, temps / duracio);
-            yield return null; 
+            yield return null;
         }
-        source.volume = volumMaxim;
+        if (source != null) source.volume = volumMaxim;
     }
 
     public IEnumerator FadeOut(AudioSource source, float duracio)
     {
-        float volumInicial = source.volume;
+        if (source == null) yield break;
         float temps = 0f;
+        float volumInicial = source.volume;
 
         while (temps < duracio)
         {
+            if (source == null) yield break;
             temps += Time.deltaTime;
             source.volume = Mathf.Lerp(volumInicial, 0f, temps / duracio);
             yield return null;
         }
-        source.volume = 0f;
-        source.Stop();
+        if (source != null)
+        {
+            source.volume = 0f;
+            source.Stop();
+        }
     }
 }

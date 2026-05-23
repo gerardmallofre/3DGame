@@ -7,7 +7,6 @@ public enum AxeState { STILL, ROTATING, HIT, AXEDOWN }
 
 public class AxeHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
     [SerializeField] float rotCooldown = 2f;
     [SerializeField] float rotDuration = 0.3f;
     [SerializeField] float hitDelay = 0.5f;
@@ -16,16 +15,18 @@ public class AxeHandler : MonoBehaviour
     [SerializeField] GameObject axe;
     Quaternion initRot;
     Quaternion axeInitRot;
-    Direction currentdir=Direction.RIGHT;
+    Direction currentdir = Direction.RIGHT;
     [SerializeField] int rotDirection = 1;
     float time = 0f;
     AxeState state = AxeState.ROTATING;
+
+    private bool soReprodut = false; 
+
     void Start()
     {
         initRot = transform.rotation;
     }
 
-    // Update is called once per frame
     void Update()
     {
         time += Time.deltaTime;
@@ -34,6 +35,7 @@ public class AxeHandler : MonoBehaviour
             time = 0;
             initRot = transform.rotation;
             state = AxeState.ROTATING;
+            soReprodut = false; 
         }
         else if (time > rotDuration + hitDelay + hitDuration + retractDuration && state == AxeState.AXEDOWN)
         {
@@ -42,12 +44,17 @@ public class AxeHandler : MonoBehaviour
         }
         else if (time > rotDuration + hitDelay + hitDuration)
         {
-            if (time > rotDuration + hitDelay + hitDuration + retractDuration/2) state = AxeState.AXEDOWN;
+            if (time > rotDuration + hitDelay + hitDuration + retractDuration / 2) state = AxeState.AXEDOWN;
             axe.transform.Rotate(0, 0, Time.deltaTime / retractDuration * 90);
         }
         else if (time > rotDuration + hitDelay)
         {
-            if (time > rotDuration + hitDelay + hitDuration/3) state = AxeState.HIT;
+            if (!soReprodut && time > rotDuration + hitDelay + hitDuration / 3)
+            {
+                state = AxeState.HIT;
+                soReprodut = true;
+                AudioManager.instance?.PlayAxeTrap();
+            }
             axe.transform.Rotate(0, 0, -90 * Time.deltaTime / hitDuration);
         }
         else if (time >= rotDuration && state == AxeState.ROTATING)

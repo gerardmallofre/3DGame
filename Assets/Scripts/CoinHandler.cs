@@ -21,6 +21,7 @@ public class CoinHandler : MonoBehaviour
         PlayerHandler p = other.GetComponent<PlayerHandler>();
         if (p != null)
         {
+            AudioManager.instance?.PlayCoin();
             HUDManager.Instance?.AddCoin();
             Destroy(this.gameObject);
         }

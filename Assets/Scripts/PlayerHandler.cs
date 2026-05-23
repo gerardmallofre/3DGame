@@ -12,7 +12,6 @@ public class PlayerHandler : MonoBehaviour
     [SerializeField] DeathHandler dieScript;
     [SerializeField] CreateLevel levelScript;
     [SerializeField] float maxInvulTime = 1;
-    [SerializeField] public AudioClip hurtSound;
     [SerializeField] float maxHitCooldown = 0.5f;
     [SerializeField] private Animator anim;
     [SerializeField] float maxSlimeCooldown = 1f;
@@ -98,14 +97,21 @@ public class PlayerHandler : MonoBehaviour
 
     public void takeDamage(int dmg, Direction d)
     {
-        if (invulTime < 0 && dieScript.getState()==DeathState.ALIVE)
+        if (invulTime < 0 && dieScript.getState() == DeathState.ALIVE)
         {
             GetComponent<HitEffect>()?.PlayHitEffect(maxInvulTime);
-            AudioSource.PlayClipAtPoint(hurtSound, Camera.main.transform.position, 0.3f);
             health -= dmg;
             HUDManager.Instance?.SetHealth(health);
-            if (health > 0) invulTime = maxInvulTime;
-            else die(d);
+
+            if (health > 0)
+            {
+                AudioManager.instance?.PlayDamage(); 
+                invulTime = maxInvulTime;
+            }
+            else
+            {
+                die(d); 
+            }
         }
     }
 

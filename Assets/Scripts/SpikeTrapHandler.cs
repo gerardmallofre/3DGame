@@ -30,7 +30,13 @@ public class SpikeTrapHandler : MonoBehaviour
         {
             case SpikeState.IN:
                 if (timer >= timeSpikesIn)
-                { timer = 0f; state = SpikeState.RISING; anim?.Play("SpikeTrap_Activate", 0, 0f); }
+                {
+                    timer = 0f;
+                    state = SpikeState.RISING;
+                    anim?.Play("SpikeTrap_Activate", 0, 0f);
+
+                    AudioManager.instance?.PlaySpikeTrap();
+                }
                 break;
 
             case SpikeState.RISING:
@@ -38,7 +44,7 @@ public class SpikeTrapHandler : MonoBehaviour
                 {
                     timer = 0f;
                     state = SpikeState.OUT;
-                    anim?.Play("SpikeTrap_Activate", 0, 1f); 
+                    anim?.Play("SpikeTrap_Activate", 0, 1f);
                 }
                 break;
 
@@ -52,12 +58,7 @@ public class SpikeTrapHandler : MonoBehaviour
                 { timer = 0f; state = SpikeState.IN; }
                 break;
         }
-
-        //Debug.Log("Spike state: " + state);
     }
-
-
-
 
     void OnTriggerStay(Collider other)
     {
@@ -68,5 +69,4 @@ public class SpikeTrapHandler : MonoBehaviour
         IEnemy ie = other.GetComponent<IEnemy>();
         if (ie != null) { ie.die(Direction.NONE); }
     }
-
 }

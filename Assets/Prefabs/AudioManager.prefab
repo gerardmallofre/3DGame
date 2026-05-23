@@ -48,10 +48,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicaFonsSource: {fileID: 6807287379401192299}
   efectesSource: {fileID: 1954980770851253300}
-  musicaNivell: {fileID: 0}
+  musicaNivell: {fileID: 8300000, guid: 088806fa11a77c84c96bf4a3b0f24c8e, type: 3}
   soPortaOberta: {fileID: 8300000, guid: 6f28bc1de61f4124f8ec6c8eec165e79, type: 3}
   soClicBoto: {fileID: 8300000, guid: aaaa4f865c050d248b39214e3a955d99, type: 3}
   soSelectBoto: {fileID: 8300000, guid: a1a213b564e4bc04abae1d41389cf85a, type: 3}
+  soMort: {fileID: 8300000, guid: 975ba1334ad902946a1037ffe1ca1807, type: 3}
+  soDamage: {fileID: 8300000, guid: 4d10377408a60654880ae91ac7cc179b, type: 3}
+  soTremolorTerra: {fileID: 8300000, guid: 639e9a9791ba71a4db2ba71c0c22130f, type: 3}
+  soSpikeTrap: {fileID: 8300000, guid: 74ee44c0cf905e84b98bca4a8f0fd70d, type: 3}
+  soAxeTrap: {fileID: 8300000, guid: 2c7d175b79725944293f52084dbcd163, type: 3}
+  soCoin: {fileID: 8300000, guid: 695d56c2d63730f439bb349cadc45fe5, type: 3}
 --- !u!82 &6807287379401192299
 AudioSource:
   m_ObjectHideFlags: 0

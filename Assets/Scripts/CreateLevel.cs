@@ -14,9 +14,8 @@ public class CreateLevel : MonoBehaviour
     private GameObject door;
     private float timepassed = 0.0f;
     private int fallingrow = 0;
-                                                // We need to position it according to the level.
-    [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor, goomba, spikeTrap, slimetile, axeTrap;  // References to objects we need to instantiate to
-                                                                        // build the level.
+    // We need to position it according to the level.
+    [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor, goomba, spikeTrap, slimetile, axeTrap;
 
     private int level = -1;
     private string[] levels = new string[10];
@@ -26,20 +25,29 @@ public class CreateLevel : MonoBehaviour
     {
         levels[0] = "/Maps/map.txt";
         levels[1] = "/Maps/map2.txt";
-        // dataPath is the directory path to the Assets in the project
-        // We want to load file map.txt inside directory Maps.
+        levels[2] = "/Maps/map3.txt";
+        levels[3] = "/Maps/map4.txt";
+        levels[4] = "/Maps/map5.txt"; // El Boss final
         advanceLevel();
     }
 
     public void advanceLevel()
     {
         level += 1;
+
+        if (level > 4)
+        {
+            SceneController.ChangeToCreditsScene();
+            return; 
+        }
+
         falls = false;
         falling = false;
         rowFallen = false;
         timepassed = 0f;
         fallingrow = 0;
         enemies = 0;
+
         string filename = Application.dataPath + levels[level];
         player.GetComponent<MovePlayer>().stopMove();
 
@@ -50,9 +58,6 @@ public class CreateLevel : MonoBehaviour
 
         if (File.Exists(filename))
         {
-            // Read map file line by line tokenizing them into the numbers we need.
-            // Specifically, width, height and the tile ids for all positions in the map.
-
             TextReader reader = File.OpenText(filename);
             string line = reader.ReadLine();
             if (line == "FALLS")
@@ -70,11 +75,9 @@ public class CreateLevel : MonoBehaviour
                 tokens = line.Split(" ");
                 for (int x = 0; x < width; x++)
                 {
-                    if (x == width/2 && y == height - 1)
+                    if (x == width / 2 && y == height - 1)
                     {
-                        // All tiles will have a ground instance under them. We instantiate it here.
                         GameObject obj = Instantiate(ground, new Vector3(x, 0.0f, y), transform.rotation);
-                        // All instances created by this script end as children of the object that contains the script.
                         obj.transform.parent = transform;
                         obj = Instantiate(exitdoor, new Vector3(x, 0.0f, y), transform.rotation);
                         obj.transform.parent = transform;
@@ -84,13 +87,9 @@ public class CreateLevel : MonoBehaviour
                     else
                     {
                         int tile = int.Parse(tokens[x]);
-
-                        // All tiles will have a ground instance under them. We instantiate it here.
                         GameObject obj = Instantiate(ground, new Vector3(x, 0.0f, y), transform.rotation);
-                        // All instances created by this script end as children of the object that contains the script.
                         obj.transform.parent = transform;
 
-                        // Now, for objects other than the player we spawn an instance.
                         switch (tile)
                         {
                             case 1:
@@ -118,8 +117,7 @@ public class CreateLevel : MonoBehaviour
                                 obj.transform.parent = transform;
                                 break;
                             case 6:
-                                // For the player, we position it at the location of the tile with the player tile id.
-                                player.transform.localPosition=new Vector3(x, 0.0f, y);
+                                player.transform.localPosition = new Vector3(x, 0.0f, y);
                                 break;
                             case 7:
                                 obj = Instantiate(axeTrap, new Vector3(x, 0.0f, y), transform.rotation);
@@ -132,8 +130,7 @@ public class CreateLevel : MonoBehaviour
         }
         else
         {
-            // Hopefully this should not happen. But just in case ...
-            Debug.Log("Map file could not be found!!!");
+            Debug.LogError("Error: No es troba el mapa! Buscant a la ruta: " + filename);
         }
     }
 
@@ -145,19 +142,15 @@ public class CreateLevel : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.Alpha1))
-        {
-            level = -1;
-            advanceLevel();
-        }
-        else if (Input.GetKey(KeyCode.Alpha2))
-        {
-            level = 0;
-            advanceLevel();
-        }
+        if (Input.GetKeyDown(KeyCode.Alpha1)) { level = -1; advanceLevel(); }
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) { level = 0; advanceLevel(); }
+        else if (Input.GetKeyDown(KeyCode.Alpha3)) { level = 1; advanceLevel(); }
+        else if (Input.GetKeyDown(KeyCode.Alpha4)) { level = 2; advanceLevel(); }
+        else if (Input.GetKeyDown(KeyCode.Alpha5)) { level = 3; advanceLevel(); }
 
         timepassed += Time.deltaTime;
         if (Input.GetKey(KeyCode.M)) SceneController.ChangeToMenuScene();
+
         if (falls)
         {
             if (!falling && timepassed > fallstart)
@@ -171,7 +164,7 @@ public class CreateLevel : MonoBehaviour
                 {
                     foreach (Transform child in transform)
                     {
-                        if (child.gameObject.tag=="Ground" && child.localPosition.z == fallingrow)
+                        if (child.gameObject.tag == "Ground" && child.localPosition.z == fallingrow)
                         {
                             child.GetComponent<GroundHandler>().setFallState(FallState.SHAKE);
                         }
@@ -198,7 +191,7 @@ public class CreateLevel : MonoBehaviour
     public void enemyKilled()
     {
         --enemies;
-        if (enemies == 0)
+        if (enemies <= 0)
         {
             door.GetComponent<DoorHandler>().open();
         }
@@ -214,7 +207,7 @@ public class CreateLevel : MonoBehaviour
                 break;
             }
         }
-        GameObject obj=Instantiate(slimetile, new Vector3(pos.x, 0.1f, pos.z), new Quaternion(0f, 0f, 0f, 0f));
+        GameObject obj = Instantiate(slimetile, new Vector3(pos.x, 0.1f, pos.z), new Quaternion(0f, 0f, 0f, 0f));
         obj.transform.parent = transform;
     }
 }

@@ -52,9 +52,12 @@ public class GroundHandler : MonoBehaviour
 
     public void setFallState(FallState state)
     {
-        if (fallstate!=FallState.FALL) fallstate = state;
-    }
+        if (fallstate != FallState.FALL)
+        {
+            fallstate = state;
 
+        }
+    }
     GameObject CheckAbove()
     {
         float min = 0f; float max = 5f; Vector3 v = new Vector3(0, 1, 0); Vector3 P = transform.localPosition;

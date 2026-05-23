@@ -48,6 +48,7 @@ public class DeathHandler : MonoBehaviour
         
     public void startDeath(Direction d)
     {
+        AudioManager.instance?.PlayMort();
         if (d == Direction.NONE)
         {
             d = moveScript.getDir();
