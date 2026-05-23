@@ -67,11 +67,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1627c68183073a489e6f9037a0a3c57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeSpikesOut: 1.5
-  timeSpikesIn: 1
-  timeRising: 0.542
-  timeFalling: 0.542
-  damageCooldown: 1
 --- !u!1001 &2458290888057223815
 PrefabInstance:
   m_ObjectHideFlags: 0

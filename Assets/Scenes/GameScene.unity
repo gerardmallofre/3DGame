@@ -744,7 +744,6 @@ MonoBehaviour:
   dieScript: {fileID: 1843085266}
   levelScript: {fileID: 1182457124}
   maxInvulTime: 1
-  hurtSound: {fileID: 8300000, guid: 019bc7bfff8c20343ac12f446546cf14, type: 3}
   maxHitCooldown: 0.25
   anim: {fileID: 21104236}
   maxSlimeCooldown: 1
@@ -895,42 +894,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3992229675829357237, guid: 199d535092afed5428487657948bff1c, type: 3}
-      propertyPath: soCoin
-      value: 
-      objectReference: {fileID: 8300000, guid: 695d56c2d63730f439bb349cadc45fe5, type: 3}
-    - target: {fileID: 3992229675829357237, guid: 199d535092afed5428487657948bff1c, type: 3}
-      propertyPath: soMort
-      value: 
-      objectReference: {fileID: 8300000, guid: 975ba1334ad902946a1037ffe1ca1807, type: 3}
-    - target: {fileID: 3992229675829357237, guid: 199d535092afed5428487657948bff1c, type: 3}
-      propertyPath: soDamage
-      value: 
-      objectReference: {fileID: 8300000, guid: 4d10377408a60654880ae91ac7cc179b, type: 3}
-    - target: {fileID: 3992229675829357237, guid: 199d535092afed5428487657948bff1c, type: 3}
-      propertyPath: soAxeTrap
-      value: 
-      objectReference: {fileID: 8300000, guid: 2c7d175b79725944293f52084dbcd163, type: 3}
-    - target: {fileID: 3992229675829357237, guid: 199d535092afed5428487657948bff1c, type: 3}
-      propertyPath: soClicBoto
-      value: 
-      objectReference: {fileID: 8300000, guid: aaaa4f865c050d248b39214e3a955d99, type: 3}
-    - target: {fileID: 3992229675829357237, guid: 199d535092afed5428487657948bff1c, type: 3}
-      propertyPath: soSpikeTrap
-      value: 
-      objectReference: {fileID: 8300000, guid: 74ee44c0cf905e84b98bca4a8f0fd70d, type: 3}
-    - target: {fileID: 3992229675829357237, guid: 199d535092afed5428487657948bff1c, type: 3}
-      propertyPath: musicaNivell
-      value: 
-      objectReference: {fileID: 8300000, guid: 088806fa11a77c84c96bf4a3b0f24c8e, type: 3}
-    - target: {fileID: 3992229675829357237, guid: 199d535092afed5428487657948bff1c, type: 3}
-      propertyPath: soPortaOberta
-      value: 
-      objectReference: {fileID: 8300000, guid: 6f28bc1de61f4124f8ec6c8eec165e79, type: 3}
-    - target: {fileID: 3992229675829357237, guid: 199d535092afed5428487657948bff1c, type: 3}
-      propertyPath: soTremolorTerra
-      value: 
-      objectReference: {fileID: 8300000, guid: 639e9a9791ba71a4db2ba71c0c22130f, type: 3}
     - target: {fileID: 6629711304306094339, guid: 199d535092afed5428487657948bff1c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.23478672
@@ -974,10 +937,6 @@ PrefabInstance:
     - target: {fileID: 6780784416982490730, guid: 199d535092afed5428487657948bff1c, type: 3}
       propertyPath: m_Name
       value: AudioManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 6807287379401192299, guid: 199d535092afed5428487657948bff1c, type: 3}
-      propertyPath: m_audioClip
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
