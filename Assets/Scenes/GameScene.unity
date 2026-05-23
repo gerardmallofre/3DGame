@@ -637,6 +637,7 @@ MonoBehaviour:
   spikeTrap: {fileID: 880992923608939561, guid: e96c8caf85000e1458eecfc4a08c792d, type: 3}
   slimetile: {fileID: 4441756582574090864, guid: 97471fff798d7564d859f280e92254d0, type: 3}
   axeTrap: {fileID: 5505234684236543623, guid: 1fd587fdaf64ebf4fad2d8d2391cc464, type: 3}
+  bomb: {fileID: 7930364858319921903, guid: 2ad03b86af579344caded769226160e6, type: 3}
 --- !u!4 &1182457125
 Transform:
   m_ObjectHideFlags: 0

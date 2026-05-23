@@ -1,0 +1,183 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+enum BombState { PATROL, CHASE, WAIT};
+
+public class BombHandler : MonoBehaviour, IEnemy
+{
+    [SerializeField] MovePlayer moveScript;
+    [SerializeField] DeathHandler dieScript;
+    [SerializeField] FallHandler fallScript;
+    [SerializeField] int chaseRange = 4;
+    [SerializeField] int explodeRange = 2;
+    [SerializeField] float explosionRange = 3f;
+    [SerializeField] GameObject explosion;
+    GameObject cl;
+    GameObject player;
+    BombState state = BombState.PATROL;
+    [SerializeField] float maxMoveCooldown = 1f;
+    [SerializeField] float maxExplodeDelay = 1f;
+    float moveCooldown=0f;
+    float explodeDelay=0f;
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (dieScript.getState() == DeathState.ALIVE)
+        {
+            if (!fallScript.isFalling() && moveScript.getState() == PlayerState.STOP) fallScript.fallCheck();
+            if (fallScript.isFalling()) fall();
+            else
+            {
+                if (state == BombState.WAIT)
+                {
+                    explodeDelay -= Time.deltaTime;
+                    if (explodeDelay < 0)
+                    {
+                        explode();
+                    }
+                }
+                else if (state == BombState.CHASE && Mathf.Abs(player.transform.position.x - transform.position.x) < explodeRange && Mathf.Abs(player.transform.position.z - transform.position.z) < explodeRange)
+                {
+                    state = BombState.WAIT;
+                    explodeDelay = maxExplodeDelay;
+                }
+                else
+                {
+                    moveCooldown -= Time.deltaTime;
+                    if (state != BombState.WAIT && moveCooldown < 0)
+                    {
+                        if (state == BombState.PATROL && Mathf.Abs(player.transform.position.x - transform.position.x) < chaseRange && Mathf.Abs(player.transform.position.z - transform.position.z) < chaseRange)
+                        {
+                            state = BombState.CHASE;
+                        }
+                        if (state == BombState.CHASE)
+                        {
+                            moveCooldown = maxMoveCooldown / 2;
+                            moveScript.tryMove(searchPlayer(player.transform.position));
+                        }
+                        else    // Patrol
+                        {
+                            moveCooldown = maxMoveCooldown;
+                            float r = Random.Range(0, 4);
+                            if (r < 1) moveScript.tryMove(Direction.UP);
+                            else if (r < 2) moveScript.tryMove(Direction.DOWN);
+                            else if (r < 3) moveScript.tryMove(Direction.LEFT);
+                            else moveScript.tryMove(Direction.RIGHT);
+                        }
+                    }
+                }
+            }
+        }
+        else if (dieScript.getState() == DeathState.DEAD) destroy();
+    }
+
+    public void setPlayer(GameObject p) { player = p; }
+
+    void fall()
+    {
+        dieScript.startDeath(Direction.NONE);
+    }
+
+    void destroy()
+    {
+        if (cl != null) cl.GetComponent<CreateLevel>().enemyKilled();
+        Destroy(this.transform.gameObject);
+    }
+
+    public void die(Direction d) { dieScript.startDeath(d); }
+
+    public void setLevelCreator(GameObject g) { cl = g; }
+
+    struct item
+    {
+        public Vector3 pos;
+        public Direction initialDir;
+    }
+    Direction searchPlayer(Vector3 targetpos)
+    {
+        Queue<item> q=new Queue<item>();
+        item i;
+        i.pos = transform.position;
+        i.initialDir = Direction.NONE;
+        q.Enqueue(i);
+        List<Vector3> visited = new List<Vector3>();
+        visited.Add(i.pos);
+
+        while (q.Count!=0)
+        {
+            i = q.Dequeue();
+            if (Mathf.Abs(i.pos.x - targetpos.x) < 1 && Mathf.Abs(i.pos.z - targetpos.z) < 1) return i.initialDir;
+            if (!visited.Contains(i.pos + new Vector3(1, 0, 0)) && checkWall(i.pos, new Vector3(1, 0, 0), 0f, 1f) == null)
+            {
+                item newit;
+                newit.pos = i.pos + new Vector3(1, 0, 0);
+                if (i.initialDir == Direction.NONE) newit.initialDir = Direction.RIGHT;
+                else newit.initialDir = i.initialDir;
+                q.Enqueue(newit);
+                visited.Add(newit.pos);
+            }
+            if (!visited.Contains(i.pos + new Vector3(-1, 0, 0)) && checkWall(i.pos, new Vector3(-1, 0, 0), 0f, 1f) == null)
+            {
+                item newit;
+                newit.pos = i.pos + new Vector3(-1, 0, 0);
+                if (i.initialDir == Direction.NONE) newit.initialDir = Direction.LEFT;
+                else newit.initialDir = i.initialDir;
+                q.Enqueue(newit);
+                visited.Add(newit.pos);
+            }
+            if (!visited.Contains(i.pos + new Vector3(0, 0, 1)) && checkWall(i.pos, new Vector3(0, 0, 1), 0f, 1f) == null)
+            {
+                item newit;
+                newit.pos = i.pos + new Vector3(0, 0, 1);
+                if (i.initialDir == Direction.NONE) newit.initialDir = Direction.UP;
+                else newit.initialDir = i.initialDir;
+                q.Enqueue(newit);
+                visited.Add(newit.pos);
+            }
+            if (!visited.Contains(i.pos + new Vector3(0, 0, -1)) && checkWall(i.pos, new Vector3(0, 0, -1), 0f, 1f) == null)
+            {
+                item newit;
+                newit.pos = i.pos + new Vector3(0, 0, -1);
+                if (i.initialDir == Direction.NONE) newit.initialDir = Direction.DOWN;
+                else newit.initialDir = i.initialDir;
+                q.Enqueue(newit);
+                visited.Add(newit.pos);
+            }
+        }
+        return Direction.NONE;
+    }
+
+    private GameObject checkWall(Vector3 P, Vector3 v, float min, float max)
+    {
+        float closestDistance = max + 1.0f;
+        GameObject obj = null;
+
+        // Physics.RaycastAll returns all colliders in a given ray (P, v) within a given distance (max)
+        RaycastHit[] hits = Physics.RaycastAll(P, v, max);
+        foreach (RaycastHit hit in hits)
+        {
+            if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag == "Wall" || (hit.collider.gameObject.tag == "Door" && !hit.collider.gameObject.GetComponent<DoorHandler>().isOpen())))
+                if (hit.distance < closestDistance)
+                {
+                    closestDistance = hit.distance;
+                    obj = hit.collider.gameObject;
+                }
+        }
+
+        return obj;
+    }
+
+    void explode()
+    {
+        GameObject e = Instantiate(explosion, transform.position, transform.rotation);
+        e.GetComponent<ExplosionHandler>().setRadius(explosionRange);
+        destroy();
+    }
+}

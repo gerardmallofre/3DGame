@@ -67,6 +67,7 @@ public class MovePlayer : MonoBehaviour
     // initializes the necessary object attributes.
     private bool PrepareMovement(Direction dirMove)
     {
+        if (dirMove == Direction.NONE) return false;
         // bMove will track if the player can really move, as walls and boxes may stop him.
         bool bMove = true;
         // angleMove is the rotation required to transform the Z axis into the direction 
