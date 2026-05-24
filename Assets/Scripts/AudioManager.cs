@@ -49,7 +49,7 @@ public class AudioManager : MonoBehaviour
         {
             musicaFonsSource.clip = musicaNivell;
             musicaFonsSource.loop = true;
-            StartCoroutine(FadeIn(musicaFonsSource, 2f, 0.1f));
+            StartCoroutine(FadeIn(musicaFonsSource, 2f, 0.4f));
         }
     }
 

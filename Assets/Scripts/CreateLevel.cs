@@ -15,7 +15,7 @@ public class CreateLevel : MonoBehaviour
     private float timepassed = 0.0f;
     private int fallingrow = 0;
     // We need to position it according to the level.
-    [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor, goomba, spikeTrap, slimetile, axeTrap, bomb;
+    [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor, giant, spikeTrap, slimetile, axeTrap, bomb, goblin;
 
     private int level = -1;
     private string[] levels = new string[10];
@@ -107,7 +107,7 @@ public class CreateLevel : MonoBehaviour
                                 ++enemies;
                                 break;
                             case 4:
-                                obj = Instantiate(goomba, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj = Instantiate(giant, new Vector3(x, 0.0f, y), transform.rotation);
                                 obj.transform.parent = transform;
                                 obj.GetComponent<SlimeHandler>().setLevelCreator(this.transform.gameObject);
                                 ++enemies;
@@ -129,6 +129,12 @@ public class CreateLevel : MonoBehaviour
                                 BombHandler b = obj.GetComponent<BombHandler>();
                                 b.setPlayer(player);
                                 b.setLevelCreator(this.transform.gameObject);
+                                ++enemies;
+                                break;
+                            case 9:
+                                obj = Instantiate(goblin, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj.transform.parent = transform;
+                                obj.GetComponent<SlimeHandler>().setLevelCreator(this.transform.gameObject);
                                 ++enemies;
                                 break;
                         }

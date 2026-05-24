@@ -38,11 +38,37 @@ public class SlimeHandler : MonoBehaviour, IEnemy
                 {
                     bool b = movement();
                     jumpwait = maxjumpwait;
-                    if (b) placeslime = true;
+                    if (b)
+                    {
+                        placeslime = true;
+                        CheckForPlayer(moveScript.getVec());  
+                    }
                 }
             }
         }
         else if (dieScript.getState() == DeathState.DEAD) destroy();
+    }
+
+    private void CheckForPlayer(Vector3 v)
+    {
+        if (v == Vector3.zero) return;
+
+        Vector3 targetTile = transform.position + v;
+        Vector3 halfExtents = new Vector3(0.4f, 1.5f, 0.4f);
+
+        Collider[] hits = Physics.OverlapBox(
+            targetTile, halfExtents, Quaternion.identity, ~0, QueryTriggerInteraction.Collide);
+
+        foreach (Collider hit in hits)
+        {
+            PlayerHandler p = hit.GetComponent<PlayerHandler>() ?? hit.GetComponentInParent<PlayerHandler>();
+            if (p != null)
+            {
+                moveScript.undoMove();             
+                p.takeDamage(1, moveScript.getDir());
+                return;
+            }
+        }
     }
 
     private bool movement()
@@ -66,7 +92,7 @@ public class SlimeHandler : MonoBehaviour, IEnemy
         cl = g;
     }
 
-    void OnTriggerEnter(Collider other)
+    /*void OnTriggerEnter(Collider other)
     {
         GameObject oobj = other.transform.gameObject;
         MovePlayer smv = GetComponent<MovePlayer>();
@@ -83,7 +109,7 @@ public class SlimeHandler : MonoBehaviour, IEnemy
                 }
             }
         }
-    }
+    }*/
 
     public void die(Direction d)
     {

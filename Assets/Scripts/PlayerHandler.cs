@@ -43,13 +43,13 @@ public class PlayerHandler : MonoBehaviour
 
     private void movement()
     {
-        if (hitCooldown < 0 && slimeCooldown<0)
+        if (hitCooldown < 0 && slimeCooldown < 0)
         {
-            bool b=false;
-            if (Input.GetKey(KeyCode.UpArrow)) b=moveScript.tryMove(Direction.UP);
-            else if (Input.GetKey(KeyCode.RightArrow)) b=moveScript.tryMove(Direction.RIGHT);
-            else if (Input.GetKey(KeyCode.LeftArrow)) b=moveScript.tryMove(Direction.LEFT);
-            else if (Input.GetKey(KeyCode.DownArrow)) b=moveScript.tryMove(Direction.DOWN);
+            bool b = false;
+            if (Input.GetKey(KeyCode.UpArrow)) b = moveScript.tryMove(Direction.UP);
+            else if (Input.GetKey(KeyCode.RightArrow)) b = moveScript.tryMove(Direction.RIGHT);
+            else if (Input.GetKey(KeyCode.LeftArrow)) b = moveScript.tryMove(Direction.LEFT);
+            else if (Input.GetKey(KeyCode.DownArrow)) b = moveScript.tryMove(Direction.DOWN);
 
             if (b)
             {
@@ -57,30 +57,42 @@ public class PlayerHandler : MonoBehaviour
                 if (obj != null)
                 {
                     anim?.SetTrigger("attack");
+                    AttackEnemy(obj);
                 }
             }
         }
     }
 
+    private void AttackEnemy(GameObject enemyObj)
+    {
+        DeathHandler ds = enemyObj.GetComponent<DeathHandler>() ?? enemyObj.GetComponentInParent<DeathHandler>();
+        IEnemy enemy = enemyObj.GetComponent<IEnemy>() ?? enemyObj.GetComponentInParent<IEnemy>();
+        if (ds != null && enemy != null && ds.getState() == DeathState.ALIVE)
+        {
+            moveScript.undoMove();       
+            hitCooldown = maxHitCooldown;
+            enemy.die(moveScript.getDir());
+        }
+    }
+
     private GameObject CheckForEnemy(Vector3 v)
     {
-        float min = 0f; float max = 1f; Vector3 P = transform.localPosition;
-        float closestDistance = max + 1.0f;
-        GameObject obj = null;
+        if (v == Vector3.zero) return null;
 
-        // Physics.RaycastAll returns all colliders in a given ray (P, v) within a given distance (max)
-        RaycastHit[] hits = Physics.RaycastAll(P, v, max);
-        foreach (RaycastHit hit in hits)
+        Vector3 targetTile = transform.position + v;
+        Vector3 halfExtents = new Vector3(0.4f, 1.5f, 0.4f);
+
+        Collider[] hits = Physics.OverlapBox(
+            targetTile, halfExtents, Quaternion.identity, ~0, QueryTriggerInteraction.Collide);
+
+        foreach (Collider hit in hits)
         {
-            if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag == "Slime"))
-                if (hit.distance < closestDistance)
-                {
-                    closestDistance = hit.distance;
-                    obj = hit.collider.gameObject;
-                }
+            DeathHandler ds = hit.GetComponent<DeathHandler>() ?? hit.GetComponentInParent<DeathHandler>();
+            IEnemy enemy = hit.GetComponent<IEnemy>() ?? hit.GetComponentInParent<IEnemy>();
+            if (ds != null && enemy != null && ds.getState() == DeathState.ALIVE)
+                return ds.gameObject;
         }
-
-        return obj;
+        return null;
     }
 
     private void fall()
@@ -115,7 +127,7 @@ public class PlayerHandler : MonoBehaviour
         }
     }
 
-    public void OnTriggerEnter(Collider other)
+    /*public void OnTriggerEnter(Collider other)
     {
         MovePlayer omv = other.GetComponent<MovePlayer>()
                         ?? other.GetComponentInParent<MovePlayer>();
@@ -132,7 +144,7 @@ public class PlayerHandler : MonoBehaviour
                 if (enemy != null) enemy.die(moveScript.getDir());
             }
         }
-    }
+    }*/
 
     void reset()
     {
