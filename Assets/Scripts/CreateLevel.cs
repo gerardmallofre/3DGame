@@ -234,7 +234,7 @@ public class CreateLevel : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            if (child.gameObject.tag == "SlimeTile" && child.localPosition.z == pos.z && child.localPosition.x == pos.x)
+            if (child.gameObject.tag == "SlimeTile" && Mathf.Abs(child.localPosition.z - pos.z)<0.3 && Mathf.Abs(child.localPosition.x - pos.x)<0.3)
             {
                 Destroy(child.gameObject);
                 break;

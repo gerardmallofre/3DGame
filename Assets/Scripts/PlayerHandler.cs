@@ -57,7 +57,6 @@ public class PlayerHandler : MonoBehaviour
                 if (obj != null)
                 {
                     anim?.SetTrigger("attack");
-                    AttackEnemy(obj);
                 }
             }
         }
@@ -127,7 +126,7 @@ public class PlayerHandler : MonoBehaviour
         }
     }
 
-    /*public void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         MovePlayer omv = other.GetComponent<MovePlayer>()
                         ?? other.GetComponentInParent<MovePlayer>();
@@ -144,7 +143,7 @@ public class PlayerHandler : MonoBehaviour
                 if (enemy != null) enemy.die(moveScript.getDir());
             }
         }
-    }*/
+    }
 
     void reset()
     {

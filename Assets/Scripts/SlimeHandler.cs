@@ -41,34 +41,11 @@ public class SlimeHandler : MonoBehaviour, IEnemy
                     if (b)
                     {
                         placeslime = true;
-                        CheckForPlayer(moveScript.getVec());  
                     }
                 }
             }
         }
         else if (dieScript.getState() == DeathState.DEAD) destroy();
-    }
-
-    private void CheckForPlayer(Vector3 v)
-    {
-        if (v == Vector3.zero) return;
-
-        Vector3 targetTile = transform.position + v;
-        Vector3 halfExtents = new Vector3(0.4f, 1.5f, 0.4f);
-
-        Collider[] hits = Physics.OverlapBox(
-            targetTile, halfExtents, Quaternion.identity, ~0, QueryTriggerInteraction.Collide);
-
-        foreach (Collider hit in hits)
-        {
-            PlayerHandler p = hit.GetComponent<PlayerHandler>() ?? hit.GetComponentInParent<PlayerHandler>();
-            if (p != null)
-            {
-                moveScript.undoMove();             
-                p.takeDamage(1, moveScript.getDir());
-                return;
-            }
-        }
     }
 
     private bool movement()
@@ -92,24 +69,69 @@ public class SlimeHandler : MonoBehaviour, IEnemy
         cl = g;
     }
 
-    /*void OnTriggerEnter(Collider other)
+    bool inLine(Direction d1, Direction d2)
+    {
+        if ((d1 == Direction.UP || d1 == Direction.DOWN) && (d2 == Direction.UP || d2 == Direction.DOWN)) return true;
+        if ((d1 == Direction.RIGHT || d1 == Direction.LEFT) && (d2 == Direction.RIGHT || d2 == Direction.LEFT)) return true;
+        return false;
+    }
+
+    void OnTriggerEnter(Collider other)
     {
         GameObject oobj = other.transform.gameObject;
-        MovePlayer smv = GetComponent<MovePlayer>();
-        if (dieScript.getState()==DeathState.ALIVE && smv.getState() == PlayerState.MOVE && oobj.tag!="Coin" && oobj.tag!="Ground" && oobj.tag!="SlimeTile")
+        if (dieScript.getState()==DeathState.ALIVE && moveScript.getState() == PlayerState.MOVE && oobj.tag!="Coin" && oobj.tag!="Ground" && oobj.tag!="SlimeTile")
         {
             DeathHandler ds = other.GetComponent<DeathHandler>();
             if (ds != null && ds.getState() == DeathState.ALIVE)
             {
-                smv.undoMove();
+                moveScript.undoMove();
                 PlayerHandler p = oobj.GetComponent<PlayerHandler>();
                 if (p != null)
                 {
-                    p.takeDamage(1, moveScript.getDir());
+                    MovePlayer pmv = oobj.GetComponent<MovePlayer>();
+                    if (pmv.getState()!=PlayerState.MOVE || movingTowardsPlayer(oobj))
+                        p.takeDamage(1, moveScript.getDir());
                 }
             }
         }
-    }*/
+    }
+
+    bool movingTowardsPlayer(GameObject player)
+    {
+        float minx, maxx, minz, maxz;
+        
+        if (moveScript.getDir() == Direction.UP)
+        {
+            minx = transform.position.x - 0.5f;
+            maxx = minx + 1f;
+            minz = transform.position.z;
+            maxz = minz + 1.5f;
+        }
+        else if (moveScript.getDir() == Direction.DOWN)
+        {
+            minx = transform.position.x - 0.5f;
+            maxx = minx + 1f;
+            maxz = transform.position.z;
+            minz = maxz - 1.5f;
+        }
+        else if (moveScript.getDir() == Direction.RIGHT)
+        {
+            minx = transform.position.x;
+            maxx = minx + 1.5f;
+            minz = transform.position.z - 0.5f;
+            maxz = minz + 1f;
+        }
+        else
+        {
+            maxx = transform.position.x;
+            minx = maxx - 1.5f;
+            minz = transform.position.z - 0.5f;
+            maxz = minz + 1f;
+        }
+
+        Vector3 playerpos = player.transform.position;
+        return (playerpos.x <= maxx && playerpos.x >= minx) && (playerpos.z <= maxz && playerpos.z >= minz);
+    }
 
     public void die(Direction d)
     {

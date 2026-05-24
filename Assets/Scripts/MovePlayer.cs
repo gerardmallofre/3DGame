@@ -146,8 +146,19 @@ public class MovePlayer : MonoBehaviour
 
     public PlayerState getState() { return state; }
     public Vector3 getVec() { 
-        if (state==PlayerState.MOVE) return vecMove;
+        if (state == PlayerState.MOVE)
+        {
+            if (dir == Direction.UP) return new Vector3(0, 0, 1);
+            if (dir == Direction.DOWN) return new Vector3(0, 0, -1);
+            if (dir == Direction.LEFT) return new Vector3(-1, 0, 0);
+            if (dir == Direction.RIGHT) return new Vector3(1, 0, 0);
+        }
         return new Vector3(0f, 0f, 0f);
+    }
+    public Vector3 getInitPos()
+    {
+        if (state == PlayerState.MOVE) return initialPosMove;
+        return transform.localPosition;
     }
 
     public Direction getDir() { return dir; }
