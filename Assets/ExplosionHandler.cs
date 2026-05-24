@@ -25,7 +25,6 @@ public class ExplosionHandler : MonoBehaviour
     public void setRadius(float r)
     {
         transform.localScale = new Vector3(r, r, r);
-        this.GetComponent<SphereCollider>().radius = r;
     }
 
     void OnTriggerEnter(Collider other)
