@@ -15,7 +15,7 @@ public class CreateLevel : MonoBehaviour
     private float timepassed = 0.0f;
     private int fallingrow = 0;
     // We need to position it according to the level.
-    [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor, giant, spikeTrap, slimetile, axeTrap, bomb, goblin;
+    [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor, giant, spikeTrap, slimetile, axeTrap, bomb, goblin, emptyWall, outerWall;
 
     private int level = -1;
     private string[] levels = new string[10];
@@ -69,26 +69,45 @@ public class CreateLevel : MonoBehaviour
             int width, height;
             width = int.Parse(tokens[0]);
             height = int.Parse(tokens[1]);
-            for (int y = height - 1; y >= 0; y--)
+            for (int y = height; y >= -1; y--)
             {
-                line = reader.ReadLine();
-                tokens = line.Split(" ");
-                for (int x = 0; x < width; x++)
+                if (y != height && y != -1) {
+                    line = reader.ReadLine();
+                    tokens = line.Split(" ");
+                }
+                for (int x = -1; x < width + 1; x++)
                 {
-                    if (x == width / 2 && y == height - 1)
+                    if (y == height || y == -1 || x == -1 || x == width)
                     {
-                        GameObject obj = Instantiate(ground, new Vector3(x, 0.0f, y), transform.rotation);
-                        obj.transform.parent = transform;
-                        obj = Instantiate(exitdoor, new Vector3(x, 0.0f, y), transform.rotation);
-                        obj.transform.parent = transform;
-                        obj.GetComponent<DoorHandler>().setLevelCreator(this.transform.gameObject);
-                        door = obj;
+                        if (x == width / 2 && y == height)
+                        {
+                            GameObject obj = Instantiate(ground, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            obj = Instantiate(exitdoor, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            obj.GetComponent<DoorHandler>().setLevelCreator(this.transform.gameObject);
+                            door = obj;
+                        }
+                        else {
+                            GameObject obj = Instantiate(emptyWall, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            if ((y == height && x != -1 && x != width) || (x == -1 && y != -1 && y!=height))
+                            {
+                                obj = Instantiate(outerWall, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj.transform.parent = transform;
+                                if (y != height)
+                                {
+                                    obj.GetComponent<OuterWallDecorator>().setLeftWall(true);
+                                    obj.transform.Rotate(0, -90, 0);
+                                }
+                                obj.GetComponent<OuterWallDecorator>().decorate();
+                            }
+                        }
                     }
-                    else
-                    {
-                        int tile = int.Parse(tokens[x]);
+                    else {
                         GameObject obj = Instantiate(ground, new Vector3(x, 0.0f, y), transform.rotation);
                         obj.transform.parent = transform;
+                        int tile = int.Parse(tokens[x]);
 
                         switch (tile)
                         {

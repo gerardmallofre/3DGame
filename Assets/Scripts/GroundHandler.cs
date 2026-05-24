@@ -69,7 +69,7 @@ public class GroundHandler : MonoBehaviour
         RaycastHit[] hits = Physics.RaycastAll(P, v, max);
         foreach (RaycastHit hit in hits)
         {
-            if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag!="Ground" && hit.collider.gameObject.tag!="Player" && hit.collider.gameObject.GetComponent<IEnemy>()==null))
+            if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag!="Ground" && hit.collider.gameObject.tag!="Player" && hit.collider.gameObject.GetComponent<IEnemy>()==null && hit.collider.gameObject.tag!="Hitbox"))
                 if (hit.distance < closestDistance)
                 {
                     closestDistance = hit.distance;
