@@ -42,6 +42,7 @@ public class GroundHandler : MonoBehaviour
             {
                 AxeHandler ah = obj.GetComponent<AxeHandler>();   
                 if (ah != null) ah.falling = true;
+                while (obj.transform.parent != transform.parent) obj = obj.transform.parent.gameObject;
                 obj.transform.localPosition -= new Vector3(0, fallspeed * Time.deltaTime, 0);
             }
             if (time > 1)

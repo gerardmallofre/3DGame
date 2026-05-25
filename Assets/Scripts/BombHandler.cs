@@ -66,11 +66,17 @@ public class BombHandler : MonoBehaviour, IEnemy
                         else    // Patrol
                         {
                             moveCooldown = maxMoveCooldown;
-                            float r = Random.Range(0, 4);
-                            if (r < 1) moveScript.tryMove(Direction.UP);
-                            else if (r < 2) moveScript.tryMove(Direction.DOWN);
-                            else if (r < 3) moveScript.tryMove(Direction.LEFT);
-                            else moveScript.tryMove(Direction.RIGHT);
+                            bool b = false;
+                            int tries = 0;
+                            while (!b && tries<10)
+                            {
+                                float r = Random.Range(0, 4);
+                                if (r < 1) b = moveScript.tryMove(Direction.UP);
+                                else if (r < 2) b = moveScript.tryMove(Direction.DOWN);
+                                else if (r < 3) b = moveScript.tryMove(Direction.LEFT);
+                                else b = moveScript.tryMove(Direction.RIGHT);
+                                ++tries;    // Failsafe to avoid weird crashes
+                            }
                         }
                     }
                 }

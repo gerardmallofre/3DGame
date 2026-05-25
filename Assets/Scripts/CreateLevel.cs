@@ -18,7 +18,7 @@ public class CreateLevel : MonoBehaviour
     [SerializeField]
     public GameObject ground, wall, box, coin, slime, exitdoor, giant,
         spikeTrap, slimetile, axeTrap, bomb, goblin, emptyWall, outerWall, arrowTrap,
-        torch, chest, barrel, carpet, pileBones;
+        torch, chest, barrel, carpet, pileBones, rock,  hole;
 
     private int level = -1;
     private string[] levels = new string[10];
@@ -108,9 +108,13 @@ public class CreateLevel : MonoBehaviour
                         }
                     }
                     else {
-                        GameObject obj = Instantiate(ground, new Vector3(x, 0.0f, y), transform.rotation);
-                        obj.transform.parent = transform;
                         string tile = tokens[x];
+                        GameObject obj;
+                        if (tile != "k")
+                        {
+                            obj = Instantiate(ground, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                        }
 
                         switch (tile)
                         {
@@ -119,7 +123,7 @@ public class CreateLevel : MonoBehaviour
                                 obj.transform.parent = transform;
                                 break;
                             case "2":
-                                obj = Instantiate(wall, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj = Instantiate(rock, new Vector3(x, 0.0f, y), transform.rotation);
                                 obj.transform.parent = transform;
                                 break;
                             case "3":
@@ -206,6 +210,10 @@ public class CreateLevel : MonoBehaviour
                                 break;
                             case "j":   // Pila d'ossos
                                 obj = Instantiate(pileBones, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj.transform.parent = transform;
+                                break;
+                            case "k":   // Forat
+                                obj = Instantiate(hole, new Vector3(x, 0.0f, y), transform.rotation);
                                 obj.transform.parent = transform;
                                 break;
                         }

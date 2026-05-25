@@ -111,7 +111,9 @@ public class MovePlayer : MonoBehaviour
         RaycastHit[] hits = Physics.RaycastAll(P, v, max);
         foreach (RaycastHit hit in hits)
         {
-            if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag == "Wall" || (hit.collider.gameObject.tag == "Door" && !hit.collider.gameObject.GetComponent<DoorHandler>().isOpen())))
+            if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag == "Wall"
+                || (hit.collider.gameObject.tag == "Door" && !hit.collider.gameObject.GetComponent<DoorHandler>().isOpen())
+                || hit.collider.gameObject.tag=="Hole"))
                 if (hit.distance < closestDistance)
                 {
                     closestDistance = hit.distance;
