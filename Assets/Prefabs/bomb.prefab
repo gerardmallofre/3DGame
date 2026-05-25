@@ -146,7 +146,7 @@ MonoBehaviour:
   fallScript: {fileID: 2480963390128812821}
   chaseRange: 4
   explodeRange: 2
-  explosionRange: 3
+  explosionRange: 2.5
   explosion: {fileID: 663903802773482061, guid: 681df94e42c9a0c47baa2da59933aa78, type: 3}
   maxMoveCooldown: 1
   maxExplodeDelay: 1

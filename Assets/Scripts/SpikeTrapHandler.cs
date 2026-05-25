@@ -67,6 +67,6 @@ public class SpikeTrapHandler : MonoBehaviour
                        ?? other.GetComponentInParent<PlayerHandler>();
         if (p != null) { p.takeDamage(1, Direction.NONE); dmgCooldownCounter = damageCooldown; }
         IEnemy ie = other.GetComponent<IEnemy>();
-        if (ie != null) { ie.die(Direction.NONE); }
+        if (ie != null) { ie.takeDamage(Direction.NONE); }
     }
 }

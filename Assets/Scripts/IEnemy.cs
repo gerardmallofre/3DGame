@@ -1,4 +1,4 @@
 public interface IEnemy
 {
-    void die(Direction d);
+    void takeDamage(Direction d);
 }

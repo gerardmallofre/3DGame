@@ -57,21 +57,8 @@ public class PlayerHandler : MonoBehaviour
                 if (obj != null)
                 {
                     anim?.SetTrigger("attack");
-                    AttackEnemy(obj);
                 }
             }
-        }
-    }
-
-    private void AttackEnemy(GameObject enemyObj)
-    {
-        DeathHandler ds = enemyObj.GetComponent<DeathHandler>() ?? enemyObj.GetComponentInParent<DeathHandler>();
-        IEnemy enemy = enemyObj.GetComponent<IEnemy>() ?? enemyObj.GetComponentInParent<IEnemy>();
-        if (ds != null && enemy != null && ds.getState() == DeathState.ALIVE)
-        {
-            moveScript.undoMove();       
-            hitCooldown = maxHitCooldown;
-            enemy.die(moveScript.getDir());
         }
     }
 
@@ -127,7 +114,7 @@ public class PlayerHandler : MonoBehaviour
         }
     }
 
-    /*public void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         MovePlayer omv = other.GetComponent<MovePlayer>()
                         ?? other.GetComponentInParent<MovePlayer>();
@@ -141,10 +128,10 @@ public class PlayerHandler : MonoBehaviour
                 hitCooldown = maxHitCooldown;
                 IEnemy enemy = other.GetComponent<IEnemy>()
                             ?? other.GetComponentInParent<IEnemy>();
-                if (enemy != null) enemy.die(moveScript.getDir());
+                if (enemy != null) enemy.takeDamage(moveScript.getDir());
             }
         }
-    }*/
+    }
 
     void reset()
     {

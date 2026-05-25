@@ -25,7 +25,6 @@ public class ExplosionHandler : MonoBehaviour
     public void setRadius(float r)
     {
         transform.localScale = new Vector3(r, r, r);
-        this.GetComponent<SphereCollider>().radius = r;
     }
 
     void OnTriggerEnter(Collider other)
@@ -39,7 +38,7 @@ public class ExplosionHandler : MonoBehaviour
             IEnemy ie = other.GetComponent<IEnemy>();
             if (ie != null)
             {
-                ie.die(Direction.NONE);
+                ie.takeDamage(Direction.NONE);
             }
         }
     }
