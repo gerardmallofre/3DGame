@@ -7,6 +7,7 @@ public class PlayerHandler : MonoBehaviour
     private float hitCooldown = 0f;
     private float slimeCooldown = 0f;
     private float falltime = 0f;
+    private bool godMode = false;
     [SerializeField] MovePlayer moveScript;
     [SerializeField] FallHandler fallScript;
     [SerializeField] DeathHandler dieScript;
@@ -30,6 +31,7 @@ public class PlayerHandler : MonoBehaviour
             if (fallScript.isFalling()) fall();
             progressCooldowns();
             if (!fallScript.isFalling()) movement();
+            if (Input.GetKeyDown(KeyCode.G)) godMode=!godMode;
         }
         else if (dieScript.getState() == DeathState.DEAD) reset();
     }
@@ -96,7 +98,7 @@ public class PlayerHandler : MonoBehaviour
 
     public void takeDamage(int dmg, Direction d)
     {
-        if (invulTime < 0 && dieScript.getState() == DeathState.ALIVE)
+        if (invulTime < 0 && dieScript.getState() == DeathState.ALIVE && !godMode)
         {
             GetComponent<HitEffect>()?.PlayHitEffect(maxInvulTime);
             health -= dmg;

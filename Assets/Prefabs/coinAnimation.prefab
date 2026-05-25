@@ -153,6 +153,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 92582137956e27449858f5b4fa1ce28e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 98e944575b86bfe4685d4b2d2f670f86, type: 2}
     - target: {fileID: 919132149155446097, guid: 92582137956e27449858f5b4fa1ce28e, type: 3}
       propertyPath: m_Name
       value: coin

@@ -36,25 +36,26 @@ public class SlimeHandler : MonoBehaviour, IEnemy
                 if (jumpwait >= 0) jumpwait -= Time.deltaTime;
                 else
                 {
-                    bool b = movement();
+                    movement();
                     jumpwait = maxjumpwait;
-                    if (b)
-                    {
-                        placeslime = true;
-                    }
+                    placeslime = true;
                 }
             }
         }
         else if (dieScript.getState() == DeathState.DEAD) destroy();
     }
 
-    private bool movement()
+    private void movement()
     {
-        float r = Random.Range(0, 4);
-        if (r < 1) return moveScript.tryMove(Direction.UP);
-        else if (r < 2) return moveScript.tryMove(Direction.DOWN);
-        else if (r < 3) return moveScript.tryMove(Direction.LEFT);
-        else return moveScript.tryMove(Direction.RIGHT);
+        bool b = false;
+        while (!b)
+        {
+            float r = Random.Range(0, 4);
+            if (r < 1) b = moveScript.tryMove(Direction.UP);
+            else if (r < 2) b = moveScript.tryMove(Direction.DOWN);
+            else if (r < 3) b = moveScript.tryMove(Direction.LEFT);
+            else b = moveScript.tryMove(Direction.RIGHT);
+        }
     }
 
     private void fall()

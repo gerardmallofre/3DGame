@@ -122,7 +122,7 @@ public class AudioManager : MonoBehaviour
         StartCoroutine(FadeIn(musicaFonsSource, 2f, 0.1f));
     }
 
-    public void PlayMort() { PlaySo(soMort, 0.8f); }
+    public void PlayMort() { PlaySo(soMort, 2.5f); }
     public void PlayDamage() { PlaySo(soDamage, 0.5f); }
     public void PlaySpikeTrap() { PlaySo(soSpikeTrap, 0.5f); }
     public void PlayAxeTrap() { PlaySo(soAxeTrap, 0.5f); }
