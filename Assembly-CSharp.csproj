@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\CreditsRoller.cs" />
     <Compile Include="Assets\Scripts\CreateLevel.cs" />
     <Compile Include="Assets\Scripts\SlimeTileHandler.cs" />
+    <Compile Include="Assets\Scripts\ArrowHandler.cs" />
     <Compile Include="Assets\Scripts\SceneController.cs" />
     <Compile Include="Assets\Scripts\HUDManager.cs" />
     <Compile Include="Assets\Scripts\PlayerHandler.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Assets\Scripts\DoorHandler.cs" />
     <Compile Include="Assets\Scripts\SlimeHandler.cs" />
     <Compile Include="Assets\Scripts\FollowPlayer.cs" />
+    <Compile Include="Assets\Scripts\ArrowTrapHandler.cs" />
     <Compile Include="Assets\Scripts\CoinHandler.cs" />
     <Compile Include="Assets\Scripts\GroundHandler.cs" />
   </ItemGroup>

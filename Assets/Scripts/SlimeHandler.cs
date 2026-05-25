@@ -61,7 +61,7 @@ public class SlimeHandler : MonoBehaviour, IEnemy
     {
         falltimer += Time.deltaTime;
         transform.localPosition -= new Vector3(0, Time.deltaTime * 10f, 0);
-        if (falltimer > 1f) die(Direction.NONE);
+        if (falltimer > 1f) takeDamage(Direction.NONE);
     }
 
     public void setLevelCreator(GameObject g)
@@ -133,7 +133,7 @@ public class SlimeHandler : MonoBehaviour, IEnemy
         return (playerpos.x <= maxx && playerpos.x >= minx) && (playerpos.z <= maxz && playerpos.z >= minz);
     }
 
-    public void die(Direction d)
+    public void takeDamage(Direction d)
     {
         dieScript.startDeath(d);
     }

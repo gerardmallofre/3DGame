@@ -15,7 +15,8 @@ public class CreateLevel : MonoBehaviour
     private float timepassed = 0.0f;
     private int fallingrow = 0;
     // We need to position it according to the level.
-    [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor, giant, spikeTrap, slimetile, axeTrap, bomb, goblin, emptyWall, outerWall;
+    [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor, giant, 
+        spikeTrap, slimetile, axeTrap, bomb, goblin, emptyWall, outerWall, arrowTrap;
 
     private int level = -1;
     private string[] levels = new string[10];
@@ -107,42 +108,47 @@ public class CreateLevel : MonoBehaviour
                     else {
                         GameObject obj = Instantiate(ground, new Vector3(x, 0.0f, y), transform.rotation);
                         obj.transform.parent = transform;
-                        int tile = int.Parse(tokens[x]);
+                        string tile = tokens[x];
 
                         switch (tile)
                         {
-                            case 1:
+                            case "1":
                                 obj = Instantiate(coin, new Vector3(x, 1.0f, y), transform.rotation);
                                 obj.transform.parent = transform;
                                 break;
-                            case 2:
+                            case "2":
                                 obj = Instantiate(wall, new Vector3(x, 0.0f, y), transform.rotation);
                                 obj.transform.parent = transform;
                                 break;
-                            case 3:
+                            case "3":
                                 obj = Instantiate(slime, new Vector3(x, 0.0f, y), transform.rotation);
                                 obj.transform.parent = transform;
                                 obj.GetComponent<SlimeHandler>().setLevelCreator(this.transform.gameObject);
                                 ++enemies;
                                 break;
-                            case 4:
+                            case "4":
                                 obj = Instantiate(giant, new Vector3(x, 0.0f, y), transform.rotation);
                                 obj.transform.parent = transform;
                                 obj.GetComponent<SlimeHandler>().setLevelCreator(this.transform.gameObject);
                                 ++enemies;
                                 break;
-                            case 5:
+                            case "5":
                                 obj = Instantiate(spikeTrap, new Vector3(x, 0.0f, y), transform.rotation);
                                 obj.transform.parent = transform;
                                 break;
-                            case 6:
+                            case "6":
                                 player.transform.localPosition = new Vector3(x, 0.0f, y);
                                 break;
-                            case 7:
+                            case "7":
                                 obj = Instantiate(axeTrap, new Vector3(x, 0.0f, y), transform.rotation);
                                 obj.transform.parent = transform;
                                 break;
-                            case 8:
+                            case "8":
+                                obj = Instantiate(axeTrap, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj.transform.parent = transform;
+                                obj.GetComponent<AxeHandler>().invertDirection();
+                                break;
+                            case "9":
                                 obj = Instantiate(bomb, new Vector3(x, 0.0f, y), transform.rotation);
                                 obj.transform.parent = transform;
                                 BombHandler b = obj.GetComponent<BombHandler>();
@@ -150,11 +156,35 @@ public class CreateLevel : MonoBehaviour
                                 b.setLevelCreator(this.transform.gameObject);
                                 ++enemies;
                                 break;
-                            case 9:
+                            case "a":
                                 obj = Instantiate(goblin, new Vector3(x, 0.0f, y), transform.rotation);
                                 obj.transform.parent = transform;
                                 obj.GetComponent<SlimeHandler>().setLevelCreator(this.transform.gameObject);
                                 ++enemies;
+                                break;
+                            case "b":
+                                obj = Instantiate(arrowTrap, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj.transform.parent = transform;
+                                obj.GetComponent<ArrowTrapHandler>().setLevelCreator(this.transform.gameObject);
+                                obj.GetComponent<ArrowTrapHandler>().setDirection(Direction.RIGHT);
+                                break;
+                            case "c":
+                                obj = Instantiate(arrowTrap, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj.transform.parent = transform;
+                                obj.GetComponent<ArrowTrapHandler>().setLevelCreator(this.transform.gameObject);
+                                obj.GetComponent<ArrowTrapHandler>().setDirection(Direction.LEFT);
+                                break;
+                            case "d":
+                                obj = Instantiate(arrowTrap, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj.transform.parent = transform;
+                                obj.GetComponent<ArrowTrapHandler>().setLevelCreator(this.transform.gameObject);
+                                obj.GetComponent<ArrowTrapHandler>().setDirection(Direction.UP);
+                                break;
+                            case "e":
+                                obj = Instantiate(arrowTrap, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj.transform.parent = transform;
+                                obj.GetComponent<ArrowTrapHandler>().setLevelCreator(this.transform.gameObject);
+                                obj.GetComponent<ArrowTrapHandler>().setDirection(Direction.DOWN);
                                 break;
                         }
                     }

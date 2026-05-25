@@ -62,18 +62,6 @@ public class PlayerHandler : MonoBehaviour
         }
     }
 
-    private void AttackEnemy(GameObject enemyObj)
-    {
-        DeathHandler ds = enemyObj.GetComponent<DeathHandler>() ?? enemyObj.GetComponentInParent<DeathHandler>();
-        IEnemy enemy = enemyObj.GetComponent<IEnemy>() ?? enemyObj.GetComponentInParent<IEnemy>();
-        if (ds != null && enemy != null && ds.getState() == DeathState.ALIVE)
-        {
-            moveScript.undoMove();       
-            hitCooldown = maxHitCooldown;
-            enemy.die(moveScript.getDir());
-        }
-    }
-
     private GameObject CheckForEnemy(Vector3 v)
     {
         if (v == Vector3.zero) return null;
@@ -140,7 +128,7 @@ public class PlayerHandler : MonoBehaviour
                 hitCooldown = maxHitCooldown;
                 IEnemy enemy = other.GetComponent<IEnemy>()
                             ?? other.GetComponentInParent<IEnemy>();
-                if (enemy != null) enemy.die(moveScript.getDir());
+                if (enemy != null) enemy.takeDamage(moveScript.getDir());
             }
         }
     }

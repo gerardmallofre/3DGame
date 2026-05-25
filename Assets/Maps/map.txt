@@ -4,7 +4,7 @@ NOFALLS
 2 0 0 0 5 2 2 2 2
 2 0 0 0 0 0 0 0 2
 2 0 2 2 2 2 2 0 0
-0 0 0 0 7 0 0 0 0
+b 0 0 7 0 8 0 0 0
 2 2 0 2 2 2 0 2 2
 2 3 0 1 0 1 0 0 2
 2 0 0 0 6 0 0 0 2
@@ -19,5 +19,10 @@ NOFALLS
 % 5 -> SpikeTrap
 % 6 -> Player
 % 7 -> AxeTrap
-% 8 -> Bomb
-% 9 -> Goblin
+% 8 -> AxeTrap (inverted)
+% 9 -> Bomb
+% a -> Goblin
+% b -> ArrowTrap (right)
+% c -> ArrowTrap (left)
+% d -> ArrowTrap (up)
+% e -> ArrowTrap (down)

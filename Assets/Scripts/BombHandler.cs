@@ -85,7 +85,7 @@ public class BombHandler : MonoBehaviour, IEnemy
     {
         falltimer += Time.deltaTime;
         transform.localPosition -= new Vector3(0, Time.deltaTime * 10f, 0);
-        if (falltimer > 1f) die(Direction.NONE);
+        if (falltimer > 1f) takeDamage(Direction.NONE);
     }
 
     void destroy()
@@ -94,7 +94,7 @@ public class BombHandler : MonoBehaviour, IEnemy
         Destroy(this.transform.gameObject);
     }
 
-    public void die(Direction d) { dieScript.startDeath(d); }
+    public void takeDamage(Direction d) { dieScript.startDeath(d); }
 
     public void setLevelCreator(GameObject g) { cl = g; }
 

@@ -38,7 +38,7 @@ public class ExplosionHandler : MonoBehaviour
             IEnemy ie = other.GetComponent<IEnemy>();
             if (ie != null)
             {
-                ie.die(Direction.NONE);
+                ie.takeDamage(Direction.NONE);
             }
         }
     }

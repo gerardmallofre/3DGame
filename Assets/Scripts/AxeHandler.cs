@@ -84,7 +84,7 @@ public class AxeHandler : MonoBehaviour
             IEnemy ie = obj.GetComponent<IEnemy>();
             if (ie != null)
             {
-                ie.die(currentdir);
+                ie.takeDamage(currentdir);
             }
         }
     }
@@ -103,5 +103,11 @@ public class AxeHandler : MonoBehaviour
         else if (tmp == 1) return Direction.RIGHT;
         else if (tmp == 2) return Direction.DOWN;
         else return Direction.LEFT;
+    }
+
+    public void invertDirection() {
+        currentdir = Direction.RIGHT;
+        transform.Rotate(0, 180, 0);
+        rotDirection = -1;
     }
 }

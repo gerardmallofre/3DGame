@@ -732,6 +732,7 @@ MonoBehaviour:
   goblin: {fileID: 7805066442742855813, guid: 50d86be4389243e4abdac96f6d51dfdf, type: 3}
   emptyWall: {fileID: 7674478909558676814, guid: a277fa6134ae70342b015fef37322cf0, type: 3}
   outerWall: {fileID: 6275570819069509887, guid: bd306789380356f479cf29af65f1a03f, type: 3}
+  arrowTrap: {fileID: 5264969418641540661, guid: 4c076dc95aa375b40a0a367d5b22c8cc, type: 3}
 --- !u!4 &1182457125
 Transform:
   m_ObjectHideFlags: 0
