@@ -4,30 +4,28 @@ FALLS
 2 2 2 2 0 2 2 2 2
 2 2 1 0 4 0 1 2 2
 2 0 5 0 a 0 5 0 2
-2 3 0 0 0 0 0 3 2
+2 3 0 0 i 0 0 3 2
 2 2 0 2 0 2 0 2 2
 2 0 7 0 0 0 7 0 2
 2 0 0 0 9 0 0 0 2
-2 0 0 0 0 0 0 0 2
+2 f 0 0 g 0 0 f 2
 2 0 0 0 5 0 0 0 2
 2 3 0 0 1 0 0 3 2
 2 2 0 2 0 2 0 2 2
-2 0 0 0 6 0 0 2 2
+2 j 0 0 6 0 0 2 2
 2 2 2 2 0 2 2 8 2
 2 2 2 2 0 2 2 2 2
 
-% 0 -> Empty
-% 1 -> Coin
-% 2 -> Wall
-% 3 -> Slime
-% 4 -> Giant
-% 5 -> SpikeTrap
-% 6 -> Player
-% 7 -> AxeTrap
-% 8 -> AxeTrap (inverted)
-% 9 -> Bomb
-% a -> Goblin
-% b -> ArrowTrap (right)
-% c -> ArrowTrap (left)
-% d -> ArrowTrap (up)
-% e -> ArrowTrap (down)
+% --- Gameplay ---
+% 0 -> Empty         % 7 -> AxeTrap
+% 1 -> Coin          % 8 -> AxeTrap (inverted)
+% 2 -> Wall          % 9 -> Bomb
+% 3 -> Slime         % a -> Goblin
+% 4 -> Giant         % b -> ArrowTrap (right)
+% 5 -> SpikeTrap     % c -> ArrowTrap (left)
+% 6 -> Player        % d -> ArrowTrap (up)
+%                    % e -> ArrowTrap (down)
+% --- Decoracions (NO compten com a enemics) ---
+% f -> Torxa         % i -> Catifa
+% g -> Cofre         % j -> Pila d'ossos
+% h -> Barril

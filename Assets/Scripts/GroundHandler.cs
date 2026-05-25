@@ -40,6 +40,8 @@ public class GroundHandler : MonoBehaviour
             GameObject obj=CheckAbove();
             if (obj != null)
             {
+                AxeHandler ah = obj.GetComponent<AxeHandler>();   
+                if (ah != null) ah.falling = true;
                 obj.transform.localPosition -= new Vector3(0, fallspeed * Time.deltaTime, 0);
             }
             if (time > 1)
@@ -58,25 +60,34 @@ public class GroundHandler : MonoBehaviour
 
         }
     }
+
     GameObject CheckAbove()
     {
-        float min = 0f; float max = 5f; Vector3 v = new Vector3(0, 1, 0); Vector3 P = transform.localPosition;
-        P += new Vector3(0, -0.5f, 0);
+        float min = 0f; float max = 5f; Vector3 v = new Vector3(0, 1, 0);
+        Vector3 P = transform.localPosition + new Vector3(0, -0.5f, 0);
         float closestDistance = max + 1.0f;
         GameObject obj = null;
 
-        // Physics.RaycastAll returns all colliders in a given ray (P, v) within a given distance (max)
         RaycastHit[] hits = Physics.RaycastAll(P, v, max);
         foreach (RaycastHit hit in hits)
         {
-            if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag!="Ground" && hit.collider.gameObject.tag!="Player" && hit.collider.gameObject.GetComponent<IEnemy>()==null && hit.collider.gameObject.tag!="Hitbox"))
+            var g = hit.collider.gameObject;
+            if ((hit.distance > min) && (hit.distance < max) && g.tag != "Ground"
+                && g.tag != "Player" && g.GetComponent<IEnemy>() == null && g.tag != "Hitbox")
                 if (hit.distance < closestDistance)
                 {
                     closestDistance = hit.distance;
-                    obj = hit.collider.gameObject;
+                    obj = g;
                 }
         }
 
+        if (obj != null)
+        {
+            Transform t = obj.transform;
+            while (t.parent != null && t.parent != transform.parent)
+                t = t.parent;
+            obj = t.gameObject;
+        }
         return obj;
     }
 }

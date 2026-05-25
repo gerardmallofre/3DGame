@@ -201,8 +201,22 @@ public class BombHandler : MonoBehaviour, IEnemy
 
     void explode()
     {
-        GameObject e = Instantiate(explosion, transform.position, transform.rotation);
-        e.GetComponent<ExplosionHandler>().setRadius(explosionRange);
+        AudioManager.instance?.PlayExplosion();
+
+        Collider[] hits = Physics.OverlapSphere(transform.position, explosionRange * 0.5f,
+                                                ~0, QueryTriggerInteraction.Collide);
+        foreach (var h in hits)
+        {
+            if (h.CompareTag("Player"))
+                (h.GetComponent<PlayerHandler>() ?? h.GetComponentInParent<PlayerHandler>())?.takeDamage(1, Direction.NONE);
+            else
+            {
+                IEnemy ie = h.GetComponent<IEnemy>() ?? h.GetComponentInParent<IEnemy>();
+                if (ie != null && (object)ie != this) ie.takeDamage(Direction.NONE);
+            }
+        }
+
+        if (explosion != null) Instantiate(explosion, transform.position, Quaternion.identity);
         destroy();
     }
 

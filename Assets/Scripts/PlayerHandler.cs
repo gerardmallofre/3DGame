@@ -1,3 +1,4 @@
+using System.Xml.Serialization;
 using UnityEngine;
 
 public class PlayerHandler : MonoBehaviour
@@ -7,6 +8,7 @@ public class PlayerHandler : MonoBehaviour
     private float hitCooldown = 0f;
     private float slimeCooldown = 0f;
     private float falltime = 0f;
+    private bool isGodMode = false;
     [SerializeField] MovePlayer moveScript;
     [SerializeField] FallHandler fallScript;
     [SerializeField] DeathHandler dieScript;
@@ -87,15 +89,16 @@ public class PlayerHandler : MonoBehaviour
         falltime += Time.deltaTime;
         if (falltime > 2)
         {
-            takeDamage(3, Direction.NONE);
+            takeDamage(3, Direction.NONE, true);
         }
         else if (falltime > 0.5) {
             transform.localPosition -= new Vector3(0, (Time.deltaTime) * 10f, 0);
         }
     }
 
-    public void takeDamage(int dmg, Direction d)
+    public void takeDamage(int dmg, Direction d, bool ignoreGodMode = false)
     {
+        if (isGodMode && !ignoreGodMode) return; 
         if (invulTime < 0 && dieScript.getState() == DeathState.ALIVE)
         {
             GetComponent<HitEffect>()?.PlayHitEffect(maxInvulTime);
@@ -133,6 +136,11 @@ public class PlayerHandler : MonoBehaviour
         }
     }
 
+    public void toggleGodMode()
+    {
+        isGodMode = !isGodMode;
+    }
+
     void reset()
     {
         dieScript.Restore();
@@ -140,6 +148,7 @@ public class PlayerHandler : MonoBehaviour
         health = 3;
         fallScript.setFalling(false);
         falltime = 0f;
+        isGodMode = false;
         HUDManager.Instance?.ResetHUD();
     }
 

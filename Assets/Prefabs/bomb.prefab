@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7783797123474079506}
   - component: {fileID: 8830960228072087188}
   m_Layer: 0
-  m_Name: Bomb
+  m_Name: bomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -147,7 +147,7 @@ MonoBehaviour:
   chaseRange: 4
   explodeRange: 2
   explosionRange: 2.5
-  explosion: {fileID: 663903802773482061, guid: 681df94e42c9a0c47baa2da59933aa78, type: 3}
+  explosion: {fileID: 7710333733029126161, guid: 3c3fe8bc43cfb88468cc48c73d22aea9, type: 3}
   maxMoveCooldown: 1
   maxExplodeDelay: 1
 --- !u!1001 &8746015083042178507

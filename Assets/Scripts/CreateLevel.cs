@@ -15,8 +15,10 @@ public class CreateLevel : MonoBehaviour
     private float timepassed = 0.0f;
     private int fallingrow = 0;
     // We need to position it according to the level.
-    [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor, giant, 
-        spikeTrap, slimetile, axeTrap, bomb, goblin, emptyWall, outerWall, arrowTrap;
+    [SerializeField]
+    public GameObject ground, wall, box, coin, slime, exitdoor, giant,
+        spikeTrap, slimetile, axeTrap, bomb, goblin, emptyWall, outerWall, arrowTrap,
+        torch, chest, barrel, carpet, pileBones;
 
     private int level = -1;
     private string[] levels = new string[10];
@@ -186,6 +188,26 @@ public class CreateLevel : MonoBehaviour
                                 obj.GetComponent<ArrowTrapHandler>().setLevelCreator(this.transform.gameObject);
                                 obj.GetComponent<ArrowTrapHandler>().setDirection(Direction.DOWN);
                                 break;
+                            case "f":   // Torxa 
+                                obj = Instantiate(torch, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj.transform.parent = transform;
+                                break;
+                            case "g":   // Cofre
+                                obj = Instantiate(chest, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj.transform.parent = transform;
+                                break;
+                            case "h":   // Barril
+                                obj = Instantiate(barrel, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj.transform.parent = transform;
+                                break;
+                            case "i":   // Catifa 
+                                obj = Instantiate(carpet, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj.transform.parent = transform;
+                                break;
+                            case "j":   // Pila d'ossos
+                                obj = Instantiate(pileBones, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj.transform.parent = transform;
+                                break;
                         }
                     }
                 }
@@ -213,7 +235,7 @@ public class CreateLevel : MonoBehaviour
 
         timepassed += Time.deltaTime;
         if (Input.GetKey(KeyCode.M)) SceneController.ChangeToMenuScene();
-
+        if (Input.GetKeyDown(KeyCode.G)) player.GetComponent<PlayerHandler>().toggleGodMode(); 
         if (falls)
         {
             if (!falling && timepassed > fallstart)

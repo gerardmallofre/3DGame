@@ -19,6 +19,7 @@ public class AxeHandler : MonoBehaviour
     [SerializeField] int rotDirection = 1;
     float time = 0f;
     AxeState state = AxeState.ROTATING;
+    public bool falling = false;
 
     private bool soReprodut = false; 
 
@@ -29,6 +30,7 @@ public class AxeHandler : MonoBehaviour
 
     void Update()
     {
+        if (falling) return;
         time += Time.deltaTime;
         if (time > rotCooldown)
         {

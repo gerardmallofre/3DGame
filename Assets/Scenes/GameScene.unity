@@ -375,7 +375,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 20, y: 1, z: 20}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -733,6 +733,11 @@ MonoBehaviour:
   emptyWall: {fileID: 7674478909558676814, guid: a277fa6134ae70342b015fef37322cf0, type: 3}
   outerWall: {fileID: 6275570819069509887, guid: bd306789380356f479cf29af65f1a03f, type: 3}
   arrowTrap: {fileID: 5264969418641540661, guid: 4c076dc95aa375b40a0a367d5b22c8cc, type: 3}
+  torch: {fileID: 8866768116493113655, guid: 3ea89663999006e43ad2f39b6b8bf8ab, type: 3}
+  chest: {fileID: 996889529104171930, guid: 03e95009b3cbb8e4c9d46bc4a9728036, type: 3}
+  barrel: {fileID: 6035498213266981771, guid: ec413e3364088484d87ca2f0373edcf8, type: 3}
+  carpet: {fileID: 5942218397096045140, guid: 9fbaea7f36bbb7042bb33f9a69024c84, type: 3}
+  pileBones: {fileID: 8272499477384352632, guid: 9695b415e8fcc664797e0e5e73aa81fb, type: 3}
 --- !u!4 &1182457125
 Transform:
   m_ObjectHideFlags: 0
@@ -990,6 +995,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3992229675829357237, guid: 199d535092afed5428487657948bff1c, type: 3}
+      propertyPath: explosionClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 50ddeeb467424ab4bb8068068162e042, type: 3}
     - target: {fileID: 6629711304306094339, guid: 199d535092afed5428487657948bff1c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.23478672

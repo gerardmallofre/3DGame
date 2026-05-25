@@ -76,20 +76,24 @@ public class SlimeHandler : MonoBehaviour, IEnemy
         return false;
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other) { HandleCollision(other); }
+    void OnTriggerStay(Collider other) { HandleCollision(other); }
+
+    void HandleCollision(Collider other)
     {
         GameObject oobj = other.transform.gameObject;
-        if (dieScript.getState()==DeathState.ALIVE && moveScript.getState() == PlayerState.MOVE && oobj.tag!="Coin" && oobj.tag!="Ground" && oobj.tag!="SlimeTile")
+        if (dieScript.getState() == DeathState.ALIVE && moveScript.getState() == PlayerState.MOVE
+            && oobj.tag != "Coin" && oobj.tag != "Ground" && oobj.tag != "SlimeTile")
         {
-            DeathHandler ds = other.GetComponent<DeathHandler>();
+            DeathHandler ds = other.GetComponent<DeathHandler>() ?? other.GetComponentInParent<DeathHandler>();
             if (ds != null && ds.getState() == DeathState.ALIVE)
             {
                 moveScript.undoMove();
-                PlayerHandler p = oobj.GetComponent<PlayerHandler>();
+                PlayerHandler p = oobj.GetComponent<PlayerHandler>() ?? oobj.GetComponentInParent<PlayerHandler>();
                 if (p != null)
                 {
-                    MovePlayer pmv = oobj.GetComponent<MovePlayer>();
-                    if (pmv.getState()!=PlayerState.MOVE || movingTowardsPlayer(oobj))
+                    MovePlayer pmv = p.GetComponent<MovePlayer>();
+                    if (pmv.getState() != PlayerState.MOVE || movingTowardsPlayer(p.gameObject))
                         p.takeDamage(1, moveScript.getDir());
                 }
             }

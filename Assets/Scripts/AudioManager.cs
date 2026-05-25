@@ -20,6 +20,8 @@ public class AudioManager : MonoBehaviour
     public AudioClip soSpikeTrap;
     public AudioClip soAxeTrap;
     public AudioClip soCoin;
+    public AudioClip explosionClip;
+
 
     private void Awake()
     {
@@ -93,6 +95,7 @@ public class AudioManager : MonoBehaviour
         this.soSpikeTrap = nouManager.soSpikeTrap;
         this.soAxeTrap = nouManager.soAxeTrap;
         this.soCoin = nouManager.soCoin;
+        this.explosionClip = nouManager.explosionClip;
 
         if (this.musicaFonsSource == null || this.efectesSource == null)
         {
@@ -130,6 +133,7 @@ public class AudioManager : MonoBehaviour
     public void PlayOpenDoor() { PlaySo(soPortaOberta, 0.5f); }
     public void PlayButtonSelect() { PlaySo(soSelectBoto, 0.1f); }
     public void PlayButtonClick() { PlaySo(soClicBoto, 0.1f); }
+    public void PlayExplosion() { PlaySo(explosionClip, 0.5f); }
 
 
     public IEnumerator FadeIn(AudioSource source, float duracio, float volumMaxim)
