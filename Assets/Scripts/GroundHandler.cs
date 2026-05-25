@@ -40,6 +40,7 @@ public class GroundHandler : MonoBehaviour
             GameObject obj=CheckAbove();
             if (obj != null)
             {
+                while (obj.transform.parent != transform.parent) obj = obj.transform.parent.gameObject;
                 obj.transform.localPosition -= new Vector3(0, fallspeed * Time.deltaTime, 0);
             }
             if (time > 1)
