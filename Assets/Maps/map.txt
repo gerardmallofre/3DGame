@@ -2,7 +2,7 @@ NOFALLS
 9 10
 2 0 2 2 0 2 2 2 2
 2 0 0 0 5 2 2 2 2
-2 0 0 0 0 0 0 0 2
+0 0 f f f 0 0 0 c
 2 0 2 2 2 2 2 0 0
 b 0 0 7 0 8 0 0 0
 2 2 0 2 2 2 0 2 2
@@ -26,3 +26,4 @@ b 0 0 7 0 8 0 0 0
 % c -> ArrowTrap (left)
 % d -> ArrowTrap (up)
 % e -> ArrowTrap (down)
+% f -> Hole

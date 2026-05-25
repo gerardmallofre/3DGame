@@ -15,6 +15,7 @@ TagManager:
   - Ground
   - SlimeTile
   - Hitbox
+  - Hole
   layers:
   - Default
   - TransparentFX

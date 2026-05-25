@@ -31,3 +31,4 @@ FALLS
 % c -> ArrowTrap (left)
 % d -> ArrowTrap (up)
 % e -> ArrowTrap (down)
+% f -> Hole

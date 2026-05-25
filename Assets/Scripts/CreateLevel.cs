@@ -15,8 +15,8 @@ public class CreateLevel : MonoBehaviour
     private float timepassed = 0.0f;
     private int fallingrow = 0;
     // We need to position it according to the level.
-    [SerializeField] public GameObject ground, wall, box, coin, slime, exitdoor, giant, 
-        spikeTrap, slimetile, axeTrap, bomb, goblin, emptyWall, outerWall, arrowTrap;
+    [SerializeField] public GameObject ground, rock, coin, slime, exitdoor, giant, 
+        spikeTrap, slimetile, axeTrap, bomb, goblin, emptyWall, outerWall, arrowTrap, hole;
 
     private int level = -1;
     private string[] levels = new string[10];
@@ -106,9 +106,13 @@ public class CreateLevel : MonoBehaviour
                         }
                     }
                     else {
-                        GameObject obj = Instantiate(ground, new Vector3(x, 0.0f, y), transform.rotation);
-                        obj.transform.parent = transform;
                         string tile = tokens[x];
+                        GameObject obj;
+                        if (tile != "f")
+                        {
+                            obj = Instantiate(ground, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                        }
 
                         switch (tile)
                         {
@@ -117,7 +121,7 @@ public class CreateLevel : MonoBehaviour
                                 obj.transform.parent = transform;
                                 break;
                             case "2":
-                                obj = Instantiate(wall, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj = Instantiate(rock, new Vector3(x, 0.0f, y), transform.rotation);
                                 obj.transform.parent = transform;
                                 break;
                             case "3":
@@ -185,6 +189,10 @@ public class CreateLevel : MonoBehaviour
                                 obj.transform.parent = transform;
                                 obj.GetComponent<ArrowTrapHandler>().setLevelCreator(this.transform.gameObject);
                                 obj.GetComponent<ArrowTrapHandler>().setDirection(Direction.DOWN);
+                                break;
+                            case "f":
+                                obj = Instantiate(hole, new Vector3(x, 0.0f, y), transform.rotation);
+                                obj.transform.parent = transform;
                                 break;
                         }
                     }
