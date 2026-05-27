@@ -16,7 +16,7 @@ public class CreateLevel : MonoBehaviour
     private int fallingrow = 0;
     // We need to position it according to the level.
     [SerializeField]
-    public GameObject ground, wall, box, coin, slime, exitdoor, giant,
+    public GameObject ground, coin, slime, exitdoor, giant,
         spikeTrap, slimetile, axeTrap, bomb, goblin, emptyWall, outerWall, arrowTrap,
         torch, chest, barrel, carpet, pileBones, rock,  hole;
 
@@ -30,7 +30,12 @@ public class CreateLevel : MonoBehaviour
         levels[1] = "/Maps/map2.txt";
         levels[2] = "/Maps/map3.txt";
         levels[3] = "/Maps/map4.txt";
-        levels[4] = "/Maps/map5.txt"; // El Boss final
+        levels[4] = "/Maps/map5.txt";
+        levels[5] = "/Maps/map6.txt";
+        levels[6] = "/Maps/map7.txt";
+        levels[7] = "/Maps/map8.txt";
+        levels[8] = "/Maps/map9.txt";
+        levels[9] = "/Maps/map10.txt";
         advanceLevel();
     }
 
@@ -38,7 +43,7 @@ public class CreateLevel : MonoBehaviour
     {
         level += 1;
 
-        if (level > 4)
+        if (level == 10)
         {
             SceneController.ChangeToCreditsScene();
             return; 
@@ -135,7 +140,8 @@ public class CreateLevel : MonoBehaviour
                             case "4":
                                 obj = Instantiate(giant, new Vector3(x, 0.0f, y), transform.rotation);
                                 obj.transform.parent = transform;
-                                obj.GetComponent<SlimeHandler>().setLevelCreator(this.transform.gameObject);
+                                obj.GetComponent<GiantHandler>().setLevelCreator(this.transform.gameObject);
+                                obj.GetComponent<GiantHandler>().setPlayer(player);
                                 ++enemies;
                                 break;
                             case "5":
@@ -165,7 +171,8 @@ public class CreateLevel : MonoBehaviour
                             case "a":
                                 obj = Instantiate(goblin, new Vector3(x, 0.0f, y), transform.rotation);
                                 obj.transform.parent = transform;
-                                obj.GetComponent<SlimeHandler>().setLevelCreator(this.transform.gameObject);
+                                obj.GetComponent<GoblinHandler>().setLevelCreator(this.transform.gameObject);
+                                obj.GetComponent<GoblinHandler>().setPlayer(player);
                                 ++enemies;
                                 break;
                             case "b":
@@ -235,11 +242,16 @@ public class CreateLevel : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) { level = -1; advanceLevel(); }
-        else if (Input.GetKeyDown(KeyCode.Alpha2)) { level = 0; advanceLevel(); }
-        else if (Input.GetKeyDown(KeyCode.Alpha3)) { level = 1; advanceLevel(); }
-        else if (Input.GetKeyDown(KeyCode.Alpha4)) { level = 2; advanceLevel(); }
-        else if (Input.GetKeyDown(KeyCode.Alpha5)) { level = 3; advanceLevel(); }
+        if (Input.GetKeyDown(KeyCode.Alpha0)) { level = -1; advanceLevel(); }
+        else if (Input.GetKeyDown(KeyCode.Alpha1)) { level = 0; advanceLevel(); }
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) { level = 1; advanceLevel(); }
+        else if (Input.GetKeyDown(KeyCode.Alpha3)) { level = 2; advanceLevel(); }
+        else if (Input.GetKeyDown(KeyCode.Alpha4)) { level = 3; advanceLevel(); }
+        else if (Input.GetKeyDown(KeyCode.Alpha5)) { level = 4; advanceLevel(); }
+        else if (Input.GetKeyDown(KeyCode.Alpha6)) { level = 5; advanceLevel(); }
+        else if (Input.GetKeyDown(KeyCode.Alpha7)) { level = 6; advanceLevel(); }
+        else if (Input.GetKeyDown(KeyCode.Alpha8)) { level = 7; advanceLevel(); }
+        else if (Input.GetKeyDown(KeyCode.Alpha9)) { level = 8; advanceLevel(); }
 
         timepassed += Time.deltaTime;
         if (Input.GetKey(KeyCode.M)) SceneController.ChangeToMenuScene();

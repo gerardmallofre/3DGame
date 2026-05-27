@@ -186,7 +186,11 @@ public class MovePlayer : MonoBehaviour
 
     public void stopMove()
     {
-        state = PlayerState.STOP;
-        transform.localPosition = initialPosMove;
+        if (state != PlayerState.STOP)
+        {
+            if (state == PlayerState.UNDO) initialPosMove = initialPosMove + vecMove;
+            state = PlayerState.STOP;
+            transform.localPosition = initialPosMove;
+        }
     }
 }

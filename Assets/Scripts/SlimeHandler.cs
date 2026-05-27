@@ -70,18 +70,7 @@ public class SlimeHandler : MonoBehaviour, IEnemy
         cl = g;
     }
 
-    bool inLine(Direction d1, Direction d2)
-    {
-        if ((d1 == Direction.UP || d1 == Direction.DOWN) && (d2 == Direction.UP || d2 == Direction.DOWN)) return true;
-        if ((d1 == Direction.RIGHT || d1 == Direction.LEFT) && (d2 == Direction.RIGHT || d2 == Direction.LEFT)) return true;
-        return false;
-    }
-
-    void OnTriggerEnter(Collider other) { HandleCollision(other); }
-    void OnTriggerStay(Collider other) { HandleCollision(other); }
-
-    void HandleCollision(Collider other)
-    {
+    void OnTriggerEnter(Collider other) {
         GameObject oobj = other.transform.gameObject;
         if (dieScript.getState() == DeathState.ALIVE && moveScript.getState() == PlayerState.MOVE
             && oobj.tag != "Coin" && oobj.tag != "Ground" && oobj.tag != "SlimeTile")
@@ -140,7 +129,7 @@ public class SlimeHandler : MonoBehaviour, IEnemy
 
     public void takeDamage(Direction d)
     {
-        dieScript.startDeath(d);
+        if (dieScript.getState() == DeathState.ALIVE) dieScript.startDeath(d);
     }
 
     public void destroy()

@@ -2,26 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-enum BombState { PATROL, CHASE, WAIT};
+public enum GoblinState { PATROL, CHASE };
 
-public class BombHandler : MonoBehaviour, IEnemy
+public class GoblinHandler : MonoBehaviour, IEnemy
 {
+    // Start is called before the first frame update
     [SerializeField] MovePlayer moveScript;
     [SerializeField] DeathHandler dieScript;
-    [SerializeField] FallHandler fallScript;
     [SerializeField] int chaseRange = 4;
-    [SerializeField] int explodeRange = 2;
-    [SerializeField] float explosionRange = 3f;
-    [SerializeField] GameObject explosion;
-    GameObject cl;
-    float falltimer = 0f;
+    [SerializeField] FallHandler fallScript;
     GameObject player;
-    BombState state = BombState.PATROL;
-    [SerializeField] float maxMoveCooldown = 1f;
-    [SerializeField] float maxExplodeDelay = 1f;
-    float moveCooldown=0f;
-    float explodeDelay=0f;
-    // Start is called before the first frame update
+    GoblinState state;
+    private float falltimer = 0f;
+    private GameObject cl;
+    [SerializeField] float maxMoveCooldown = 1;
+    private float moveCooldown = 0;
+
     void Start()
     {
         
@@ -36,47 +32,31 @@ public class BombHandler : MonoBehaviour, IEnemy
             if (fallScript.isFalling()) fall();
             else
             {
-                if (state == BombState.WAIT)
+                moveCooldown -= Time.deltaTime;
+                if (moveCooldown < 0)
                 {
-                    explodeDelay -= Time.deltaTime;
-                    if (explodeDelay < 0)
+                    if (state == GoblinState.PATROL && Mathf.Abs(player.transform.position.x - transform.position.x) < chaseRange && Mathf.Abs(player.transform.position.z - transform.position.z) < chaseRange)
                     {
-                        explode();
+                        state = GoblinState.CHASE;
                     }
-                }
-                else if (state == BombState.CHASE && Mathf.Abs(player.transform.position.x - transform.position.x) < explodeRange && Mathf.Abs(player.transform.position.z - transform.position.z) < explodeRange)
-                {
-                    state = BombState.WAIT;
-                    explodeDelay = maxExplodeDelay;
-                }
-                else
-                {
-                    moveCooldown -= Time.deltaTime;
-                    if (state != BombState.WAIT && moveCooldown < 0)
+                    if (state == GoblinState.CHASE)
                     {
-                        if (state == BombState.PATROL && Mathf.Abs(player.transform.position.x - transform.position.x) < chaseRange && Mathf.Abs(player.transform.position.z - transform.position.z) < chaseRange)
+                        moveCooldown = maxMoveCooldown;
+                        moveScript.tryMove(searchPlayer(player.transform.position));
+                    }
+                    else    // Patrol
+                    {
+                        moveCooldown = maxMoveCooldown;
+                        bool b = false;
+                        int tries = 0;
+                        while (!b && tries < 10)
                         {
-                            state = BombState.CHASE;
-                        }
-                        if (state == BombState.CHASE)
-                        {
-                            moveCooldown = maxMoveCooldown / 2;
-                            moveScript.tryMove(searchPlayer(player.transform.position));
-                        }
-                        else    // Patrol
-                        {
-                            moveCooldown = maxMoveCooldown;
-                            bool b = false;
-                            int tries = 0;
-                            while (!b && tries<10)
-                            {
-                                float r = Random.Range(0, 4);
-                                if (r < 1) b = moveScript.tryMove(Direction.UP);
-                                else if (r < 2) b = moveScript.tryMove(Direction.DOWN);
-                                else if (r < 3) b = moveScript.tryMove(Direction.LEFT);
-                                else b = moveScript.tryMove(Direction.RIGHT);
-                                ++tries;    // Failsafe to avoid weird crashes
-                            }
+                            float r = Random.Range(0, 4);
+                            if (r < 1) b = moveScript.tryMove(Direction.UP);
+                            else if (r < 2) b = moveScript.tryMove(Direction.DOWN);
+                            else if (r < 3) b = moveScript.tryMove(Direction.LEFT);
+                            else b = moveScript.tryMove(Direction.RIGHT);
+                            ++tries;    // Failsafe to avoid weird crashes
                         }
                     }
                 }
@@ -85,8 +65,6 @@ public class BombHandler : MonoBehaviour, IEnemy
         else if (dieScript.getState() == DeathState.DEAD) destroy();
     }
 
-    public void setPlayer(GameObject p) { player = p; }
-
     private void fall()
     {
         falltimer += Time.deltaTime;
@@ -94,15 +72,80 @@ public class BombHandler : MonoBehaviour, IEnemy
         if (falltimer > 1f) takeDamage(Direction.NONE);
     }
 
-    void destroy()
+    public void setLevelCreator(GameObject g)
+    {
+        cl = g;
+    }
+    public void setPlayer(GameObject p) { player = p; }
+
+    void OnTriggerEnter(Collider other)
+    {
+        GameObject oobj = other.transform.gameObject;
+        if (dieScript.getState() == DeathState.ALIVE && moveScript.getState() == PlayerState.MOVE
+            && oobj.tag != "Coin" && oobj.tag != "Ground" && oobj.tag != "SlimeTile")
+        {
+            DeathHandler ds = other.GetComponent<DeathHandler>() ?? other.GetComponentInParent<DeathHandler>();
+            if (ds != null && ds.getState() == DeathState.ALIVE)
+            {
+                moveScript.undoMove();
+                PlayerHandler p = oobj.GetComponent<PlayerHandler>() ?? oobj.GetComponentInParent<PlayerHandler>();
+                if (p != null)
+                {
+                    MovePlayer pmv = p.GetComponent<MovePlayer>();
+                    if (pmv.getState() != PlayerState.MOVE || movingTowardsPlayer(p.gameObject))
+                        p.takeDamage(1, moveScript.getDir());
+                }
+            }
+        }
+    }
+
+    bool movingTowardsPlayer(GameObject player)
+    {
+        float minx, maxx, minz, maxz;
+
+        if (moveScript.getDir() == Direction.UP)
+        {
+            minx = transform.position.x - 0.5f;
+            maxx = minx + 1f;
+            minz = transform.position.z;
+            maxz = minz + 1.5f;
+        }
+        else if (moveScript.getDir() == Direction.DOWN)
+        {
+            minx = transform.position.x - 0.5f;
+            maxx = minx + 1f;
+            maxz = transform.position.z;
+            minz = maxz - 1.5f;
+        }
+        else if (moveScript.getDir() == Direction.RIGHT)
+        {
+            minx = transform.position.x;
+            maxx = minx + 1.5f;
+            minz = transform.position.z - 0.5f;
+            maxz = minz + 1f;
+        }
+        else
+        {
+            maxx = transform.position.x;
+            minx = maxx - 1.5f;
+            minz = transform.position.z - 0.5f;
+            maxz = minz + 1f;
+        }
+
+        Vector3 playerpos = player.transform.position;
+        return (playerpos.x <= maxx && playerpos.x >= minx) && (playerpos.z <= maxz && playerpos.z >= minz);
+    }
+
+    public void takeDamage(Direction d)
+    {
+        if (dieScript.getState()==DeathState.ALIVE) dieScript.startDeath(d);
+    }
+
+    public void destroy()
     {
         if (cl != null) cl.GetComponent<CreateLevel>().enemyKilled();
         Destroy(this.transform.gameObject);
     }
-
-    public void takeDamage(Direction d) { if (dieScript.getState() == DeathState.ALIVE) dieScript.startDeath(d); }
-
-    public void setLevelCreator(GameObject g) { cl = g; }
 
     struct item
     {
@@ -111,7 +154,7 @@ public class BombHandler : MonoBehaviour, IEnemy
     }
     Direction searchPlayer(Vector3 targetpos)
     {
-        Queue<item> q=new Queue<item>();
+        Queue<item> q = new Queue<item>();
         item i;
         i.pos = transform.position;
         i.initialDir = Direction.NONE;
@@ -119,7 +162,7 @@ public class BombHandler : MonoBehaviour, IEnemy
         List<Vector3> visited = new List<Vector3>();
         visited.Add(i.pos);
 
-        while (q.Count!=0)
+        while (q.Count != 0)
         {
             i = q.Dequeue();
             if (Mathf.Abs(i.pos.x - targetpos.x) < 1 && Mathf.Abs(i.pos.z - targetpos.z) < 1) return i.initialDir;
@@ -203,28 +246,5 @@ public class BombHandler : MonoBehaviour, IEnemy
         }
 
         return obj;
-    }
-
-    void explode()
-    {
-        AudioManager.instance?.PlayExplosion();
-
-        GameObject e = Instantiate(explosion, transform.position, transform.rotation);
-        e.GetComponent<ExplosionHandler>().setRadius(explosionRange);
-        destroy();
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        GameObject oobj = other.transform.gameObject;
-        MovePlayer smv = GetComponent<MovePlayer>();
-        if (dieScript.getState() == DeathState.ALIVE && smv.getState() == PlayerState.MOVE && oobj.tag != "Coin" && oobj.tag != "Ground" && oobj.tag != "SlimeTile")
-        {
-            DeathHandler ds = other.GetComponent<DeathHandler>();
-            if (ds != null && ds.getState() == DeathState.ALIVE)
-            {
-                smv.undoMove();
-            }
-        }
     }
 }

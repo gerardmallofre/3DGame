@@ -22,6 +22,7 @@ public class PlayerHandler : MonoBehaviour
     {
         if (anim == null)
             anim = GetComponentInChildren<Animator>();
+        moveScript.setDir(Direction.UP);
     }
 
     void Update()
