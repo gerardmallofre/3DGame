@@ -83,6 +83,7 @@
     <Compile Include="Assets\Scripts\AudioManager.cs" />
     <Compile Include="Assets\Scripts\DoorHandler.cs" />
     <Compile Include="Assets\Scripts\SlimeHandler.cs" />
+    <Compile Include="Assets\Scripts\ScreenTransitionHandler.cs" />
     <Compile Include="Assets\Scripts\FollowPlayer.cs" />
     <Compile Include="Assets\Scripts\ArrowTrapHandler.cs" />
     <Compile Include="Assets\Scripts\CoinHandler.cs" />
