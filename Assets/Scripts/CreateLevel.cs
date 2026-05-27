@@ -171,7 +171,8 @@ public class CreateLevel : MonoBehaviour
                             case "a":
                                 obj = Instantiate(goblin, new Vector3(x, 0.0f, y), transform.rotation);
                                 obj.transform.parent = transform;
-                                obj.GetComponent<SlimeHandler>().setLevelCreator(this.transform.gameObject);
+                                obj.GetComponent<GoblinHandler>().setLevelCreator(this.transform.gameObject);
+                                obj.GetComponent<GoblinHandler>().setPlayer(player);
                                 ++enemies;
                                 break;
                             case "b":

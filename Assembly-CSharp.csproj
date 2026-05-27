@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\DeathHandler.cs" />
     <Compile Include="Assets\Scripts\CreditsRoller.cs" />
     <Compile Include="Assets\Scripts\CreateLevel.cs" />
+    <Compile Include="Assets\Scripts\GoblinHandler.cs" />
     <Compile Include="Assets\Scripts\SlimeTileHandler.cs" />
     <Compile Include="Assets\Scripts\ArrowHandler.cs" />
     <Compile Include="Assets\Scripts\SceneController.cs" />

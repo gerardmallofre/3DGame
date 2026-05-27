@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1486399732542282667}
   - component: {fileID: 1107126704071462854}
   - component: {fileID: 1094473013260889446}
-  - component: {fileID: 5078986680290160911}
+  - component: {fileID: 1954149866525473565}
   m_Layer: 0
   m_Name: goblin
   m_TagString: Untagged
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6e3f81fc3a4aa54d8ff74ec94180d9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 2
   heightJump: 0.5
   jumpSound: {fileID: 8300000, guid: aad764e98302718409099d90023e7fea, type: 3}
 --- !u!114 &1107126704071462854
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68bc078f6a87ce1428c6593068e1b2df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5078986680290160911
+--- !u!114 &1954149866525473565
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,13 +138,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7805066442742855813}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffa8bbd4f687a7247963b0adcc3bf638, type: 3}
+  m_Script: {fileID: 11500000, guid: 8cd3d4ccf1c0ce647bc677931f3cb48e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveScript: {fileID: 1486399732542282667}
   dieScript: {fileID: 1107126704071462854}
+  chaseRange: 5
   fallScript: {fileID: 1094473013260889446}
-  maxjumpwait: 1
+  maxMoveCooldown: 0.75
 --- !u!1001 &4142241381995560019
 PrefabInstance:
   m_ObjectHideFlags: 0
