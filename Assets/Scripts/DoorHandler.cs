@@ -36,7 +36,7 @@ animator = GetComponentInChildren<Animator>();    }
         if (isopen && other.transform.gameObject.tag == "Player")
         {
 
-            cl.GetComponent<CreateLevel>().advanceLevel();
+            cl.GetComponent<CreateLevel>().enteredDoor();
             HUDManager.Instance.AddDoor();
         }
     }

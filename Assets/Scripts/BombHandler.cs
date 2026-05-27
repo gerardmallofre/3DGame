@@ -123,7 +123,7 @@ public class BombHandler : MonoBehaviour, IEnemy
         {
             i = q.Dequeue();
             if (Mathf.Abs(i.pos.x - targetpos.x) < 1 && Mathf.Abs(i.pos.z - targetpos.z) < 1) return i.initialDir;
-            if (!visited.Contains(i.pos + new Vector3(1, 0, 0)) && checkWall(i.pos, new Vector3(1, 0, 0), 0f, 1f) == null && CheckForGround(i.pos + new Vector3(0, 0, -1)) != null)
+            if (!visited.Contains(i.pos + new Vector3(1, 0, 0)) && checkWall(i.pos, new Vector3(1, 0, 0), 0f, 1f) == null && CheckForGround(i.pos + new Vector3(1, 0, 0)) != null)
             {
                 item newit;
                 newit.pos = i.pos + new Vector3(1, 0, 0);
@@ -132,7 +132,7 @@ public class BombHandler : MonoBehaviour, IEnemy
                 q.Enqueue(newit);
                 visited.Add(newit.pos);
             }
-            if (!visited.Contains(i.pos + new Vector3(-1, 0, 0)) && checkWall(i.pos, new Vector3(-1, 0, 0), 0f, 1f) == null && CheckForGround(i.pos + new Vector3(0, 0, -1)) != null)
+            if (!visited.Contains(i.pos + new Vector3(-1, 0, 0)) && checkWall(i.pos, new Vector3(-1, 0, 0), 0f, 1f) == null && CheckForGround(i.pos + new Vector3(-1, 0, 0)) != null)
             {
                 item newit;
                 newit.pos = i.pos + new Vector3(-1, 0, 0);
@@ -141,7 +141,7 @@ public class BombHandler : MonoBehaviour, IEnemy
                 q.Enqueue(newit);
                 visited.Add(newit.pos);
             }
-            if (!visited.Contains(i.pos + new Vector3(0, 0, 1)) && checkWall(i.pos, new Vector3(0, 0, 1), 0f, 1f) == null && CheckForGround(i.pos + new Vector3(0, 0, -1)) != null)
+            if (!visited.Contains(i.pos + new Vector3(0, 0, 1)) && checkWall(i.pos, new Vector3(0, 0, 1), 0f, 1f) == null && CheckForGround(i.pos + new Vector3(0, 0, 1)) != null)
             {
                 item newit;
                 newit.pos = i.pos + new Vector3(0, 0, 1);
@@ -172,7 +172,7 @@ public class BombHandler : MonoBehaviour, IEnemy
         RaycastHit[] hits = Physics.RaycastAll(P, v, max);
         foreach (RaycastHit hit in hits)
         {
-            if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag == "Wall" || (hit.collider.gameObject.tag == "Door" && !hit.collider.gameObject.GetComponent<DoorHandler>().isOpen())))
+            if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag == "Wall" || hit.collider.gameObject.tag == "Hole" || (hit.collider.gameObject.tag == "Door" && !hit.collider.gameObject.GetComponent<DoorHandler>().isOpen())))
                 if (hit.distance < closestDistance)
                 {
                     closestDistance = hit.distance;

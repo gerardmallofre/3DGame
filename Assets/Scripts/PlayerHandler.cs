@@ -17,6 +17,7 @@ public class PlayerHandler : MonoBehaviour
     [SerializeField] float maxHitCooldown = 0.5f;
     [SerializeField] private Animator anim;
     [SerializeField] float maxSlimeCooldown = 1f;
+    private bool canControl = true;
 
     void Start()
     {
@@ -46,7 +47,7 @@ public class PlayerHandler : MonoBehaviour
 
     private void movement()
     {
-        if (hitCooldown < 0 && slimeCooldown < 0)
+        if (canControl && hitCooldown < 0 && slimeCooldown < 0)
         {
             bool b = false;
             if (Input.GetKey(KeyCode.UpArrow)) b = moveScript.tryMove(Direction.UP);
@@ -163,5 +164,10 @@ public class PlayerHandler : MonoBehaviour
     public void slime()
     {
         slimeCooldown = maxSlimeCooldown;
+    }
+
+    public void allowControl(bool a)
+    {
+        canControl = a;
     }
 }

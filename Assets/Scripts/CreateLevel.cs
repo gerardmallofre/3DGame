@@ -9,6 +9,10 @@ public class CreateLevel : MonoBehaviour
     [SerializeField] float fallstart = 5f;
     [SerializeField] float fallinterval = 2f;
     [SerializeField] float shakelength = 1f;
+    [SerializeField] GameObject transition;
+    float transitionDuration;
+    float transitionTime=-1f;
+    bool pendingTransition = false;
     private bool rowFallen = false;
     private int enemies = 0;
     private GameObject door;
@@ -37,6 +41,22 @@ public class CreateLevel : MonoBehaviour
         levels[8] = "/Maps/map9.txt";
         levels[9] = "/Maps/map10.txt";
         advanceLevel();
+
+        transitionDuration = transition.GetComponent<ScreenTransitionHandler>().getDuration();
+    }
+
+    public void enteredDoor()
+    {
+        transition.GetComponent<ScreenTransitionHandler>().transition();
+        transitionTime = 0f;
+        pendingTransition = true;
+        player.GetComponent<PlayerHandler>().allowControl(false);
+
+        falls = false;
+        falling = false;
+        rowFallen = false;
+        timepassed = 0f;
+        fallingrow = 0;
     }
 
     public void advanceLevel()
@@ -252,6 +272,16 @@ public class CreateLevel : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha7)) { level = 6; advanceLevel(); }
         else if (Input.GetKeyDown(KeyCode.Alpha8)) { level = 7; advanceLevel(); }
         else if (Input.GetKeyDown(KeyCode.Alpha9)) { level = 8; advanceLevel(); }
+
+
+        if (transitionTime > transitionDuration) transitionTime = -1;
+        else if (transitionTime > transitionDuration / 2 && pendingTransition == true)
+        {
+            advanceLevel();
+            pendingTransition = false;
+            player.GetComponent<PlayerHandler>().allowControl(true);
+        }
+        if (transitionTime > -1) transitionTime += Time.deltaTime;
 
         timepassed += Time.deltaTime;
         if (Input.GetKey(KeyCode.M)) SceneController.ChangeToMenuScene();

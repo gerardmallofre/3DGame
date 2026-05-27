@@ -42,7 +42,9 @@ public class GoblinHandler : MonoBehaviour, IEnemy
                     if (state == GoblinState.CHASE)
                     {
                         moveCooldown = maxMoveCooldown;
-                        moveScript.tryMove(searchPlayer(player.transform.position));
+                        Direction d = searchPlayer(player.transform.position);
+                        //Debug.Log(d);
+                        moveScript.tryMove(d);
                     }
                     else    // Patrol
                     {
@@ -162,11 +164,18 @@ public class GoblinHandler : MonoBehaviour, IEnemy
         List<Vector3> visited = new List<Vector3>();
         visited.Add(i.pos);
 
+        //int DEBUGCOUNT = 0;
+
         while (q.Count != 0)
         {
+            //++DEBUGCOUNT;
             i = q.Dequeue();
+            //Debug.Log(i.pos + " " + i.initialDir);
             if (Mathf.Abs(i.pos.x - targetpos.x) < 1 && Mathf.Abs(i.pos.z - targetpos.z) < 1) return i.initialDir;
-            if (!visited.Contains(i.pos + new Vector3(1, 0, 0)) && checkWall(i.pos, new Vector3(1, 0, 0), 0f, 1f) == null && CheckForGround(i.pos + new Vector3(0, 0, -1)) != null)
+
+            //Debug.Log("x+ ground: " + CheckForGround(i.pos + new Vector3(0, 0, -1)) != null);
+
+            if (!visited.Contains(i.pos + new Vector3(1, 0, 0)) && checkWall(i.pos, new Vector3(1, 0, 0), 0f, 0.7f) == null && CheckForGround(i.pos + new Vector3(1, 0, 0)) != null)
             {
                 item newit;
                 newit.pos = i.pos + new Vector3(1, 0, 0);
@@ -174,8 +183,9 @@ public class GoblinHandler : MonoBehaviour, IEnemy
                 else newit.initialDir = i.initialDir;
                 q.Enqueue(newit);
                 visited.Add(newit.pos);
+                //Debug.Log("x+");
             }
-            if (!visited.Contains(i.pos + new Vector3(-1, 0, 0)) && checkWall(i.pos, new Vector3(-1, 0, 0), 0f, 1f) == null && CheckForGround(i.pos + new Vector3(0, 0, -1)) != null)
+            if (!visited.Contains(i.pos + new Vector3(-1, 0, 0)) && checkWall(i.pos, new Vector3(-1, 0, 0), 0f, 0.7f) == null && CheckForGround(i.pos + new Vector3(-1, 0, 0)) != null)
             {
                 item newit;
                 newit.pos = i.pos + new Vector3(-1, 0, 0);
@@ -183,8 +193,9 @@ public class GoblinHandler : MonoBehaviour, IEnemy
                 else newit.initialDir = i.initialDir;
                 q.Enqueue(newit);
                 visited.Add(newit.pos);
+                //Debug.Log("x-");
             }
-            if (!visited.Contains(i.pos + new Vector3(0, 0, 1)) && checkWall(i.pos, new Vector3(0, 0, 1), 0f, 1f) == null && CheckForGround(i.pos + new Vector3(0, 0, -1)) != null)
+            if (!visited.Contains(i.pos + new Vector3(0, 0, 1)) && checkWall(i.pos, new Vector3(0, 0, 1), 0f, 0.7f) == null && CheckForGround(i.pos + new Vector3(0, 0, 1)) != null)
             {
                 item newit;
                 newit.pos = i.pos + new Vector3(0, 0, 1);
@@ -192,8 +203,9 @@ public class GoblinHandler : MonoBehaviour, IEnemy
                 else newit.initialDir = i.initialDir;
                 q.Enqueue(newit);
                 visited.Add(newit.pos);
+                //Debug.Log("z+");
             }
-            if (!visited.Contains(i.pos + new Vector3(0, 0, -1)) && checkWall(i.pos, new Vector3(0, 0, -1), 0f, 1f) == null && CheckForGround(i.pos + new Vector3(0, 0, -1)) != null)
+            if (!visited.Contains(i.pos + new Vector3(0, 0, -1)) && checkWall(i.pos, new Vector3(0, 0, -1), 0f, 0.7f) == null && CheckForGround(i.pos + new Vector3(0, 0, -1)) != null)
             {
                 item newit;
                 newit.pos = i.pos + new Vector3(0, 0, -1);
@@ -201,8 +213,10 @@ public class GoblinHandler : MonoBehaviour, IEnemy
                 else newit.initialDir = i.initialDir;
                 q.Enqueue(newit);
                 visited.Add(newit.pos);
+                //Debug.Log("z-");
             }
         }
+        //Debug.Log(DEBUGCOUNT);
         return Direction.NONE;
     }
 
@@ -215,7 +229,7 @@ public class GoblinHandler : MonoBehaviour, IEnemy
         RaycastHit[] hits = Physics.RaycastAll(P, v, max);
         foreach (RaycastHit hit in hits)
         {
-            if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag == "Wall" || (hit.collider.gameObject.tag == "Door" && !hit.collider.gameObject.GetComponent<DoorHandler>().isOpen())))
+            if ((hit.distance > min) && (hit.distance < max) && (hit.collider.gameObject.tag == "Wall" || hit.collider.gameObject.tag=="Hole" || (hit.collider.gameObject.tag == "Door" && !hit.collider.gameObject.GetComponent<DoorHandler>().isOpen())))
                 if (hit.distance < closestDistance)
                 {
                     closestDistance = hit.distance;

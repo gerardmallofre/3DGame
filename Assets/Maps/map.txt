@@ -1,15 +1,20 @@
 NOFALLS
-9 10
-2 0 2 2 0 2 2 2 2
-2 0 0 0 5 2 2 2 2
-2 0 0 0 0 0 0 g 2
-2 0 0 2 2 2 2 0 0
-b k 0 7 0 8 0 0 h
-2 2 0 2 2 2 0 2 2
-2 3 0 1 0 1 0 j 2
-2 0 i 0 6 0 0 0 2
-2 2 2 2 0 2 2 2 2
-2 2 2 2 0 2 2 2 2
+9 15
+1 2 0 0 i 2 j g j
+1 2 0 0 0 2 j 3 j
+1 2 0 0 0 2 j j j
+5 2 0 0 0 0 0 0 0
+0 2 0 0 0 0 0 0 0
+0 2 2 f 5 f 2 2 g
+0 2 0 0 0 0 0 2 1
+0 0 0 0 0 0 0 2 0
+1 0 0 0 0 0 0 0 0
+2 2 2 0 h h 1 2 2
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 6 0 0 0 0
+0 0 0 0 0 0 0 0 0
 
 % --- Gameplay ---
 % 0 -> Empty         % 7 -> AxeTrap
@@ -19,8 +24,8 @@ b k 0 7 0 8 0 0 h
 % 4 -> Giant         % b -> ArrowTrap (right)
 % 5 -> SpikeTrap     % c -> ArrowTrap (left)
 % 6 -> Player        % d -> ArrowTrap (up)
-%                    % e -> ArrowTrap (down)
+% k -> Forat         % e -> ArrowTrap (down)
 % --- Decoracions (NO compten com a enemics) ---
 % f -> Torxa         % i -> Catifa
 % g -> Cofre         % j -> Pila d'ossos
-% h -> Barril	     % k -> Forat
+% h -> Barril
