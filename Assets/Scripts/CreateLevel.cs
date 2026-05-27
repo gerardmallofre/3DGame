@@ -141,6 +141,7 @@ public class CreateLevel : MonoBehaviour
                                 obj = Instantiate(giant, new Vector3(x, 0.0f, y), transform.rotation);
                                 obj.transform.parent = transform;
                                 obj.GetComponent<GiantHandler>().setLevelCreator(this.transform.gameObject);
+                                obj.GetComponent<GiantHandler>().setPlayer(player);
                                 ++enemies;
                                 break;
                             case "5":
