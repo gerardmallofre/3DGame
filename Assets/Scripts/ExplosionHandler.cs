@@ -8,6 +8,7 @@ public class ExplosionHandler : MonoBehaviour
     float time = 0f;
     float radius = 1f;
     Renderer rend;
+    Vector3 baseScale=new Vector3(1, 1, 1);
 
     void Awake()
     {
@@ -31,7 +32,7 @@ public class ExplosionHandler : MonoBehaviour
         if (time < duration * 2 / 3)
         {
             float s = scaleCurve.Evaluate(t) * radius;
-            transform.localScale = new Vector3(s, s, s);
+            transform.localScale = baseScale*s;
             float h, v;
             Color.RGBToHSV(rend.material.color, out h, out s, out v);
             h = h - Time.deltaTime/3;
@@ -52,6 +53,10 @@ public class ExplosionHandler : MonoBehaviour
     }
 
     public void setRadius(float r) { radius = r; }
+
+    public void setScale(Vector3 s) { baseScale = s; }
+
+    public void setDuration(float d) { duration = d; }
 
     void OnTriggerEnter(Collider other)
     {

@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 5052502444989338916}
   - component: {fileID: 7593510234834454658}
   - component: {fileID: 2878008233684010002}
-  - component: {fileID: 1795926780585865123}
   - component: {fileID: 7337818612444324250}
   - component: {fileID: 6287488693100136398}
+  - component: {fileID: 9077216409336237515}
   m_Layer: 0
   m_Name: giant
   m_TagString: Untagged
@@ -101,18 +101,6 @@ MonoBehaviour:
   speed: 2
   heightJump: 0.5
   jumpSound: {fileID: 8300000, guid: aad764e98302718409099d90023e7fea, type: 3}
---- !u!114 &1795926780585865123
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3405060030623688499}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68bc078f6a87ce1428c6593068e1b2df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7337818612444324250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,11 +126,41 @@ MonoBehaviour:
   m_GameObject: {fileID: 3405060030623688499}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecef0c0c76abbe141a98462ec1e792b0, type: 3}
+  m_Script: {fileID: 11500000, guid: 33db99c9a9d36e1478fde90b3eb2e2d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveScript: {fileID: 2878008233684010002}
   dieScript: {fileID: 7337818612444324250}
+  maxMoveCooldown: 1
+  stompRecoverTime: 1.5
+  chargeRecoverTime: 2
+  chargeSpeed: 8
+  chargeStartup: 1
+  stompUpswing: 0.3
+  stompHeight: 2
+  stompSuspend: 0.5
+  stompDownswing: 0.1
+  maxInvulTime: 1
+  shakeMagnitude: 0.2
+  shakeDuration: 0.1
+  explosion: {fileID: 663903802773482061, guid: 681df94e42c9a0c47baa2da59933aa78, type: 3}
+  health: 5
+--- !u!114 &9077216409336237515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3405060030623688499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f585b8775aeb2e478447d2f3e2d8a0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeDuration: 0
+  shakeMagnitude: 0
+  blinkInterval: 0.1
+  hitParticlePrefab: {fileID: 0}
 --- !u!1001 &7148731939981458371
 PrefabInstance:
   m_ObjectHideFlags: 0
