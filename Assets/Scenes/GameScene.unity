@@ -719,8 +719,6 @@ MonoBehaviour:
   fallinterval: 2
   shakelength: 1
   ground: {fileID: 1620564332409280801, guid: c79172a17ef11fc4eb2f4c8d605e73b4, type: 3}
-  wall: {fileID: 0}
-  box: {fileID: 0}
   coin: {fileID: 2472641925563084845, guid: ae5677f20cf96b04290097a06584525c, type: 3}
   slime: {fileID: 5359074256982616140, guid: c40189d0bd8019a459ca5b9124946c30, type: 3}
   exitdoor: {fileID: 1697947369741459574, guid: f705e7eb9d9af814c8d88fa72b834750, type: 3}
