@@ -77,11 +77,7 @@ public class SlimeHandler : MonoBehaviour, IEnemy
         return false;
     }
 
-    void OnTriggerEnter(Collider other) { HandleCollision(other); }
-    void OnTriggerStay(Collider other) { HandleCollision(other); }
-
-    void HandleCollision(Collider other)
-    {
+    void OnTriggerEnter(Collider other) {
         GameObject oobj = other.transform.gameObject;
         if (dieScript.getState() == DeathState.ALIVE && moveScript.getState() == PlayerState.MOVE
             && oobj.tag != "Coin" && oobj.tag != "Ground" && oobj.tag != "SlimeTile")
