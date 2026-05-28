@@ -85,7 +85,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.7, y: 0.7, z: 0.7}
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!114 &2878008233684010002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,6 +144,10 @@ MonoBehaviour:
   shakeMagnitude: 0.2
   shakeDuration: 0.1
   explosion: {fileID: 663903802773482061, guid: 681df94e42c9a0c47baa2da59933aa78, type: 3}
+  smoke: {fileID: 4312575139591512867, guid: fe5880012469e8b4d8c0c1af48a386a2, type: 3}
+  rotationDuration: 0.6
+  rotationAmount: 30
+  hopHeight: 0.4
   health: 5
 --- !u!114 &9077216409336237515
 MonoBehaviour:
