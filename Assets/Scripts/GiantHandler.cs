@@ -21,6 +21,14 @@ public class GiantHandler : MonoBehaviour, IEnemy
     [SerializeField] float shakeMagnitude = 0.1f;
     [SerializeField] float shakeDuration = 0.1f;
     [SerializeField] GameObject explosion;
+    [SerializeField] GameObject smoke;
+    [SerializeField] float maxSmokeCooldown = 0.3f;
+    [SerializeField] float rotationDuration = 0.3f;
+    [SerializeField] float rotationAmount = 15f;
+    [SerializeField] float hopHeight = 0.2f;
+    float hopDuration;
+    float hopTime = 0f;
+    float smokeCooldown = 0f;
     Vector3 chargevec;
     float time = 0f;
     bool invulnerable = false;
@@ -37,6 +45,7 @@ public class GiantHandler : MonoBehaviour, IEnemy
     void Start()
     {
         moveCooldown = maxMoveCooldown;
+        hopDuration = chargeStartup / 4;
     }
 
     // Update is called once per frame
@@ -63,6 +72,7 @@ public class GiantHandler : MonoBehaviour, IEnemy
                         time = 0f;
                         state = GiantState.CHARGE;
                         collidedWithPlayer = false;
+                        smokeCooldown = 0f;
                         if (player.transform.position.z - transform.position.z > 0)
                         {
                             moveScript.setDir(Direction.UP);
@@ -104,9 +114,20 @@ public class GiantHandler : MonoBehaviour, IEnemy
             else if (state == GiantState.CHARGE)
             {
                 time += Time.deltaTime;
+                smokeCooldown -= Time.deltaTime;
+                if (smokeCooldown < 0)
+                {
+                    GameObject obj = Instantiate(smoke, transform.position, transform.rotation);
+                    smokeCooldown = maxSmokeCooldown;
+                }
                 if (time > chargeStartup)
                 {
                     if (!invulnerable) invulnerable = true;
+                    if (hopTime != 0)
+                    {
+                        hopTime = 0;
+                        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+                    }
                     transform.position = transform.position + chargevec * Time.deltaTime * chargeSpeed;
                     if (checkWall(transform.position - chargevec * 0.5f, chargevec, 0, 1f)!=null)
                     {
@@ -120,6 +141,7 @@ public class GiantHandler : MonoBehaviour, IEnemy
                         ExplosionHandler eh = obj.GetComponent<ExplosionHandler>();
                         eh.setRadius(1.5f);
                         eh.setDuration(0.3f);
+                        transform.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
                     }
                     else if (collidedWithPlayer)
                     {
@@ -135,6 +157,29 @@ public class GiantHandler : MonoBehaviour, IEnemy
                         ExplosionHandler eh = obj.GetComponent<ExplosionHandler>();
                         eh.setRadius(2.5f);
                         eh.setDuration(0.3f);
+                        transform.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
+                    }
+                }
+                else
+                {
+                    hopTime += Time.deltaTime;
+                    
+                    if (hopTime > hopDuration)
+                    {
+                        hopTime = 0;
+                        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+                    }
+                    else if (hopTime > hopDuration / 2)
+                    {
+                        transform.position -= new Vector3(0, 1, 0) * Time.deltaTime / hopDuration / 2 * hopHeight;
+                    }
+                    else
+                    {
+                        transform.position += new Vector3(0, 1, 0) * Time.deltaTime / hopDuration / 2 * hopHeight;
+                    }
+                    if (time < rotationDuration)
+                    {
+                        transform.Rotate(-Time.deltaTime * time / rotationDuration * rotationAmount, 0, 0);
                     }
                 }
             }
