@@ -68,35 +68,22 @@ public class MovePlayer : MonoBehaviour
     private bool PrepareMovement(Direction dirMove)
     {
         if (dirMove == Direction.NONE) return false;
-        // bMove will track if the player can really move, as walls and boxes may stop him.
-        bool bMove = true;
-        // angleMove is the rotation required to transform the Z axis into the direction 
-        // encoded by dirMove, the direction of the movement.
-        float angleMove = Mathf.PI * (int)dirMove / 2.0f;
 
-        // Save the initial position of the player before moving
+        bool bMove = true;
+        float angleMove = Mathf.PI * (int)dirMove / 2.0f;
         initialPosMove = transform.localPosition;
-        // From angleMove we compute the vector of the movement's displacement
         vecMove = new Vector3(Mathf.Sin(angleMove), 0.0f, Mathf.Cos(angleMove));
 
-        // We look for a object tagged as "Wall" next to the player in the movement's direction 
-        // If present, we cannot move
         GameObject obj = GetObjectInDirection(initialPosMove, vecMove, 0.0f, 1.0f);
-        if (obj != null)
-            bMove = false;
+        if (obj != null) bMove = false;
         if (bMove)
         {
-            // Now that we know we will move, we initalize all that we need, and rotate
-            // the player to face the direction of movement
             state = PlayerState.MOVE;
             timeInMove = 0;
             transform.Rotate(0.0f, 90.0f * ((int)dirMove - (int)dir), 0.0f);
             dir = dirMove;
-
-            // We also play the corresponding sound, and add a sound for the box if one is being pushed.
             AudioSource.PlayClipAtPoint(jumpSound, Camera.main.transform.position, 0.3f);
         }
-
         return bMove;
     }
 

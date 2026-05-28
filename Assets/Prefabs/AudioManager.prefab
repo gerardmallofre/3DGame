@@ -59,6 +59,7 @@ MonoBehaviour:
   soAxeTrap: {fileID: 8300000, guid: 2c7d175b79725944293f52084dbcd163, type: 3}
   soCoin: {fileID: 8300000, guid: 695d56c2d63730f439bb349cadc45fe5, type: 3}
   explosionClip: {fileID: 8300000, guid: 50ddeeb467424ab4bb8068068162e042, type: 3}
+  slimeImpact: {fileID: 8300000, guid: 4807e811ce6a72f478f12d2857bbee55, type: 3}
 --- !u!82 &6807287379401192299
 AudioSource:
   m_ObjectHideFlags: 0

@@ -21,6 +21,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip soAxeTrap;
     public AudioClip soCoin;
     public AudioClip explosionClip;
+    public AudioClip slimeImpact;
 
 
     private void Awake()
@@ -96,6 +97,7 @@ public class AudioManager : MonoBehaviour
         this.soAxeTrap = nouManager.soAxeTrap;
         this.soCoin = nouManager.soCoin;
         this.explosionClip = nouManager.explosionClip;
+        this.slimeImpact = nouManager.slimeImpact;
 
         if (this.musicaFonsSource == null || this.efectesSource == null)
         {
@@ -134,6 +136,8 @@ public class AudioManager : MonoBehaviour
     public void PlayButtonSelect() { PlaySo(soSelectBoto, 0.1f); }
     public void PlayButtonClick() { PlaySo(soClicBoto, 0.1f); }
     public void PlayExplosion() { PlaySo(explosionClip, 0.5f); }
+
+    public void PlaySlimeImpact() { PlaySo(slimeImpact, 0.5f); }
 
 
     public IEnumerator FadeIn(AudioSource source, float duracio, float volumMaxim)

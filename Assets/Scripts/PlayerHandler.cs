@@ -9,6 +9,31 @@ public class PlayerHandler : MonoBehaviour
     private float slimeCooldown = 0f;
     private float falltime = 0f;
     private bool isGodMode = false;
+
+    [Header("Efecte slime")]
+    [SerializeField] Renderer slimeRenderer;        
+    [SerializeField] Color slimeColor = new Color(0.35f, 0.85f, 0.25f);
+    [SerializeField, Range(0, 1)] float slimeTintStrength = 0.65f;
+    [SerializeField] float slimeWobbleAngle = 5f;  // oscilacio
+    [SerializeField] float slimeWobbleSpeed = 22f;
+
+    [Header("Caiguda al buit")]
+    [SerializeField] Transform visualRoot;
+    private Vector3 visualRootInitialPos;
+    [SerializeField] float fallDuration = 1.5f;     
+    [SerializeField] float fallTeeter = 0.25f;          //tremolor abans de caure
+    [SerializeField] float fallDropDepth = 0.5f;    
+    [SerializeField] float fallSpinSpeed = 600f;
+    [SerializeField] float fallShrinkTo = 0.05f;    // desapareix dins el forat
+
+    [Header("Idle")]
+    [SerializeField] float idleBobSpeed = 3f;
+    [SerializeField] float idleBobHeight = 0.03f;
+
+    MaterialPropertyBlock mpb;
+    Color slimeOgColor;
+    bool slimeTinted = false;
+
     [SerializeField] MovePlayer moveScript;
     [SerializeField] FallHandler fallScript;
     [SerializeField] DeathHandler dieScript;
@@ -21,11 +46,15 @@ public class PlayerHandler : MonoBehaviour
 
     void Start()
     {
-        if (anim == null)
-            anim = GetComponentInChildren<Animator>();
+        if (anim == null) anim = GetComponentInChildren<Animator>();
         moveScript.setDir(Direction.UP);
-    }
 
+        mpb = new MaterialPropertyBlock();
+        if (slimeRenderer == null) slimeRenderer = GetComponentInChildren<Renderer>();
+        if (slimeRenderer != null) slimeOgColor = slimeRenderer.sharedMaterial.color;
+
+        if (visualRoot != null) visualRootInitialPos = visualRoot.localPosition;
+    }
     void Update()
     {
         if (dieScript.getState() == DeathState.ALIVE)
@@ -36,6 +65,52 @@ public class PlayerHandler : MonoBehaviour
             if (!fallScript.isFalling()) movement();
         }
         else if (dieScript.getState() == DeathState.DEAD) reset();
+
+        UpdateVisualEffects();   
+    }
+
+    private void UpdateVisualEffects()
+    {
+        if (visualRoot == null) return;
+
+        if (dieScript.getState() != DeathState.ALIVE) { SetSlimeTint(false); return; }
+        if (fallScript.isFalling()) return;
+
+        bool slimed = slimeCooldown > 0f;
+        SetSlimeTint(slimed);
+
+        if (slimed)
+        {
+            visualRoot.localPosition = visualRootInitialPos;
+            visualRoot.localRotation = Quaternion.Euler(0, 0,
+                Mathf.Sin(Time.time * slimeWobbleSpeed) * slimeWobbleAngle);
+        }
+        else if (moveScript.getState() == PlayerState.STOP)
+        {
+            float bob = Mathf.Sin(Time.time * idleBobSpeed) * idleBobHeight;
+            visualRoot.localPosition = visualRootInitialPos + new Vector3(0, bob, 0);
+            visualRoot.localRotation = Quaternion.identity;
+        }
+        else
+        {
+            visualRoot.localPosition = visualRootInitialPos;
+            visualRoot.localRotation = Quaternion.identity;
+        }
+    }
+
+    private void SetSlimeTint(bool on)
+    {
+        if (slimeRenderer == null || on == slimeTinted) return;
+        slimeTinted = on;
+        if (on)
+        {
+            slimeRenderer.GetPropertyBlock(mpb);
+            Color c = Color.Lerp(slimeOgColor, slimeColor, slimeTintStrength);
+            mpb.SetColor("_Color", c);
+            mpb.SetColor("_BaseColor", c);
+            slimeRenderer.SetPropertyBlock(mpb);
+        }
+        else slimeRenderer.SetPropertyBlock(null);
     }
 
     private void progressCooldowns()
@@ -89,13 +164,40 @@ public class PlayerHandler : MonoBehaviour
     private void fall()
     {
         falltime += Time.deltaTime;
-        if (falltime > 2)
+
+        if (visualRoot != null)
         {
-            takeDamage(3, Direction.NONE, true);
+            if (falltime < fallTeeter)
+            {
+                float w = Mathf.Sin(falltime / fallTeeter * Mathf.PI * 2f) * 20f;
+                visualRoot.localRotation = Quaternion.Euler(0f, 0f, w);
+            }
+            else
+            {
+                float t = Mathf.Clamp01((falltime - fallTeeter) / (fallDuration - fallTeeter));
+                float e = t * t;
+                float spin = fallSpinSpeed * (falltime - fallTeeter);
+
+                visualRoot.localPosition = visualRootInitialPos + (Vector3.down * fallDropDepth * e);
+                visualRoot.localRotation = Quaternion.Euler(0f, spin, 0f);
+                visualRoot.localScale = Vector3.one * Mathf.Lerp(1f, fallShrinkTo, e);
+            }
         }
-        else if (falltime > 0.5) {
-            transform.localPosition -= new Vector3(0, (Time.deltaTime) * 10f, 0);
+
+        if (falltime > fallDuration)
+        {
+            AudioManager.instance?.PlayMort();
+            reset();
         }
+    }
+
+    private void ResetVisual()
+    {
+        if (visualRoot == null) return;
+
+        visualRoot.localPosition = visualRootInitialPos;
+        visualRoot.localRotation = Quaternion.identity;
+        visualRoot.localScale = Vector3.one;
     }
 
     public void takeDamage(int dmg, Direction d, bool ignoreGodMode = false)
@@ -114,7 +216,9 @@ public class PlayerHandler : MonoBehaviour
             }
             else
             {
-                die(d); 
+                die(d);
+                ResetVisual();
+
             }
         }
     }
@@ -145,6 +249,8 @@ public class PlayerHandler : MonoBehaviour
 
     void reset()
     {
+        SetSlimeTint(false);
+        ResetVisual();
         dieScript.Restore();
         levelScript.restart();
         health = 3;
@@ -163,6 +269,7 @@ public class PlayerHandler : MonoBehaviour
 
     public void slime()
     {
+        if (slimeCooldown < 0) AudioManager.instance?.PlaySlimeImpact();  
         slimeCooldown = maxSlimeCooldown;
     }
 

@@ -90,7 +90,7 @@ public class DeathHandler : MonoBehaviour
         for (int i = 0; i < renderers.Length; i++)
             renderers[i].material = ogmat[i];
         transform.localScale = new Vector3(1, 1, 1);
-        transform.rotation = new Quaternion(0, 0, 0, 0);
+        transform.rotation = Quaternion.identity;
         moveScript.setOnlyDir(Direction.DOWN);
 
         state = DeathState.ALIVE;
