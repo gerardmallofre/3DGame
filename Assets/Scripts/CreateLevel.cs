@@ -75,6 +75,7 @@ public class CreateLevel : MonoBehaviour
         timepassed = 0f;
         fallingrow = 0;
         enemies = 0;
+        bool spikeMakesSound = true;
 
         string filename = Application.dataPath + levels[level];
         player.GetComponent<MovePlayer>().stopMove();
@@ -167,6 +168,11 @@ public class CreateLevel : MonoBehaviour
                             case "5":
                                 obj = Instantiate(spikeTrap, new Vector3(x, 0.0f, y), transform.rotation);
                                 obj.transform.parent = transform;
+                                if (spikeMakesSound)
+                                {
+                                    spikeMakesSound = false;
+                                    obj.GetComponent<SpikeTrapHandler>().enableSound();
+                                }
                                 break;
                             case "6":
                                 player.transform.localPosition = new Vector3(x, 0.0f, y);
