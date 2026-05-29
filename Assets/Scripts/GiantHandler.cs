@@ -29,6 +29,7 @@ public class GiantHandler : MonoBehaviour, IEnemy
     float hopDuration;
     float hopTime = 0f;
     float smokeCooldown = 0f;
+    float amtRotated = 0f;
     Vector3 chargevec;
     float time = 0f;
     bool invulnerable = false;
@@ -73,6 +74,7 @@ public class GiantHandler : MonoBehaviour, IEnemy
                         state = GiantState.CHARGE;
                         collidedWithPlayer = false;
                         smokeCooldown = 0f;
+                        amtRotated = 0f;
                         if (player.transform.position.z - transform.position.z > 0)
                         {
                             moveScript.setDir(Direction.UP);
@@ -141,7 +143,7 @@ public class GiantHandler : MonoBehaviour, IEnemy
                         ExplosionHandler eh = obj.GetComponent<ExplosionHandler>();
                         eh.setRadius(1.5f);
                         eh.setDuration(0.3f);
-                        transform.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
+                        transform.Rotate(-amtRotated, 0, 0);
                     }
                     else if (collidedWithPlayer)
                     {
@@ -157,7 +159,7 @@ public class GiantHandler : MonoBehaviour, IEnemy
                         ExplosionHandler eh = obj.GetComponent<ExplosionHandler>();
                         eh.setRadius(2.5f);
                         eh.setDuration(0.3f);
-                        transform.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
+                        transform.Rotate(-amtRotated, 0, 0);
                     }
                 }
                 else
@@ -180,6 +182,7 @@ public class GiantHandler : MonoBehaviour, IEnemy
                     if (time < rotationDuration)
                     {
                         transform.Rotate(-Time.deltaTime * time / rotationDuration * rotationAmount, 0, 0);
+                        amtRotated += -Time.deltaTime * time / rotationDuration * rotationAmount;
                     }
                 }
             }
@@ -204,7 +207,7 @@ public class GiantHandler : MonoBehaviour, IEnemy
                     GameObject obj = Instantiate(explosion, transform.position, transform.rotation);
                     ExplosionHandler eh = obj.GetComponent<ExplosionHandler>();
                     eh.setRadius(2.5f);
-                    eh.setDuration(0.2f);
+                    eh.setDuration(0.3f);
                     eh.setScale(new Vector3(1, 0.3f, 1));
                 }
                 else if (time > stompUpswing + stompSuspend)
@@ -224,7 +227,6 @@ public class GiantHandler : MonoBehaviour, IEnemy
 
     void shovePlayer()
     {
-        player.GetComponent<MovePlayer>().stopMove();
         Direction[] dirs ={ Direction.UP, Direction.DOWN, Direction.RIGHT, Direction.LEFT};
         Vector3[] vecs ={ new Vector3(0, 0, -1), new Vector3(0, 0, 1), new Vector3(-1, 0, 0), new Vector3(1, 0, 0)};
         if (Mathf.Abs((player.transform.position - transform.position).magnitude) < 0.2f)
@@ -235,6 +237,7 @@ public class GiantHandler : MonoBehaviour, IEnemy
                 int r = Random.Range(0, 4);
                 if (checkWall(player.transform.position - 0.5f * vecs[r], vecs[r], 0, 1.5f) == null)
                 {
+                    player.GetComponent<MovePlayer>().stopMove();
                     player.transform.position += vecs[r];
                     player.GetComponent<MovePlayer>().setDir(dirs[r]);
                     found = true;
