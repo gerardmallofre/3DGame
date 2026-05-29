@@ -59,7 +59,7 @@ public class PlayerHandler : MonoBehaviour
     {
         if (dieScript.getState() == DeathState.ALIVE)
         {
-            if (!fallScript.isFalling() && moveScript.getState() == PlayerState.STOP) fallScript.fallCheck();
+            if (canControl && !fallScript.isFalling() && moveScript.getState() == PlayerState.STOP) fallScript.fallCheck();
             if (fallScript.isFalling()) fall();
             progressCooldowns();
             if (!fallScript.isFalling()) movement();
