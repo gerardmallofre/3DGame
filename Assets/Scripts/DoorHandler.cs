@@ -6,6 +6,7 @@ public class DoorHandler : MonoBehaviour
 {
     GameObject cl;
     private bool isopen = false;
+    private bool goneThrough = false;
 
     private Animator animator;
 
@@ -31,11 +32,11 @@ animator = GetComponentInChildren<Animator>();    }
         }
     }
 
-    public void OnTriggerEnter(Collider other)
+    public void OnTriggerStay(Collider other)
     {
-        if (isopen && other.transform.gameObject.tag == "Player")
+        if (!goneThrough && isopen && other.transform.gameObject.tag == "Player")
         {
-
+            goneThrough = true;
             cl.GetComponent<CreateLevel>().enteredDoor();
             HUDManager.Instance.AddDoor();
         }

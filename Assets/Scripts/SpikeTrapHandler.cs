@@ -14,6 +14,7 @@ public class SpikeTrapHandler : MonoBehaviour
     private Animator anim;
     private float timer = 0f;
     private float dmgCooldownCounter = 0f;
+    private bool canMakeSound = false;
 
     void Start()
     {
@@ -35,7 +36,7 @@ public class SpikeTrapHandler : MonoBehaviour
                     state = SpikeState.RISING;
                     anim?.Play("SpikeTrap_Activate", 0, 0f);
 
-                    AudioManager.instance?.PlaySpikeTrap();
+                    if (canMakeSound) AudioManager.instance?.PlaySpikeTrap();
                 }
                 break;
 
@@ -69,4 +70,6 @@ public class SpikeTrapHandler : MonoBehaviour
         IEnemy ie = other.GetComponent<IEnemy>();
         if (ie != null) { ie.takeDamage(Direction.NONE); }
     }
+
+    public void enableSound() { canMakeSound = true; }
 }
