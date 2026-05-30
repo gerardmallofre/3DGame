@@ -58,7 +58,6 @@ public class GroundHandler : MonoBehaviour
         if (fallstate != FallState.FALL)
         {
             fallstate = state;
-            if (state == FallState.SHAKE && transform.position.x==0) AudioManager.instance.PlayCrumble();
         }
     }
 

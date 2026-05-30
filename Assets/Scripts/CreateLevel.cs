@@ -298,6 +298,7 @@ public class CreateLevel : MonoBehaviour
             {
                 falling = true;
                 timepassed = fallinterval;
+                AudioManager.instance.PlayCrumble();
             }
             else if (falling)
             {
