@@ -19,7 +19,6 @@ public class MovePlayer : MonoBehaviour
 {
     public float speed = 1.0f;              // Speed of movement
     public float heightJump = 0.5f;         // Height of the jump during a move
-    public AudioClip jumpSound;  // Sound for moving and pushing a box
     //[SerializeField] bool isPlayer=false;
 
     PlayerState state;               // Current player state
@@ -82,7 +81,7 @@ public class MovePlayer : MonoBehaviour
             timeInMove = 0;
             transform.Rotate(0.0f, 90.0f * ((int)dirMove - (int)dir), 0.0f);
             dir = dirMove;
-            AudioSource.PlayClipAtPoint(jumpSound, Camera.main.transform.position, 0.3f);
+            AudioManager.instance.PlayJump();
         }
         return bMove;
     }

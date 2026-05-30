@@ -10,18 +10,21 @@ public class AudioManager : MonoBehaviour
     public AudioSource efectesSource;
 
     [Header("Arxius de So (AudioClips)")]
+    public AudioClip soSalt;
     public AudioClip musicaNivell;
     public AudioClip soPortaOberta;
     public AudioClip soClicBoto;
     public AudioClip soSelectBoto;
     public AudioClip soMort;
     public AudioClip soDamage;
-    public AudioClip soTremolorTerra;
     public AudioClip soSpikeTrap;
     public AudioClip soAxeTrap;
     public AudioClip soCoin;
     public AudioClip explosionClip;
     public AudioClip slimeImpact;
+    public AudioClip soDispararFletxa;
+    public AudioClip soImpactarFletxa;
+    public AudioClip soTremolorTerra;
 
 
     private void Awake()
@@ -98,6 +101,9 @@ public class AudioManager : MonoBehaviour
         this.soCoin = nouManager.soCoin;
         this.explosionClip = nouManager.explosionClip;
         this.slimeImpact = nouManager.slimeImpact;
+        this.soDispararFletxa = nouManager.soDispararFletxa;
+        this.soImpactarFletxa = nouManager.soImpactarFletxa;
+        this.soSalt = nouManager.soSalt;
 
         if (this.musicaFonsSource == null || this.efectesSource == null)
         {
@@ -136,9 +142,11 @@ public class AudioManager : MonoBehaviour
     public void PlayButtonSelect() { PlaySo(soSelectBoto, 0.1f); }
     public void PlayButtonClick() { PlaySo(soClicBoto, 0.1f); }
     public void PlayExplosion() { PlaySo(explosionClip, 0.5f); }
-
     public void PlaySlimeImpact() { PlaySo(slimeImpact, 0.5f); }
-
+    public void PlayShootArrow() { PlaySo(soDispararFletxa, 0.5f); }
+    public void PlayHitArrow() { PlaySo(soImpactarFletxa, 0.5f); }
+    public void PlayJump() { PlaySo(soSalt, 1f); }
+    public void PlayCrumble() { PlaySo(soTremolorTerra, 1f);  }
 
     public IEnumerator FadeIn(AudioSource source, float duracio, float volumMaxim)
     {

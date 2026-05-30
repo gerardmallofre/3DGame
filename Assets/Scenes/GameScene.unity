@@ -950,7 +950,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   heightJump: 0.5
-  jumpSound: {fileID: 8300000, guid: aad764e98302718409099d90023e7fea, type: 3}
 --- !u!65 &1843085262
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1153,9 +1152,25 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3992229675829357237, guid: 199d535092afed5428487657948bff1c, type: 3}
+      propertyPath: soSalt
+      value: 
+      objectReference: {fileID: 8300000, guid: aad764e98302718409099d90023e7fea, type: 3}
+    - target: {fileID: 3992229675829357237, guid: 199d535092afed5428487657948bff1c, type: 3}
       propertyPath: slimeImpact
       value: 
       objectReference: {fileID: 8300000, guid: 4807e811ce6a72f478f12d2857bbee55, type: 3}
+    - target: {fileID: 3992229675829357237, guid: 199d535092afed5428487657948bff1c, type: 3}
+      propertyPath: soTremolorTerra
+      value: 
+      objectReference: {fileID: 8300000, guid: 00c8d594e4b74c543ae26a838696e867, type: 3}
+    - target: {fileID: 3992229675829357237, guid: 199d535092afed5428487657948bff1c, type: 3}
+      propertyPath: soDispararFletxa
+      value: 
+      objectReference: {fileID: 8300000, guid: 7e47a0d16ef6a124d92a727c9b9ecb22, type: 3}
+    - target: {fileID: 3992229675829357237, guid: 199d535092afed5428487657948bff1c, type: 3}
+      propertyPath: soImpactarFletxa
+      value: 
+      objectReference: {fileID: 8300000, guid: c9e4a35c3d946f54ea6c0ac98ae8b6d8, type: 3}
     - target: {fileID: 6629711304306094339, guid: 199d535092afed5428487657948bff1c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.23478672

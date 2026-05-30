@@ -12,6 +12,7 @@ public class ArrowHandler : MonoBehaviour
     void Start()
     {
         initPos = transform.position;
+        AudioManager.instance.PlayShootArrow();
     }
 
     // Update is called once per frame
@@ -25,16 +26,19 @@ public class ArrowHandler : MonoBehaviour
         if ((other.gameObject.tag=="Wall" && Mathf.Abs((transform.position-initPos).magnitude)>1) || (other.gameObject.tag=="Door" && !other.GetComponent<DoorHandler>().isOpen()))
         {
             Destroy(this.gameObject);
+            AudioManager.instance.PlayHitArrow();
         }
         else if (other.GetComponent<IEnemy>() != null)
         {
             other.GetComponent<IEnemy>().takeDamage(dir);
             Destroy(this.gameObject);
+            AudioManager.instance.PlayHitArrow();
         }
         else if (other.gameObject.tag == "Player")
         {
             other.GetComponent<PlayerHandler>().takeDamage(1, dir);
             Destroy(this.gameObject);
+            AudioManager.instance.PlayHitArrow();
         }
     }
 
