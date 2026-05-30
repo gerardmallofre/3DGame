@@ -19,7 +19,7 @@ public class HUDManager : MonoBehaviour
     [SerializeField] private int totalRooms = 10;
     [SerializeField] private TMP_FontAsset customFont;
 
-    const float U = 64f, GAP = 10f, PAD = 14f, TEXT_W = 90f, MARGIN = 24f, FONT = 38f, RADIUS = 16f;
+    const float U = 64f, GAP = 10f, PAD = 14f, TEXT_W = 130f, MARGIN = 24f, FONT = 38f, RADIUS = 16f;
 
     static readonly Color C_HEARTS = new Color(0.75f, 0.08f, 0.08f, 0.55f);
     static readonly Color C_COINS = new Color(0.85f, 0.65f, 0.05f, 0.55f);

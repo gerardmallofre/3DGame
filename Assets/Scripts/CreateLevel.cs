@@ -268,16 +268,16 @@ public class CreateLevel : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha0)) { level = -1; advanceLevel(); }
-        else if (Input.GetKeyDown(KeyCode.Alpha1)) { level = 0; advanceLevel(); }
-        else if (Input.GetKeyDown(KeyCode.Alpha2)) { level = 1; advanceLevel(); }
-        else if (Input.GetKeyDown(KeyCode.Alpha3)) { level = 2; advanceLevel(); }
-        else if (Input.GetKeyDown(KeyCode.Alpha4)) { level = 3; advanceLevel(); }
-        else if (Input.GetKeyDown(KeyCode.Alpha5)) { level = 4; advanceLevel(); }
-        else if (Input.GetKeyDown(KeyCode.Alpha6)) { level = 5; advanceLevel(); }
-        else if (Input.GetKeyDown(KeyCode.Alpha7)) { level = 6; advanceLevel(); }
-        else if (Input.GetKeyDown(KeyCode.Alpha8)) { level = 7; advanceLevel(); }
-        else if (Input.GetKeyDown(KeyCode.Alpha9)) { level = 8; advanceLevel(); }
+        if (Input.GetKeyDown(KeyCode.Alpha0)) { level = -1; advanceLevel(); HUDManager.Instance?.SetRoom(1); }
+        else if (Input.GetKeyDown(KeyCode.Alpha1)) { level = 0; advanceLevel(); HUDManager.Instance?.SetRoom(2); }
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) { level = 1; advanceLevel(); HUDManager.Instance?.SetRoom(3); }
+        else if (Input.GetKeyDown(KeyCode.Alpha3)) { level = 2; advanceLevel(); HUDManager.Instance?.SetRoom(4); }
+        else if (Input.GetKeyDown(KeyCode.Alpha4)) { level = 3; advanceLevel(); HUDManager.Instance?.SetRoom(5); }
+        else if (Input.GetKeyDown(KeyCode.Alpha5)) { level = 4; advanceLevel(); HUDManager.Instance?.SetRoom(6); }
+        else if (Input.GetKeyDown(KeyCode.Alpha6)) { level = 5; advanceLevel(); HUDManager.Instance?.SetRoom(7); }
+        else if (Input.GetKeyDown(KeyCode.Alpha7)) { level = 6; advanceLevel(); HUDManager.Instance?.SetRoom(8); }
+        else if (Input.GetKeyDown(KeyCode.Alpha8)) { level = 7; advanceLevel(); HUDManager.Instance?.SetRoom(9); }
+        else if (Input.GetKeyDown(KeyCode.Alpha9)) { level = 8; advanceLevel(); HUDManager.Instance?.SetRoom(10); }
 
 
         if (transitionTime > transitionDuration) transitionTime = -1;
