@@ -385,8 +385,12 @@ public class GiantHandler : MonoBehaviour, IEnemy
         {
             GetComponent<HitEffect>()?.PlayHitEffect(maxInvulTime);
             health -= 1;
-            if (health == 0) if (dieScript.getState() == DeathState.ALIVE) dieScript.startDeath(d);
-            else invulTime = maxInvulTime;
+            if (health == 0) { if (dieScript.getState() == DeathState.ALIVE) dieScript.startDeath(d); }
+            else
+            {
+                invulTime = maxInvulTime;
+                AudioManager.instance?.PlayDamage();
+            }
         }
     }
 

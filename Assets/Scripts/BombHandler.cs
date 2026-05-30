@@ -48,6 +48,7 @@ public class BombHandler : MonoBehaviour, IEnemy
                 {
                     state = BombState.WAIT;
                     explodeDelay = maxExplodeDelay;
+                    GetComponent<HitEffect>().PlayHitEffect(maxExplodeDelay);
                 }
                 else
                 {
