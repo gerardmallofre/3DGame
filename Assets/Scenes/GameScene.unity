@@ -757,6 +757,16 @@ MonoBehaviour:
   pileBones: {fileID: 8272499477384352632, guid: 9695b415e8fcc664797e0e5e73aa81fb, type: 3}
   rock: {fileID: 9006195103552068770, guid: bc4852b8a9840e74ba91d20c9b608fbf, type: 3}
   hole: {fileID: 4146033468870403603, guid: c42f1c31eea70a44d91f5cd423ec004e, type: 3}
+  level1: {fileID: 4900000, guid: 63c96b5bbafade84ab75eab67873b034, type: 3}
+  level2: {fileID: 4900000, guid: 4a0d867d40e47aa40bd7df040c8eb17c, type: 3}
+  level3: {fileID: 4900000, guid: a930675c8a887b042908777f23e80276, type: 3}
+  level4: {fileID: 4900000, guid: 442ad57bf5b4a4e43b2326d07054c151, type: 3}
+  level5: {fileID: 4900000, guid: 9ef7dede25a77a042a04c953e74c8fb8, type: 3}
+  level6: {fileID: 4900000, guid: 722065cd1011a35429d0a90e6c635101, type: 3}
+  level7: {fileID: 4900000, guid: 43e5c3da7ce04f94d97cf132ea9cbf25, type: 3}
+  level8: {fileID: 4900000, guid: beb0d1f4aeecd20459fa1c53eb080c47, type: 3}
+  level9: {fileID: 4900000, guid: 02f4d1307ef5dfa489dbfd1a9a01ca62, type: 3}
+  level10: {fileID: 4900000, guid: a434f71658445534c8b7cc5700e2d627, type: 3}
 --- !u!4 &1182457125
 Transform:
   m_ObjectHideFlags: 0

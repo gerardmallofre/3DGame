@@ -25,21 +25,31 @@ public class CreateLevel : MonoBehaviour
         torch, chest, barrel, carpet, pileBones, rock,  hole;
 
     private int level = -1;
-    private string[] levels = new string[10];
+    private TextAsset[] levels = new TextAsset[10];
+    [SerializeField] private TextAsset level1;
+    [SerializeField] private TextAsset level2;
+    [SerializeField] private TextAsset level3;
+    [SerializeField] private TextAsset level4;
+    [SerializeField] private TextAsset level5;
+    [SerializeField] private TextAsset level6;
+    [SerializeField] private TextAsset level7;
+    [SerializeField] private TextAsset level8;
+    [SerializeField] private TextAsset level9;
+    [SerializeField] private TextAsset level10;
 
     // Start is called before the first frame update
     void Start()
     {
-        levels[0] = "/Maps/map.txt";
-        levels[1] = "/Maps/map2.txt";
-        levels[2] = "/Maps/map3.txt";
-        levels[3] = "/Maps/map4.txt";
-        levels[4] = "/Maps/map5.txt";
-        levels[5] = "/Maps/map6.txt";
-        levels[6] = "/Maps/map7.txt";
-        levels[7] = "/Maps/map8.txt";
-        levels[8] = "/Maps/map9.txt";
-        levels[9] = "/Maps/map10.txt";
+        levels[0] = level1;
+        levels[1] = level2;
+        levels[2] = level3;
+        levels[3] = level4;
+        levels[4] = level5;
+        levels[5] = level6;
+        levels[6] = level7;
+        levels[7] = level8;
+        levels[8] = level9;
+        levels[9] = level10;
         advanceLevel();
 
         transitionDuration = transition.GetComponent<ScreenTransitionHandler>().getDuration();
@@ -77,7 +87,6 @@ public class CreateLevel : MonoBehaviour
         enemies = 0;
         bool spikeMakesSound = true;
 
-        string filename = Application.dataPath + levels[level];
         player.GetComponent<MovePlayer>().stopMove();
 
         foreach (Transform child in transform)
@@ -85,178 +94,173 @@ public class CreateLevel : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        if (File.Exists(filename))
+        string text = levels[level].text;
+        string[] lines = text.Split('\n');
+        int currentLine = 0;
+        string line = lines[currentLine]; ++currentLine;
+        if (line == "FALLS")
         {
-            TextReader reader = File.OpenText(filename);
-            string line = reader.ReadLine();
-            if (line == "FALLS")
-            {
-                falls = true;
+            falls = true;
+        }
+        line = lines[currentLine]; ++currentLine;
+        string[] tokens = line.Split(' ');
+        int width, height;
+        width = int.Parse(tokens[0]);
+        height = int.Parse(tokens[1]);
+        for (int y = height; y >= -1; y--)
+        {
+            if (y != height && y != -1) {
+                line = lines[currentLine]; ++currentLine;
+                tokens = line.Split(" ");
             }
-            line = reader.ReadLine();
-            string[] tokens = line.Split(' ');
-            int width, height;
-            width = int.Parse(tokens[0]);
-            height = int.Parse(tokens[1]);
-            for (int y = height; y >= -1; y--)
+            for (int x = -1; x < width + 1; x++)
             {
-                if (y != height && y != -1) {
-                    line = reader.ReadLine();
-                    tokens = line.Split(" ");
-                }
-                for (int x = -1; x < width + 1; x++)
+                if (y == height || y == -1 || x == -1 || x == width)
                 {
-                    if (y == height || y == -1 || x == -1 || x == width)
+                    if (x == width / 2 && y == height)
                     {
-                        if (x == width / 2 && y == height)
-                        {
-                            GameObject obj = Instantiate(ground, new Vector3(x, 0.0f, y), transform.rotation);
-                            obj.transform.parent = transform;
-                            obj = Instantiate(exitdoor, new Vector3(x, 0.0f, y), transform.rotation);
-                            obj.transform.parent = transform;
-                            obj.GetComponent<DoorHandler>().setLevelCreator(this.transform.gameObject);
-                            door = obj;
-                        }
-                        else {
-                            GameObject obj = Instantiate(emptyWall, new Vector3(x, 0.0f, y), transform.rotation);
-                            obj.transform.parent = transform;
-                            if ((y == height && x != -1 && x != width) || (x == -1 && y != -1 && y!=height))
-                            {
-                                obj = Instantiate(outerWall, new Vector3(x, 0.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                if (y != height)
-                                {
-                                    obj.GetComponent<OuterWallDecorator>().setLeftWall(true);
-                                    obj.transform.Rotate(0, -90, 0);
-                                }
-                                obj.GetComponent<OuterWallDecorator>().decorate();
-                            }
-                        }
+                        GameObject obj = Instantiate(ground, new Vector3(x, 0.0f, y), transform.rotation);
+                        obj.transform.parent = transform;
+                        obj = Instantiate(exitdoor, new Vector3(x, 0.0f, y), transform.rotation);
+                        obj.transform.parent = transform;
+                        obj.GetComponent<DoorHandler>().setLevelCreator(this.transform.gameObject);
+                        door = obj;
                     }
                     else {
-                        string tile = tokens[x];
-                        GameObject obj;
-                        if (tile != "k")
+                        GameObject obj = Instantiate(emptyWall, new Vector3(x, 0.0f, y), transform.rotation);
+                        obj.transform.parent = transform;
+                        if ((y == height && x != -1 && x != width) || (x == -1 && y != -1 && y!=height))
                         {
-                            obj = Instantiate(ground, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj = Instantiate(outerWall, new Vector3(x, 0.0f, y), transform.rotation);
                             obj.transform.parent = transform;
-                        }
-
-                        switch (tile)
-                        {
-                            case "1":
-                                obj = Instantiate(coin, new Vector3(x, 1.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                break;
-                            case "2":
-                                obj = Instantiate(rock, new Vector3(x, 0.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                break;
-                            case "3":
-                                obj = Instantiate(slime, new Vector3(x, 0.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                obj.GetComponent<SlimeHandler>().setLevelCreator(this.transform.gameObject);
-                                ++enemies;
-                                break;
-                            case "4":
-                                obj = Instantiate(giant, new Vector3(x, 0.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                obj.GetComponent<GiantHandler>().setLevelCreator(this.transform.gameObject);
-                                obj.GetComponent<GiantHandler>().setPlayer(player);
-                                ++enemies;
-                                break;
-                            case "5":
-                                obj = Instantiate(spikeTrap, new Vector3(x, 0.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                if (spikeMakesSound)
-                                {
-                                    spikeMakesSound = false;
-                                    obj.GetComponent<SpikeTrapHandler>().enableSound();
-                                }
-                                break;
-                            case "6":
-                                player.transform.localPosition = new Vector3(x, 0.0f, y);
-                                break;
-                            case "7":
-                                obj = Instantiate(axeTrap, new Vector3(x, 0.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                break;
-                            case "8":
-                                obj = Instantiate(axeTrap, new Vector3(x, 0.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                obj.GetComponent<AxeHandler>().invertDirection();
-                                break;
-                            case "9":
-                                obj = Instantiate(bomb, new Vector3(x, 0.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                BombHandler b = obj.GetComponent<BombHandler>();
-                                b.setPlayer(player);
-                                b.setLevelCreator(this.transform.gameObject);
-                                ++enemies;
-                                break;
-                            case "a":
-                                obj = Instantiate(goblin, new Vector3(x, 0.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                obj.GetComponent<GoblinHandler>().setLevelCreator(this.transform.gameObject);
-                                obj.GetComponent<GoblinHandler>().setPlayer(player);
-                                ++enemies;
-                                break;
-                            case "b":
-                                obj = Instantiate(arrowTrap, new Vector3(x, 0.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                obj.GetComponent<ArrowTrapHandler>().setLevelCreator(this.transform.gameObject);
-                                obj.GetComponent<ArrowTrapHandler>().setDirection(Direction.RIGHT);
-                                break;
-                            case "c":
-                                obj = Instantiate(arrowTrap, new Vector3(x, 0.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                obj.GetComponent<ArrowTrapHandler>().setLevelCreator(this.transform.gameObject);
-                                obj.GetComponent<ArrowTrapHandler>().setDirection(Direction.LEFT);
-                                break;
-                            case "d":
-                                obj = Instantiate(arrowTrap, new Vector3(x, 0.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                obj.GetComponent<ArrowTrapHandler>().setLevelCreator(this.transform.gameObject);
-                                obj.GetComponent<ArrowTrapHandler>().setDirection(Direction.UP);
-                                break;
-                            case "e":
-                                obj = Instantiate(arrowTrap, new Vector3(x, 0.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                obj.GetComponent<ArrowTrapHandler>().setLevelCreator(this.transform.gameObject);
-                                obj.GetComponent<ArrowTrapHandler>().setDirection(Direction.DOWN);
-                                break;
-                            case "f":   // Torxa 
-                                obj = Instantiate(torch, new Vector3(x, 0.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                break;
-                            case "g":   // Cofre
-                                obj = Instantiate(chest, new Vector3(x, 0.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                break;
-                            case "h":   // Barril
-                                obj = Instantiate(barrel, new Vector3(x, 0.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                break;
-                            case "i":   // Catifa 
-                                obj = Instantiate(carpet, new Vector3(x, 0.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                break;
-                            case "j":   // Pila d'ossos
-                                obj = Instantiate(pileBones, new Vector3(x, 0.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                break;
-                            case "k":   // Forat
-                                obj = Instantiate(hole, new Vector3(x, 0.0f, y), transform.rotation);
-                                obj.transform.parent = transform;
-                                break;
+                            if (y != height)
+                            {
+                                obj.GetComponent<OuterWallDecorator>().setLeftWall(true);
+                                obj.transform.Rotate(0, -90, 0);
+                            }
+                            obj.GetComponent<OuterWallDecorator>().decorate();
                         }
                     }
                 }
+                else {
+                    string tile = tokens[x];
+                    GameObject obj;
+                    if (tile != "k")
+                    {
+                        obj = Instantiate(ground, new Vector3(x, 0.0f, y), transform.rotation);
+                        obj.transform.parent = transform;
+                    }
+
+                    switch (tile)
+                    {
+                        case "1":
+                            obj = Instantiate(coin, new Vector3(x, 1.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            break;
+                        case "2":
+                            obj = Instantiate(rock, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            break;
+                        case "3":
+                            obj = Instantiate(slime, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            obj.GetComponent<SlimeHandler>().setLevelCreator(this.transform.gameObject);
+                            ++enemies;
+                            break;
+                        case "4":
+                            obj = Instantiate(giant, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            obj.GetComponent<GiantHandler>().setLevelCreator(this.transform.gameObject);
+                            obj.GetComponent<GiantHandler>().setPlayer(player);
+                            ++enemies;
+                            break;
+                        case "5":
+                            obj = Instantiate(spikeTrap, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            if (spikeMakesSound)
+                            {
+                                spikeMakesSound = false;
+                                obj.GetComponent<SpikeTrapHandler>().enableSound();
+                            }
+                            break;
+                        case "6":
+                            player.transform.localPosition = new Vector3(x, 0.0f, y);
+                            break;
+                        case "7":
+                            obj = Instantiate(axeTrap, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            break;
+                        case "8":
+                            obj = Instantiate(axeTrap, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            obj.GetComponent<AxeHandler>().invertDirection();
+                            break;
+                        case "9":
+                            obj = Instantiate(bomb, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            BombHandler b = obj.GetComponent<BombHandler>();
+                            b.setPlayer(player);
+                            b.setLevelCreator(this.transform.gameObject);
+                            ++enemies;
+                            break;
+                        case "a":
+                            obj = Instantiate(goblin, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            obj.GetComponent<GoblinHandler>().setLevelCreator(this.transform.gameObject);
+                            obj.GetComponent<GoblinHandler>().setPlayer(player);
+                            ++enemies;
+                            break;
+                        case "b":
+                            obj = Instantiate(arrowTrap, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            obj.GetComponent<ArrowTrapHandler>().setLevelCreator(this.transform.gameObject);
+                            obj.GetComponent<ArrowTrapHandler>().setDirection(Direction.RIGHT);
+                            break;
+                        case "c":
+                            obj = Instantiate(arrowTrap, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            obj.GetComponent<ArrowTrapHandler>().setLevelCreator(this.transform.gameObject);
+                            obj.GetComponent<ArrowTrapHandler>().setDirection(Direction.LEFT);
+                            break;
+                        case "d":
+                            obj = Instantiate(arrowTrap, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            obj.GetComponent<ArrowTrapHandler>().setLevelCreator(this.transform.gameObject);
+                            obj.GetComponent<ArrowTrapHandler>().setDirection(Direction.UP);
+                            break;
+                        case "e":
+                            obj = Instantiate(arrowTrap, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            obj.GetComponent<ArrowTrapHandler>().setLevelCreator(this.transform.gameObject);
+                            obj.GetComponent<ArrowTrapHandler>().setDirection(Direction.DOWN);
+                            break;
+                        case "f":   // Torxa 
+                            obj = Instantiate(torch, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            break;
+                        case "g":   // Cofre
+                            obj = Instantiate(chest, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            break;
+                        case "h":   // Barril
+                            obj = Instantiate(barrel, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            break;
+                        case "i":   // Catifa 
+                            obj = Instantiate(carpet, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            break;
+                        case "j":   // Pila d'ossos
+                            obj = Instantiate(pileBones, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            break;
+                        case "k":   // Forat
+                            obj = Instantiate(hole, new Vector3(x, 0.0f, y), transform.rotation);
+                            obj.transform.parent = transform;
+                            break;
+                    }
+                }
             }
-        }
-        else
-        {
-            Debug.LogError("Error: No es troba el mapa! Buscant a la ruta: " + filename);
         }
     }
 

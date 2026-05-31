@@ -3,7 +3,7 @@
 /[Oo]bj/
 /[Bb]uilds/
 /[Ll]ogs/
-
+/Build
 .vs/
 Library/
 Temp/
