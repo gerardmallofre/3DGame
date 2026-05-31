@@ -110,7 +110,7 @@ public class CreateLevel : MonoBehaviour
         for (int y = height; y >= -1; y--)
         {
             if (y != height && y != -1) {
-                line = lines[currentLine]; ++currentLine;
+                line = lines[currentLine].Trim(); ++currentLine;
                 tokens = line.Split(" ");
             }
             for (int x = -1; x < width + 1; x++)
