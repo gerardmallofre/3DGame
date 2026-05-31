@@ -97,7 +97,7 @@ public class CreateLevel : MonoBehaviour
         string text = levels[level].text;
         string[] lines = text.Split('\n');
         int currentLine = 0;
-        string line = lines[currentLine]; ++currentLine;
+        string line = lines[currentLine].Trim(); ++currentLine;
         if (line == "FALLS")
         {
             falls = true;
