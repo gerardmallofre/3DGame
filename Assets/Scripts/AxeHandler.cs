@@ -39,25 +39,9 @@ public class AxeHandler : MonoBehaviour
             state = AxeState.ROTATING;
             soReprodut = false; 
         }
-        else if (time > rotDuration + hitDelay + hitDuration + retractDuration && state == AxeState.AXEDOWN)
+        else if (time < rotDuration)
         {
-            state = AxeState.STILL;
-            axe.transform.localRotation = axeInitRot;
-        }
-        else if (time > rotDuration + hitDelay + hitDuration)
-        {
-            if (time > rotDuration + hitDelay + hitDuration + retractDuration / 2) state = AxeState.AXEDOWN;
-            axe.transform.Rotate(0, 0, Time.deltaTime / retractDuration * 90);
-        }
-        else if (time > rotDuration + hitDelay)
-        {
-            if (!soReprodut && time > rotDuration + hitDelay + hitDuration / 3)
-            {
-                state = AxeState.HIT;
-                soReprodut = true;
-                AudioManager.instance?.PlayAxeTrap();
-            }
-            axe.transform.Rotate(0, 0, -90 * Time.deltaTime / hitDuration);
+            transform.Rotate(0, rotDirection * Time.deltaTime / rotDuration * 90, 0);
         }
         else if (time >= rotDuration && state == AxeState.ROTATING)
         {
@@ -68,9 +52,25 @@ public class AxeHandler : MonoBehaviour
             axeInitRot = axe.transform.localRotation;
             currentdir = rotate(currentdir, rotDirection);
         }
-        else if (time < rotDuration)
+        else if (time >= rotDuration + hitDelay && time < rotDuration + hitDelay + hitDuration)
         {
-            transform.Rotate(0, rotDirection * Time.deltaTime / rotDuration * 90, 0);
+            if (!soReprodut && time > rotDuration + hitDelay + hitDuration / 3)
+            {
+                state = AxeState.HIT;
+                soReprodut = true;
+                AudioManager.instance?.PlayAxeTrap();
+            }
+            axe.transform.Rotate(0, 0, -90 * Time.deltaTime / hitDuration);
+        }
+        else if (time >= rotDuration + hitDelay + hitDuration && time < rotDuration + hitDelay + hitDuration + retractDuration)
+        {
+            if (time > rotDuration + hitDelay + hitDuration + retractDuration / 2) state = AxeState.AXEDOWN;
+            axe.transform.Rotate(0, 0, Time.deltaTime / retractDuration * 90);
+        }
+        else if (time >= rotDuration + hitDelay + hitDuration + retractDuration && state == AxeState.AXEDOWN)
+        {
+            state = AxeState.STILL;
+            axe.transform.localRotation = axeInitRot;
         }
     }
 
